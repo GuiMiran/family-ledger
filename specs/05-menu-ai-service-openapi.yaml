@@ -1,0 +1,351 @@
+openapi: 3.1.0
+info:
+  title: Family Ledger — Menu/AI Service
+  version: 1.0.0
+  description: |
+    Servicio de sugerencia de menús e insights de compra generados por IA.
+
+    Principios:
+    - Los menús priorizan SIEMPRE los lotes de inventario más próximos a caducar.
+    - Nunca se propone comprar un ingrediente que ya existe en el inventario.
+    - Toda sugerencia lleva su justificación (ai_rationale) — el usuario ve POR QUÉ
+      se propone ese plato ("usa el pollo que caduca el jueves").
+    - La IA es un proveedor desacoplado (interfaz AIProvider). El prompt recibe:
+      inventario con caducidades + histórico de menús aceptados/rechazados +
+      tamaño de familia (5) — nunca datos personales innecesarios.
+
+    Caso real de referencia (ticket Makro 04/07/2026):
+    - 6,87 kg de pollo/picada/burger llegan el mismo día → el planner debe
+      sugerir congelar parte inmediatamente y repartir el resto en menús
+      de la semana, no proponer 5 días seguidos de pollo.
+
+servers:
+  - url: /api/v1
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: menus
+  - name: insights
+
+paths:
+  /menus/suggestions:
+    post:
+      tags: [menus]
+      summary: Generar sugerencias de menú
+      description: |
+        Genera menús para un rango de fechas usando el inventario actual.
+        Operación asíncrona si el rango es > 3 días (202), síncrona si es
+        para hoy/mañana (200 directa, latencia aceptable ~5-10 s).
+      operationId: generateSuggestions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [from_date, to_date]
+              properties:
+                from_date: { type: string, format: date }
+                to_date: { type: string, format: date }
+                meal_types:
+                  type: array
+                  items:
+                    type: string
+                    enum: [lunch, dinner]
+                  default: [lunch, dinner]
+                constraints:
+                  type: object
+                  description: Restricciones opcionales de la familia
+                  properties:
+                    exclude_product_ids:
+                      type: array
+                      items: { type: string, format: uuid }
+                    notes:
+                      type: string
+                      description: 'Texto libre: "sin pescado los martes", "los niños no comen picante"'
+      responses:
+        '200':
+          description: Sugerencias generadas (rango corto)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MenuSuggestion'
+        '202':
+          description: Generación en curso (rango largo), polling en GET /menus/suggestions
+        '422':
+          description: Inventario insuficiente para el rango pedido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: { type: string }
+                  suggested_purchases:
+                    description: Qué faltaría comprar para cubrir el rango (sin duplicar inventario)
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        product_name: { type: string }
+                        quantity: { type: number }
+                        unit: { type: string }
+
+    get:
+      tags: [menus]
+      summary: Listar sugerencias
+      operationId: listSuggestions
+      parameters:
+        - name: from
+          in: query
+          schema: { type: string, format: date }
+        - name: to
+          in: query
+          schema: { type: string, format: date }
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [suggested, accepted, rejected, cooked]
+      responses:
+        '200':
+          description: Sugerencias del rango
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MenuSuggestion'
+
+  /menus/suggestions/{suggestionId}/accept:
+    parameters:
+      - $ref: '#/components/parameters/suggestionId'
+    post:
+      tags: [menus]
+      summary: Aceptar sugerencia
+      description: Reserva (soft-lock) los ingredientes del inventario para esa fecha.
+      operationId: acceptSuggestion
+      responses:
+        '200':
+          $ref: '#/components/responses/SuggestionUpdated'
+
+  /menus/suggestions/{suggestionId}/reject:
+    parameters:
+      - $ref: '#/components/parameters/suggestionId'
+    post:
+      tags: [menus]
+      summary: Rechazar sugerencia
+      description: |
+        El motivo alimenta el aprendizaje: los rechazos recurrentes de un tipo
+        de plato reducen su probabilidad en futuras generaciones.
+      operationId: rejectSuggestion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  enum: [dont_like, too_complex, already_planned, missing_ingredient, other]
+                note: { type: string }
+      responses:
+        '200':
+          $ref: '#/components/responses/SuggestionUpdated'
+
+  /menus/suggestions/{suggestionId}/cooked:
+    parameters:
+      - $ref: '#/components/parameters/suggestionId'
+    post:
+      tags: [menus]
+      summary: Marcar como cocinado
+      description: |
+        Genera automáticamente movimientos 'consume' en Inventory Service
+        para los ingredientes usados. Si el plato usó lotes a ≤3 días de
+        caducar, se registra savings_record tipo 'waste_avoided'.
+      operationId: markCooked
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                actual_ingredients:
+                  description: Ajustes si se usó más/menos de lo previsto (opcional)
+                  type: array
+                  items:
+                    type: object
+                    required: [inventory_item_id, quantity_used]
+                    properties:
+                      inventory_item_id: { type: string, format: uuid }
+                      quantity_used: { type: number }
+      responses:
+        '200':
+          $ref: '#/components/responses/SuggestionUpdated'
+
+  /insights/receipts/{receiptId}:
+    parameters:
+      - name: receiptId
+        in: path
+        required: true
+        schema: { type: string, format: uuid }
+    get:
+      tags: [insights]
+      summary: Informe IA de una compra
+      description: |
+        Análisis automático generado tras ReceiptConfirmed (se consulta, no se
+        genera bajo demanda). Compara cada línea contra product_price_history.
+      operationId: getReceiptInsights
+      responses:
+        '200':
+          description: Informe de la compra
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceiptInsights'
+        '404':
+          description: Informe aún no generado o ticket inexistente
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    suggestionId:
+      name: suggestionId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+
+  responses:
+    SuggestionUpdated:
+      description: Estado actualizado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/MenuSuggestion'
+
+  schemas:
+    MenuSuggestion:
+      type: object
+      required: [id, suggested_for_date, meal_type, title, status]
+      properties:
+        id: { type: string, format: uuid }
+        suggested_for_date: { type: string, format: date }
+        meal_type:
+          type: string
+          enum: [lunch, dinner]
+        title: { type: string }
+        recipe_body:
+          type: string
+          description: Receta en markdown, raciones ajustadas al tamaño de la familia
+        servings: { type: integer }
+        status:
+          type: string
+          enum: [suggested, accepted, rejected, cooked]
+        ai_rationale:
+          type: string
+          description: '"Usa las 2,37 kg de pechuga que caducan el 8/07"'
+        urgency_score:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Cuánto desperdicio evita este plato (ordena la UI)
+        ingredients:
+          type: array
+          items:
+            type: object
+            required: [inventory_item_id, product_name, quantity_needed, unit]
+            properties:
+              inventory_item_id: { type: string, format: uuid }
+              product_name: { type: string }
+              quantity_needed: { type: number }
+              unit: { type: string }
+              expiry_date: { type: string, format: date, nullable: true }
+              is_expiring_soon: { type: boolean }
+
+    ReceiptInsights:
+      type: object
+      required: [receipt_id, generated_at, summary, line_insights]
+      properties:
+        receipt_id: { type: string, format: uuid }
+        generated_at: { type: string, format: date-time }
+        summary:
+          type: string
+          description: Resumen en lenguaje natural de la compra
+        good_buys:
+          type: array
+          description: Líneas por debajo de su precio histórico
+          items:
+            $ref: '#/components/schemas/LineInsight'
+        expensive_buys:
+          type: array
+          description: Líneas por encima de su precio histórico
+          items:
+            $ref: '#/components/schemas/LineInsight'
+        bulk_recommendations:
+          type: array
+          description: Productos que compensa comprar en formato grande
+          items:
+            type: object
+            properties:
+              product_name: { type: string }
+              rationale: { type: string }
+              estimated_annual_saving: { type: number }
+        waste_risks:
+          type: array
+          description: |
+            Riesgo de desperdicio detectado. Ej: 6,87 kg de carne fresca en una
+            sola compra → recomendar congelar N kg hoy mismo.
+          items:
+            type: object
+            properties:
+              product_name: { type: string }
+              quantity: { type: number }
+              risk_level:
+                type: string
+                enum: [low, medium, high]
+              recommended_action: { type: string }
+              suggested_freeze_quantity: { type: number, nullable: true }
+        estimated_savings_this_receipt:
+          type: number
+          description: Descuentos + diferencia vs precio histórico medio
+        line_insights:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineInsight'
+
+    LineInsight:
+      type: object
+      properties:
+        receipt_line_id: { type: string, format: uuid }
+        product_name: { type: string }
+        paid_unit_price: { type: number }
+        historical_avg_unit_price: { type: number, nullable: true }
+        delta_pct:
+          type: number
+          nullable: true
+          description: Negativo = más barato que la media histórica
+        cheapest_known_supermarket:
+          type: string
+          nullable: true
+          description: Fase 1 solo con datos propios de la familia
+        verdict:
+          type: string
+          enum: [good_buy, fair, expensive, no_history]
+
+# ─────────────────────────────────────────────
+# Eventos internos
+# ─────────────────────────────────────────────
+# CONSUME:
+#   ReceiptConfirmed  → genera ReceiptInsights + evalúa waste_risks
+#   ItemExpiringSoon  → puede regenerar sugerencias del día si hay hueco
+# EMITE:
+#   MenuCooked { family_id, suggestion_id, ingredients[] }
+#     → Inventory Service (consume), Analytics (waste_avoided)

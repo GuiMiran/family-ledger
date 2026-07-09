@@ -1,0 +1,354 @@
+openapi: 3.1.0
+info:
+  title: Family Ledger — Analytics Service
+  version: 1.0.0
+  description: |
+    Servicio de dashboards, KPIs familiares y registros de ahorro.
+
+    Principios:
+    - Solo lectura hacia el cliente: los datos nacen de eventos
+      (ReceiptConfirmed, ItemWasted, MenuCooked), nunca de escrituras directas.
+    - Fuente: vistas materializadas refrescadas al confirmar cada ticket
+      (mv_monthly_spend, mv_price_evolution, mv_family_kpis).
+    - Todas las cifras monetarias en EUR, NUMERIC — nunca float.
+    - members_count de la familia (5) alimenta los KPIs per cápita.
+
+servers:
+  - url: /api/v1
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: dashboard
+  - name: spend
+  - name: prices
+  - name: savings
+  - name: waste
+
+paths:
+  /analytics/dashboard:
+    get:
+      tags: [dashboard]
+      summary: Dashboard principal (pantalla de inicio)
+      description: Una sola llamada devuelve todo lo que pinta la home de la app.
+      operationId: getDashboard
+      parameters:
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum: [current_month, last_30_days, current_year]
+            default: current_month
+      responses:
+        '200':
+          description: KPIs del periodo
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dashboard'
+
+  /analytics/spend/monthly:
+    get:
+      tags: [spend]
+      summary: Serie de gasto mensual
+      operationId: getMonthlySpend
+      parameters:
+        - $ref: '#/components/parameters/from'
+        - $ref: '#/components/parameters/to'
+        - name: group_by
+          in: query
+          schema:
+            type: string
+            enum: [none, supermarket, category]
+            default: none
+      responses:
+        '200':
+          description: Serie temporal, apta para gráfico de barras/líneas
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  series:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        label:
+                          type: string
+                          description: Nombre de supermercado/categoría, o "total"
+                        points:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              month: { type: string, example: '2026-07' }
+                              amount: { type: number }
+
+  /analytics/spend/breakdown:
+    get:
+      tags: [spend]
+      summary: Desglose de gasto de un periodo
+      operationId: getSpendBreakdown
+      parameters:
+        - $ref: '#/components/parameters/from'
+        - $ref: '#/components/parameters/to'
+        - name: dimension
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [supermarket, category, vat_rate, payment_method]
+      responses:
+        '200':
+          description: Desglose para gráfico de tarta/donut
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total: { type: number }
+                  slices:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        label: { type: string }
+                        amount: { type: number }
+                        pct: { type: number }
+
+  /analytics/prices/evolution:
+    get:
+      tags: [prices]
+      summary: Evolución de precio de un producto
+      operationId: getPriceEvolution
+      parameters:
+        - name: product_id
+          in: query
+          required: true
+          schema: { type: string, format: uuid }
+        - $ref: '#/components/parameters/from'
+        - $ref: '#/components/parameters/to'
+      responses:
+        '200':
+          description: Precio unitario pagado a lo largo del tiempo, por supermercado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  product_name: { type: string }
+                  unit: { type: string, example: '€/kg' }
+                  series:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        supermarket_name: { type: string }
+                        points:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              date: { type: string, format: date }
+                              unit_price: { type: number }
+                              had_promotion: { type: boolean }
+
+  /analytics/prices/family-inflation:
+    get:
+      tags: [prices]
+      summary: Inflación familiar
+      description: |
+        Índice tipo Laspeyres sobre la cesta REAL de la familia: precio actual
+        de los productos recurrentes vs su precio hace N meses, ponderado por
+        gasto. "Vuestra cesta cuesta hoy un +4,2% que hace 6 meses".
+      operationId: getFamilyInflation
+      parameters:
+        - name: months_back
+          in: query
+          schema: { type: integer, default: 6, minimum: 1, maximum: 24 }
+      responses:
+        '200':
+          description: Índice de inflación de la cesta familiar
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  inflation_pct: { type: number }
+                  period_from: { type: string, format: date }
+                  period_to: { type: string, format: date }
+                  basket_size:
+                    type: integer
+                    description: Nº de productos recurrentes usados en el cálculo
+                  top_increases:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PriceChange'
+                  top_decreases:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PriceChange'
+
+  /analytics/savings:
+    get:
+      tags: [savings]
+      summary: Ahorro conseguido
+      operationId: getSavings
+      parameters:
+        - $ref: '#/components/parameters/from'
+        - $ref: '#/components/parameters/to'
+      responses:
+        '200':
+          description: Ahorro por tipo y acumulado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total: { type: number }
+                  by_type:
+                    type: object
+                    properties:
+                      promotion:
+                        type: number
+                        description: Descuentos aplicados en tickets (ej. "COMPRA MÁS PAGA MENOS 1,29")
+                      better_price:
+                        type: number
+                        description: Compras por debajo del precio histórico medio
+                      waste_avoided:
+                        type: number
+                        description: Valor de comida salvada gracias a alertas/menús
+                  monthly_series:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        month: { type: string }
+                        amount: { type: number }
+                  accumulated_this_year: { type: number }
+
+  /analytics/waste:
+    get:
+      tags: [waste]
+      summary: Dinero desperdiciado
+      operationId: getWaste
+      parameters:
+        - $ref: '#/components/parameters/from'
+        - $ref: '#/components/parameters/to'
+      responses:
+        '200':
+          description: Desperdicio del periodo, con desglose
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_value: { type: number }
+                  total_quantity_kg: { type: number }
+                  by_reason:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        reason:
+                          type: string
+                          enum: [expired, spoiled, leftover_discarded, other]
+                        value: { type: number }
+                  top_wasted_products:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        product_name: { type: string }
+                        times_wasted: { type: integer }
+                        total_value: { type: number }
+                  trend_vs_previous_period:
+                    type: number
+                    description: '% de variación vs periodo anterior (negativo = mejora)'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    from:
+      name: from
+      in: query
+      schema: { type: string, format: date }
+    to:
+      name: to
+      in: query
+      schema: { type: string, format: date }
+
+  schemas:
+    Dashboard:
+      type: object
+      required: [period, spend, kpis, inventory_value, savings, waste]
+      properties:
+        period:
+          type: object
+          properties:
+            from: { type: string, format: date }
+            to: { type: string, format: date }
+        spend:
+          type: object
+          properties:
+            total: { type: number }
+            vs_previous_period_pct: { type: number }
+            receipts_count: { type: integer }
+            avg_receipt: { type: number }
+        kpis:
+          type: object
+          description: Family KPIs
+          properties:
+            cost_per_person: { type: number }
+            cost_per_day: { type: number }
+            cost_per_meal:
+              type: number
+              description: gasto / (días × comidas/día configuradas)
+        inventory_value:
+          type: object
+          properties:
+            pantry: { type: number }
+            fridge: { type: number }
+            freezer: { type: number }
+            total: { type: number }
+        savings:
+          type: object
+          properties:
+            this_period: { type: number }
+            accumulated_year: { type: number }
+        waste:
+          type: object
+          properties:
+            this_period_value: { type: number }
+            items_at_risk:
+              type: integer
+              description: Items que caducan en ≤3 días
+        alerts_pending: { type: integer }
+
+    PriceChange:
+      type: object
+      properties:
+        product_name: { type: string }
+        old_unit_price: { type: number }
+        new_unit_price: { type: number }
+        change_pct: { type: number }
+        monthly_impact:
+          type: number
+          description: Impacto estimado en € /mes según consumo habitual
+
+# ─────────────────────────────────────────────
+# Eventos internos
+# ─────────────────────────────────────────────
+# CONSUME:
+#   ReceiptConfirmed → refresco incremental de mv_monthly_spend, mv_price_evolution,
+#                      mv_family_kpis + cálculo de savings (promotion, better_price)
+#   ItemWasted       → acumula desperdicio del periodo
+#   MenuCooked       → si usó lotes a ≤3 días de caducar → savings waste_avoided
+# NO EMITE eventos: es un servicio terminal de lectura.

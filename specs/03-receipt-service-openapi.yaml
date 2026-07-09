@@ -1,0 +1,416 @@
+openapi: 3.1.0
+info:
+  title: Family Ledger — Receipt Service
+  version: 1.0.0
+  description: |
+    Servicio de ingesta de tickets: captura de imagen, OCR, parsing por supermercado,
+    normalización de productos y confirmación de campos ambiguos.
+
+    Flujo principal:
+    1. POST /receipts (multipart, imagen) → procesamiento asíncrono
+    2. GET /receipts/{id} → polling de estado (o push via websocket en cliente)
+    3. Si status=pending_review → PATCH /receipts/{id}/confirm con SOLO los campos ambiguos
+    4. status=confirmed → evento interno ReceiptConfirmed → Inventory + Analytics
+
+    Regla de oro: NUNCA se pide al usuario reintroducir el ticket completo.
+    Solo los campos cuya confianza OCR esté por debajo del umbral.
+
+servers:
+  - url: /api/v1
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: receipts
+  - name: review
+
+paths:
+  /receipts:
+    post:
+      tags: [receipts]
+      summary: Subir foto de ticket
+      description: |
+        Sube la imagen del ticket. El procesamiento (OCR + parsing + normalización)
+        es asíncrono. Devuelve 202 con el id del receipt en estado 'processing'.
+      operationId: uploadReceipt
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [image]
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: JPEG/PNG/HEIC, máx 10 MB
+                captured_at:
+                  type: string
+                  format: date-time
+                  description: Timestamp de captura en el dispositivo (opcional)
+      responses:
+        '202':
+          description: Imagen aceptada, procesamiento en curso
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id, status]
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum: [processing]
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '413':
+          description: Imagen demasiado grande
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    get:
+      tags: [receipts]
+      summary: Listar tickets de la familia
+      operationId: listReceipts
+      parameters:
+        - name: from
+          in: query
+          schema: { type: string, format: date }
+        - name: to
+          in: query
+          schema: { type: string, format: date }
+        - name: supermarket_id
+          in: query
+          schema: { type: string, format: uuid }
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [processing, pending_review, confirmed, rejected]
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1, default: 1 }
+        - name: page_size
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+      responses:
+        '200':
+          description: Lista paginada
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, total, page, page_size]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ReceiptSummary'
+                  total: { type: integer }
+                  page: { type: integer }
+                  page_size: { type: integer }
+
+  /receipts/{receiptId}:
+    parameters:
+      - $ref: '#/components/parameters/receiptId'
+    get:
+      tags: [receipts]
+      summary: Detalle completo de un ticket
+      operationId: getReceipt
+      responses:
+        '200':
+          description: Detalle del ticket, incluyendo campos pendientes de revisión si aplica
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceiptDetail'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [receipts]
+      summary: Eliminar un ticket
+      description: |
+        Solo permitido en estados processing/pending_review/rejected.
+        Un ticket confirmed ya generó movimientos de inventario — requiere
+        anulación explícita (fuera de alcance Fase 1).
+      operationId: deleteReceipt
+      responses:
+        '204': { description: Eliminado }
+        '409':
+          description: El ticket está confirmado y no puede eliminarse directamente
+
+  /receipts/{receiptId}/image:
+    parameters:
+      - $ref: '#/components/parameters/receiptId'
+    get:
+      tags: [receipts]
+      summary: Imagen original del ticket
+      operationId: getReceiptImage
+      responses:
+        '200':
+          description: Imagen original
+          content:
+            image/jpeg:
+              schema: { type: string, format: binary }
+
+  /receipts/{receiptId}/confirm:
+    parameters:
+      - $ref: '#/components/parameters/receiptId'
+    patch:
+      tags: [review]
+      summary: Confirmar campos ambiguos
+      description: |
+        El cliente envía ÚNICAMENTE los campos que estaban en pending_fields.
+        Campos no incluidos conservan el valor detectado por OCR.
+        Si tras aplicar las correcciones no queda ningún campo por debajo
+        del umbral, el ticket pasa a 'confirmed' y se emite ReceiptConfirmed.
+      operationId: confirmReceipt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReceiptCorrections'
+      responses:
+        '200':
+          description: Correcciones aplicadas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceiptDetail'
+        '409':
+          description: El ticket no está en estado pending_review
+        '422':
+          description: Corrección inválida (p.ej. total no cuadra con líneas)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /receipts/{receiptId}/reject:
+    parameters:
+      - $ref: '#/components/parameters/receiptId'
+    post:
+      tags: [review]
+      summary: Descartar un ticket (foto ilegible, duplicado...)
+      operationId: rejectReceipt
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  enum: [unreadable, duplicate, not_a_receipt, other]
+      responses:
+        '200': { description: Ticket marcado como rejected }
+
+  /receipts/{receiptId}/lines/{lineId}/product:
+    parameters:
+      - $ref: '#/components/parameters/receiptId'
+      - name: lineId
+        in: path
+        required: true
+        schema: { type: string, format: uuid }
+    put:
+      tags: [review]
+      summary: Corregir la normalización de producto de una línea
+      description: |
+        El usuario reasigna una línea a otro producto canónico (o crea uno nuevo).
+        El alias queda aprendido en product_aliases para futuros tickets.
+      operationId: setLineProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  required: [product_id]
+                  properties:
+                    product_id: { type: string, format: uuid }
+                - type: object
+                  required: [new_product]
+                  properties:
+                    new_product:
+                      type: object
+                      required: [canonical_name, category_id]
+                      properties:
+                        canonical_name: { type: string }
+                        category_id: { type: string, format: uuid }
+                        brand: { type: string, nullable: true }
+      responses:
+        '200':
+          description: Línea actualizada y alias aprendido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceiptLine'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    receiptId:
+      name: receiptId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+
+  responses:
+    BadRequest:
+      description: Petición inválida
+    Unauthorized:
+      description: Token ausente o inválido
+    NotFound:
+      description: Recurso no encontrado o de otra familia
+
+  schemas:
+    ReceiptSummary:
+      type: object
+      required: [id, status, supermarket, purchase_date, total_amount]
+      properties:
+        id: { type: string, format: uuid }
+        status:
+          type: string
+          enum: [processing, pending_review, confirmed, rejected]
+        supermarket:
+          $ref: '#/components/schemas/SupermarketRef'
+        purchase_date: { type: string, format: date, nullable: true }
+        total_amount: { type: number, nullable: true }
+        lines_count: { type: integer }
+        ocr_confidence: { type: number, minimum: 0, maximum: 1 }
+
+    ReceiptDetail:
+      allOf:
+        - $ref: '#/components/schemas/ReceiptSummary'
+        - type: object
+          required: [lines, pending_fields]
+          properties:
+            purchase_time: { type: string, format: time, nullable: true }
+            total_vat: { type: number, nullable: true }
+            payment_method:
+              type: string
+              enum: [card, cash, other]
+              nullable: true
+            lines:
+              type: array
+              items:
+                $ref: '#/components/schemas/ReceiptLine'
+            pending_fields:
+              description: |
+                Campos cuya confianza está por debajo del umbral y requieren
+                confirmación del usuario. Vacío si status != pending_review.
+                Path con notación JSONPath simplificada:
+                "total_amount", "purchase_date", "lines[3].quantity"...
+              type: array
+              items:
+                type: object
+                required: [field_path, detected_value, confidence]
+                properties:
+                  field_path: { type: string }
+                  detected_value: {}
+                  confidence: { type: number }
+                  suggestion:
+                    description: Valor alternativo sugerido por heurística (p.ej. suma de líneas)
+                    nullable: true
+
+    ReceiptLine:
+      type: object
+      required: [id, line_number, description, quantity, unit, line_total]
+      properties:
+        id: { type: string, format: uuid }
+        line_number: { type: integer }
+        raw_text: { type: string }
+        description: { type: string }
+        product:
+          $ref: '#/components/schemas/ProductRef'
+        product_match:
+          type: object
+          description: Cómo se normalizó la línea
+          properties:
+            match_type:
+              type: string
+              enum: [exact, fuzzy, ai, manual, unmatched]
+            confidence: { type: number }
+        quantity: { type: number }
+        unit:
+          type: string
+          enum: [unit, kg, l]
+        unit_price: { type: number, nullable: true }
+        line_total: { type: number }
+        discount_amount: { type: number }
+        promotion_text: { type: string, nullable: true }
+        vat_rate: { type: number, nullable: true }
+        ocr_confidence: { type: number }
+
+    ReceiptCorrections:
+      type: object
+      description: Solo los campos que el usuario corrige/confirma
+      properties:
+        supermarket_id: { type: string, format: uuid }
+        purchase_date: { type: string, format: date }
+        total_amount: { type: number }
+        total_vat: { type: number }
+        payment_method:
+          type: string
+          enum: [card, cash, other]
+        lines:
+          type: array
+          items:
+            type: object
+            required: [id]
+            properties:
+              id: { type: string, format: uuid }
+              quantity: { type: number }
+              unit_price: { type: number }
+              line_total: { type: number }
+              description: { type: string }
+
+    ProductRef:
+      type: object
+      nullable: true
+      properties:
+        id: { type: string, format: uuid }
+        canonical_name: { type: string }
+        category_name: { type: string }
+
+    SupermarketRef:
+      type: object
+      nullable: true
+      properties:
+        id: { type: string, format: uuid }
+        name: { type: string }
+
+    ValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            type: object
+            properties:
+              field: { type: string }
+              message: { type: string }
+
+# ─────────────────────────────────────────────
+# Eventos internos emitidos (documentación, no HTTP)
+# ─────────────────────────────────────────────
+# ReceiptConfirmed:
+#   payload:
+#     receipt_id: uuid
+#     family_id: uuid
+#     supermarket_id: uuid
+#     purchase_date: date
+#     lines:
+#       - product_id, quantity, unit, unit_price, expiry_estimate (nullable)
+#   consumidores: Inventory Service (alta de stock), Analytics Service (refresco MVs)

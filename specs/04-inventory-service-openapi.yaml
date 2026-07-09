@@ -1,0 +1,518 @@
+openapi: 3.1.0
+info:
+  title: Family Ledger — Inventory Service
+  version: 1.0.0
+  description: |
+    Servicio de inventario doméstico: despensa, nevera y congelador.
+
+    Principios:
+    - El inventario se alimenta AUTOMÁTICAMENTE del evento ReceiptConfirmed.
+      El usuario nunca da de alta manualmente lo que acaba de comprar.
+    - Todo cambio de stock pasa por un movimiento (ledger inmutable).
+      El stock actual es la suma de movimientos — nunca se edita directamente.
+    - El desperdicio se registra como movimiento 'waste' y alimenta el KPI
+      de dinero desperdiciado.
+
+    Flujos del usuario:
+    - Consultar qué hay en casa (por ubicación, por caducidad, por categoría)
+    - Marcar consumo ("hemos gastado 2 L de leche")
+    - Mover al congelador / sacar del congelador
+    - Registrar desperdicio (con motivo)
+    - Ajustar cantidades tras recuento físico
+    - Configurar stock mínimo por producto
+
+servers:
+  - url: /api/v1
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: inventory
+  - name: freezer
+  - name: movements
+  - name: settings
+
+paths:
+  /inventory:
+    get:
+      tags: [inventory]
+      summary: Estado actual del inventario
+      operationId: listInventory
+      parameters:
+        - name: location
+          in: query
+          schema:
+            type: string
+            enum: [pantry, fridge, freezer]
+        - name: category_id
+          in: query
+          schema: { type: string, format: uuid }
+        - name: expiring_within_days
+          in: query
+          description: Solo items que caducan en ≤ N días
+          schema: { type: integer, minimum: 0 }
+        - name: below_min_stock
+          in: query
+          description: Solo items por debajo de su stock mínimo
+          schema: { type: boolean }
+        - name: search
+          in: query
+          description: Búsqueda por nombre de producto
+          schema: { type: string }
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [expiry_asc, name_asc, quantity_asc, value_desc]
+            default: expiry_asc
+      responses:
+        '200':
+          description: |
+            Inventario agrupado por producto. Cada producto puede tener varios
+            lotes (misma referencia, distintas caducidades).
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, totals]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InventoryProductGroup'
+                  totals:
+                    $ref: '#/components/schemas/InventoryTotals'
+
+  /inventory/{itemId}:
+    parameters:
+      - $ref: '#/components/parameters/itemId'
+    get:
+      tags: [inventory]
+      summary: Detalle de un lote de inventario
+      operationId: getInventoryItem
+      responses:
+        '200':
+          description: Detalle con historial de movimientos recientes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryItemDetail'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /inventory/{itemId}/consume:
+    parameters:
+      - $ref: '#/components/parameters/itemId'
+    post:
+      tags: [movements]
+      summary: Registrar consumo
+      description: Genera movimiento 'consume'. Si la cantidad llega a 0, el lote se cierra.
+      operationId: consumeItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [quantity]
+              properties:
+                quantity: { type: number, exclusiveMinimum: 0 }
+                occurred_at:
+                  type: string
+                  format: date-time
+                  description: Por defecto, ahora
+      responses:
+        '200':
+          $ref: '#/components/responses/ItemUpdated'
+        '422':
+          description: Cantidad mayor que el stock disponible del lote
+
+  /inventory/{itemId}/waste:
+    parameters:
+      - $ref: '#/components/parameters/itemId'
+    post:
+      tags: [movements]
+      summary: Registrar desperdicio
+      description: |
+        Genera movimiento 'waste'. El valor económico se calcula con el último
+        unit_price conocido del producto y alimenta el KPI de dinero desperdiciado.
+      operationId: wasteItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [quantity, reason]
+              properties:
+                quantity: { type: number, exclusiveMinimum: 0 }
+                reason:
+                  type: string
+                  enum: [expired, spoiled, leftover_discarded, other]
+                note: { type: string }
+      responses:
+        '200':
+          $ref: '#/components/responses/ItemUpdated'
+
+  /inventory/{itemId}/freeze:
+    parameters:
+      - $ref: '#/components/parameters/itemId'
+    post:
+      tags: [freezer]
+      summary: Mover (total o parcialmente) al congelador
+      description: |
+        Genera movimiento 'freeze'. Crea un freezer_item con fecha de congelación
+        y fecha recomendada de consumo calculada por categoría
+        (carne 6 meses, pescado 3, pan 3, verdura 8...).
+        Si la cantidad es parcial, el lote original se divide.
+      operationId: freezeItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [quantity]
+              properties:
+                quantity: { type: number, exclusiveMinimum: 0 }
+                freezer_location:
+                  type: string
+                  description: '"cajón 2", "puerta"...'
+      responses:
+        '200':
+          description: Item congelado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FreezerItem'
+
+  /inventory/{itemId}/adjust:
+    parameters:
+      - $ref: '#/components/parameters/itemId'
+    post:
+      tags: [movements]
+      summary: Ajuste tras recuento físico
+      description: |
+        El usuario cuenta lo que realmente hay y fija la cantidad absoluta.
+        Se genera un movimiento 'adjust' con el delta calculado.
+      operationId: adjustItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [actual_quantity]
+              properties:
+                actual_quantity: { type: number, minimum: 0 }
+                note: { type: string }
+      responses:
+        '200':
+          $ref: '#/components/responses/ItemUpdated'
+
+  /inventory/items:
+    post:
+      tags: [inventory]
+      summary: Alta manual excepcional
+      description: |
+        Solo para productos que no vienen de un ticket (regalo, huerto, compra
+        sin ticket). El camino normal es SIEMPRE el evento ReceiptConfirmed.
+      operationId: createInventoryItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [product_id, location, quantity, unit]
+              properties:
+                product_id: { type: string, format: uuid }
+                location:
+                  type: string
+                  enum: [pantry, fridge, freezer]
+                quantity: { type: number, exclusiveMinimum: 0 }
+                unit:
+                  type: string
+                  enum: [unit, kg, l]
+                expiry_date: { type: string, format: date, nullable: true }
+      responses:
+        '201':
+          description: Lote creado (movimiento 'purchase' con origen manual)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryItemDetail'
+
+  /freezer:
+    get:
+      tags: [freezer]
+      summary: Inventario del congelador
+      operationId: listFreezer
+      parameters:
+        - name: consume_by_within_days
+          in: query
+          description: Solo items cuya fecha recomendada de consumo está en ≤ N días
+          schema: { type: integer }
+        - name: sort
+          in: query
+          schema:
+            type: string
+            enum: [consume_by_asc, frozen_date_asc, name_asc]
+            default: consume_by_asc
+      responses:
+        '200':
+          description: Items del congelador con su valor económico total
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, total_value]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FreezerItem'
+                  total_value:
+                    type: number
+                    description: Valor económico del congelador (KPI)
+
+  /freezer/{freezerItemId}/unfreeze:
+    parameters:
+      - name: freezerItemId
+        in: path
+        required: true
+        schema: { type: string, format: uuid }
+    post:
+      tags: [freezer]
+      summary: Sacar del congelador
+      description: |
+        Movimiento 'unfreeze'. El item vuelve a nevera con una caducidad corta
+        (por defecto 2 días, ajustable por categoría).
+      operationId: unfreezeItem
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: number
+                  description: Por defecto, todo el lote
+      responses:
+        '200':
+          $ref: '#/components/responses/ItemUpdated'
+
+  /inventory/movements:
+    get:
+      tags: [movements]
+      summary: Historial de movimientos (ledger)
+      operationId: listMovements
+      parameters:
+        - name: product_id
+          in: query
+          schema: { type: string, format: uuid }
+        - name: movement_type
+          in: query
+          schema:
+            type: string
+            enum: [purchase, consume, freeze, unfreeze, waste, adjust]
+        - name: from
+          in: query
+          schema: { type: string, format: date }
+        - name: to
+          in: query
+          schema: { type: string, format: date }
+        - name: page
+          in: query
+          schema: { type: integer, default: 1 }
+        - name: page_size
+          in: query
+          schema: { type: integer, default: 50, maximum: 200 }
+      responses:
+        '200':
+          description: Movimientos ordenados por fecha desc
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Movement'
+                  total: { type: integer }
+
+  /inventory/settings/min-stock:
+    put:
+      tags: [settings]
+      summary: Configurar stock mínimo por producto
+      description: Al caer por debajo, Alert Service genera alerta low_stock.
+      operationId: setMinStock
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [product_id, min_stock]
+              properties:
+                product_id: { type: string, format: uuid }
+                min_stock:
+                  type: number
+                  minimum: 0
+                  description: 0 desactiva la alerta
+      responses:
+        '200': { description: Umbral actualizado }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    itemId:
+      name: itemId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+
+  responses:
+    NotFound:
+      description: Recurso no encontrado o de otra familia
+    ItemUpdated:
+      description: Movimiento registrado, estado actualizado del lote
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InventoryItemDetail'
+
+  schemas:
+    InventoryProductGroup:
+      type: object
+      description: Un producto con todos sus lotes activos
+      required: [product, total_quantity, unit, lots]
+      properties:
+        product:
+          $ref: '#/components/schemas/ProductRef'
+        total_quantity: { type: number }
+        unit:
+          type: string
+          enum: [unit, kg, l]
+        min_stock: { type: number, nullable: true }
+        below_min_stock: { type: boolean }
+        estimated_value:
+          type: number
+          description: total_quantity × último unit_price conocido
+        nearest_expiry: { type: string, format: date, nullable: true }
+        lots:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryLot'
+
+    InventoryLot:
+      type: object
+      required: [id, location, quantity]
+      properties:
+        id: { type: string, format: uuid }
+        location:
+          type: string
+          enum: [pantry, fridge, freezer]
+        quantity: { type: number }
+        expiry_date: { type: string, format: date, nullable: true }
+        days_to_expiry: { type: integer, nullable: true }
+        source:
+          type: object
+          nullable: true
+          description: Trazabilidad al ticket de origen
+          properties:
+            receipt_id: { type: string, format: uuid }
+            purchase_date: { type: string, format: date }
+            supermarket_name: { type: string }
+
+    InventoryItemDetail:
+      allOf:
+        - $ref: '#/components/schemas/InventoryLot'
+        - type: object
+          properties:
+            product:
+              $ref: '#/components/schemas/ProductRef'
+            unit:
+              type: string
+              enum: [unit, kg, l]
+            recent_movements:
+              type: array
+              items:
+                $ref: '#/components/schemas/Movement'
+
+    FreezerItem:
+      type: object
+      required: [id, product, quantity, frozen_date, recommended_consume_by]
+      properties:
+        id: { type: string, format: uuid }
+        inventory_item_id: { type: string, format: uuid }
+        product:
+          $ref: '#/components/schemas/ProductRef'
+        quantity: { type: number }
+        unit: { type: string }
+        frozen_date: { type: string, format: date }
+        recommended_consume_by: { type: string, format: date }
+        days_remaining: { type: integer }
+        freezer_location: { type: string, nullable: true }
+        estimated_value: { type: number }
+
+    Movement:
+      type: object
+      required: [id, movement_type, quantity_delta, occurred_at]
+      properties:
+        id: { type: string, format: uuid }
+        inventory_item_id: { type: string, format: uuid }
+        product_name: { type: string }
+        movement_type:
+          type: string
+          enum: [purchase, consume, freeze, unfreeze, waste, adjust]
+        quantity_delta: { type: number }
+        reason: { type: string, nullable: true }
+        economic_value:
+          type: number
+          nullable: true
+          description: Relevante en waste (dinero perdido) y purchase (dinero invertido)
+        occurred_at: { type: string, format: date-time }
+        created_by_name:
+          type: string
+          nullable: true
+          description: null si el movimiento fue automático (evento de ticket)
+
+    InventoryTotals:
+      type: object
+      properties:
+        pantry_value: { type: number }
+        fridge_value: { type: number }
+        freezer_value: { type: number }
+        total_value: { type: number }
+        items_expiring_3_days: { type: integer }
+        items_below_min_stock: { type: integer }
+
+    ProductRef:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        canonical_name: { type: string }
+        category_name: { type: string }
+        is_freezable: { type: boolean }
+
+# ─────────────────────────────────────────────
+# Eventos internos (documentación, no HTTP)
+# ─────────────────────────────────────────────
+# CONSUME (suscripciones):
+#   ReceiptConfirmed (de Receipt Service):
+#     → por cada línea: crea/incrementa lote en 'pantry' o 'fridge' según categoría
+#     → expiry_date estimada = purchase_date + typical_shelf_life_days del producto
+#
+# EMITE:
+#   InventoryLow:     { family_id, product_id, current, min_stock }
+#   ItemExpiringSoon: { family_id, inventory_item_id, expiry_date, estimated_value }
+#   ItemWasted:       { family_id, product_id, quantity, economic_value }
+#     → consumidores: Alert Service, Analytics Service, Menu/AI Service
