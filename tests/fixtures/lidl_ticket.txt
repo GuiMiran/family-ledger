@@ -1,0 +1,85 @@
+        LIDL SUPERMERCADOS S.A.AU
+        Av. Apel.les Mestres, 109
+        08820 El Prat del Llobregat
+              A60195278
+                                    EUR
+MACARRONS RATLLATS    1,09x  2      2,18 B
+SPAGHETTI INTEGRAL                  1,09 B
+PA RATLLAT            0,78x  2      1,56 A
+PIZZA PERNIL/FORMAT.  2,45x  2      4,90 B
+OLI OLIVA VERGE EXT.               14,38 A
+TE SABOR LLIMONA                    1,19 C
+DETERGENT MARSELLA                  4,39 C
+COLA 2L                             1,08 C
+TOMAQUET FREGIT                     1,19 B
+BOMBO NEGRE/BLANC                   2,99 B
+PACK LLET SENCERA                   5,76 A
+BLAT DE MORO DOLC                   1,49 B
+FORMATGE TENDRE PECA                8,11 A
+SUAVITZANT BLAU                     2,89 C
+FLAM DE VAINILLA                    1,05 B
+MANTEGA IRLANDESA                   2,59 B
+MEGA ROTLLE PAPER                   3,59 C
+SALSITXES POLLASTRE   0,65x  2      1,30 B
+IOGURT FRUITES TROS.                2,35 A
+QUEFIR NATURAL        1,05x  2      2,10 A
+FILET D'ANOLL 1a A                  8,30 B
+  0,472 kg x 17,59  EUR/kg
+H&S XAMPU CITRUS                    7,29 C
+  Desc.                            -1,10
+CEREALS PILLOWS                     3,45 B
+XAMPU VAINILLA                      1,25 C
+GEL DE BANY COCO                    1,49 C
+    PROMO LIDL PLUS                -0,30
+PAPER HIGIENIC                      3,59 C
+FLOCS DE CIVADA SUAU                1,29 B
+ESTRIS CUINA-0525404                1,49 C
+LLIMONA                             3,09 A
+ALBERGINIA                          2,46 A
+  1,236 kg x 1,99  EUR/kg
+REXONA MEN                          2,89 C
+ORXATA                              1,29 B
+COLGATE PROT.CARIES                 1,95 C
+TONYINA OLI OLIVA     4,18x  2      8,36 B
+SPRAY SOLAR FPS 50                  6,99 C
+IOGURT SABORS                       2,29 A
+LLEIXIU TRADICIONAL                 0,75 C
+TOMAQUET CANARI MALLA               1,99 A
+CEBA 2 KG                           3,59 A
+FILETS DE LLOM                      2,98 B
+  0,458 kg x 6,50  EUR/kg
+BANANA                              2,09 A
+  1,404 kg x 1,49  EUR/kg
+XAMPINYO                            1,49 A
+TE ENGLISH BREAKFAST  1,59x  2      3,18 B
+ALL MORAT                           1,75 A
+CARBASSO                            1,34 A
+  0,844 kg x 1,59  EUR/kg
+    PROMO LIDL PLUS                -0,42
+SPRAY SOLAR FPS 50+                 6,99 C
+STEVIA                              2,89 B
+COGOMBRE ALMERIA U.                 0,95 A
+  Desc.                            -0,36
+----------------------------------------
+TOTAL                             151,46
+ENTREGA                           151,46
+----------------------------------------
+034782797                       00004001
+A0000000041010                        00
+VENTA DEBIT MASTERCARD
+524829XXXXXX5501                  977597
+04/07/2026                      19:59:26
+IMP.: 151,46 EUR
+        RECIBO PARA EL CLIENTE
+----------------------------------------
+ IVA%     IVA   +   P N   =   PVP
+A  4%     2,10     52,42     54,52
+B 10%     4,59     45,93     50,52
+C 21%     8,06     38,36     46,42
+Suma     14,75    136,71    151,46
+----------------------------------------
+        Desc. total en compra
+              2,18EUR
+----------------------------------------
+        Total oferta Lidl Plus:
+              0,72 EUR
