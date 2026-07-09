@@ -1,0 +1,46 @@
+Makro Distribucion Mayorista, S.A.          MAKRO BARCELONA
+PASEO IMPERIAL 40                           C/A, N.1 Sect. C Pol. Ind. Zona Franca      Fecha de venta:      04/07/2026
+28005 MADRID                                8040 Barcelona                              Fecha impresion:     04/07/2026
+                                            Telf.: 933363111 Fax: 933357169             Fecha de entrega:    04/07/2026
+NIF: A-28/647451
+Reg. Merc. de Madrid, T. 3.669, L. O. F. 86 Secc. 8.a H. M-61.688
+Factura:            1/0(002)0205/(2026)000125        (205-0001251)
+------------------------------------------------------------------------------------------------
+                              N.cliente: 2 66178
+------------------------------------------------------------------------------------------------
+MM Num. articulo   Descrip. articulo        Cont  Prec. Ud.  Cont P.  Precio  Cant.  Importe  Imp  Prec.Ud.*  DT
+------------------------------------------------------------------------------------------------
+   8414892311571   HVO S -53G 1DOC MC        CJ   2,692      10       26,92   1      26,92    5
+   2000610028706   BARRA SANDWICH ARO        KG   4,090      2,870    11,74   1      11,74    1
+   8414892363839   ENSALADILLA MC 2.5 KG     BL   2,750      1        2,75    1      2,75     5
+   08414892328944  JAMON COCD 11X11 MC       KG   6,650      2,920    19,42   1      19,42    1
+                   BC GTIN: 08414892328944 Lote: 261660625
+                   Fecha consumo preferente: 270117
+   08436035624744  CALLO BCO VACUNO TROCEADO BJ J  KG  6,750  0,940   6,35    1      6,35     1
+                   BC GTIN: 08436035624744 Lote: 26062905
+M  220256          POLLO PECHUGA VC MC       KG   5,390      2,370    12,77   1      12,77    1
+   08412763245222  POLLO PECHUGA VC MC       KG   5,390      2,188    11,79   1      11,79    1
+                   BC GTIN: 08412763245222 Lote: 026180
+   08412763245222  POLLO PECHUGA VC MC       KG   5,390      2,308    12,44   1      12,44    1
+                   BC GTIN: 08412763245222 Lote: 026180
+   2082048015923   PREP PICADA MIXTA 1,6KG BJ RLR  KG  7,290  1,592   11,61   1      11,61    1    6,890 84240
+   2082048016159   PREP PICADA MIXTA 1,6KG BJ RLR  KG  7,290  1,615   11,77   1      11,77    1    6,890 84240
+   2102802017908   BURGER MIXTA BJ 16*110    KG   8,950      1,790    16,02   1      16,02    1
+   2102802018035   BURGER MIXTA BJ 16*110    KG   8,950      1,803    16,14   1      16,14    1
+   8410270258902   ACT GIRASOL KOIPESOL PROF 5L  BD  9,690   1        9,69    1      9,69     1
+   8414892330992   MACARRON PLUMA 3 ARO 5KG  PQ   5,390      1        5,39    1      5,39     1
+   8414892331043   SPAGHETTI ARO 5KG         PQ   5,390      1        5,39    1      5,39     1
+   8414892781947   ARROZ LARGO MC 5KG        BL   6,050      1        6,05    2      12,10    5
+   8715700016504   HEINZ ketchup bote de 875ML  BO  3,890    1        3,89    1      3,89     1    P
+------------------------------------------------------------------------------------------------
+                   COMPRA MAS PAGA MENOS                                      1,29-  1        84240
+------------------------------------------------------------------------------------------------
+Numero de bultos: 18      Peso Total: 20,396 KG      Envases: 0        Importe    194,89
+                                                     Mercancia   % IMP        Total IMP
+                                                     153,12      1=10,00%     15,31
+                                                     41,77       5= 4,00%     1,67
+                                                     194,89                   16,98
+                                                     Total a pagar            211,87
+C: 2 52482940???????? 11/28 OP: A 919947
+                                                     Tarjeta                  211,87
+                                                     Valor total descuentos   1,42-

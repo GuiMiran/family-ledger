@@ -1,0 +1,20 @@
+MERCADONA, S.A.   A-46103834
+AVDA. DIAGONAL, 1 BARCELONA
+TELEFONO: 933333333
+04/07/2026 18:23 OP: 1234567
+FACTURA SIMPLIFICADA: 2308-013-141414
+Descripcion              P. Unit  Importe
+1 LECHE ENTERA 6X1L               5,10
+2 GALLETA RELIEVE          1,22   2,44
+1 ACEITE OLIVA VIRGEN E 1L        4,85
+3 YOGUR NATURAL PACK 4     1,20   3,60
+0,536 kg
+PLATANO                    2,29   1,23
+1,240 kg POLLO ENTERO 3,95 €/kg   4,90
+TOTAL (€)                         22,12
+TARJETA BANCARIA                  22,12
+IVA  BASE IMPONIBLE (€)  CUOTA (€)
+4%       10,50              0,42
+10%      9,75               0,98
+TOTAL    20,25              1,40
+SE ADMITEN DEVOLUCIONES CON TICKET
