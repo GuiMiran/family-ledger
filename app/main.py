@@ -1,3 +1,6 @@
+# @spectra US-001
+# @spectra OP-001
+# @spectra WF-001
 """Family Ledger — API (Fase 1, vertical slice: parsing de tickets).
 
 Este scaffold implementa el slice OCR-text → ParsedReceipt.

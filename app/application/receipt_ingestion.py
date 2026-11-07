@@ -1,3 +1,11 @@
+# @spectra US-002
+# @spectra BR-003
+# @spectra BR-004
+# @spectra INV-003
+# @spectra OP-002
+# @spectra POL-002
+# @spectra SK-002
+# @spectra WF-002
 """Caso de uso: ingesta de un ticket parseado.
 
 ParsedReceipt (dominio parsing) →
