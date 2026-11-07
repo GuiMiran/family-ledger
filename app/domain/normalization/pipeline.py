@@ -31,7 +31,8 @@ class ProductMatcher(ABC):
 
     @abstractmethod
     def match(
-        self, alias_text: str, supermarket_id: uuid.UUID | None
+        self, alias_text: str, supermarket_id: uuid.UUID | None,
+        family_id: uuid.UUID | None = None,
     ) -> MatchResult | None: ...
 
 

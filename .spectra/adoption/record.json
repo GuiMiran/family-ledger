@@ -6,7 +6,7 @@
   "project": {
     "name": "Family Ledger",
     "repository": "https://github.com/GuiMiran/family-ledger",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "scope": {
     "objective": "Mapear adopción previa al protocolo 1.0.0 y registrar diagnóstico acotado reproducible.",
@@ -40,13 +40,13 @@
     "executionPolicy": "No despliegue, cambio funcional ni datos productivos; el diagnóstico no concede autoridad adicional."
   },
   "baseline": {
-    "commit": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-    "snapshotRef": "docs/brownfield/baseline.json",
-    "snapshotSha256": "779fb1a541e0a1e8d6c5bd60d4dfa6b0807365736679cf9c8bedf1dc9bcff7b0",
-    "workingTreeDeltaRef": null,
+    "commit": "92c768697240d71c913e208c5ba231b97312b154",
+    "snapshotRef": "docs/brownfield/remediation-baseline.json",
+    "snapshotSha256": "7eb8f9b0f7ed0e80c5ba6994c2e51bf0aee8871fec2518c6640a3a38c7f4b606",
+    "workingTreeDeltaRef": "docs/changes/2026-11-07-remediation-contract.md",
     "limitations": [
-      "La baseline histórica conserva el commit de código 9b371ad1bf3c6caffa0f79cc82e2470f3cdd7a45; este diagnóstico examina su adopción fusionada en 0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd.",
-      "La propuesta de conformidad posterior no forma parte de la revisión del commit evaluado."
+      "Runtime candidate is an explicit tested delta from this commit, not an unchanged historical baseline.",
+      "Original 0.1 adoption/diagnosis preserved in record-v0.1.json and docs/sdd-assessment/2026-11-07/."
     ]
   },
   "tooling": {
@@ -187,335 +187,21 @@
       "owner": "GuiMiran"
     }
   ],
-  "claims": [
-    {
-      "id": "BR-001",
-      "obligationRefs": [
-        "OBL-001"
-      ],
-      "kind": "observed",
-      "sourceRefs": [
-        {
-          "path": ".spectra/03-business-rules.md",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        },
-        {
-          "path": "app/infrastructure/parsers/makro.py",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        },
-        {
-          "path": "tests/test_makro_parser.py",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        }
-      ],
-      "scope": "Interpretar líneas Makro con pesos y cantidades y reconciliar base neta con IVA declarado.",
-      "verification": "DEMONSTRATED",
-      "openQuestion": null,
-      "evidenceRefs": [
-        "docs/sdd-assessment/2026-11-07/reviewer-a.json#OBL-001",
-        "docs/sdd-assessment/2026-11-07/reviewer-b.json#OBL-001"
-      ]
-    },
-    {
-      "id": "BR-002",
-      "obligationRefs": [
-        "OBL-002"
-      ],
-      "kind": "observed",
-      "sourceRefs": [
-        {
-          "path": ".spectra/04-invariants.md",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        },
-        {
-          "path": "app/infrastructure/parsers/makro.py",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        }
-      ],
-      "scope": "Mantener fecha desconocida pendiente en lugar de inventarla.",
-      "verification": "DEMONSTRATED",
-      "openQuestion": null,
-      "evidenceRefs": [
-        "docs/sdd-assessment/2026-11-07/reviewer-a.json#OBL-002",
-        "docs/sdd-assessment/2026-11-07/reviewer-b.json#OBL-002"
-      ]
-    },
-    {
-      "id": "INV-003",
-      "obligationRefs": [
-        "OBL-003"
-      ],
-      "kind": "observed",
-      "sourceRefs": [
-        {
-          "path": ".spectra/04-invariants.md",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        },
-        {
-          "path": "app/application/receipt_ingestion.py",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        },
-        {
-          "path": "tests/test_ingestion.py",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        }
-      ],
-      "scope": "Conservar descripción e importes de líneas no normalizadas en la ingesta.",
-      "verification": "NOT_EVALUATED",
-      "openQuestion": "Revisión del propietario y cierre de brecha pendiente.",
-      "evidenceRefs": [
-        "docs/sdd-assessment/2026-11-07/reviewer-a.json#OBL-003",
-        "docs/sdd-assessment/2026-11-07/reviewer-b.json#OBL-003"
-      ]
-    },
-    {
-      "id": "BR-003",
-      "obligationRefs": [
-        "OBL-004"
-      ],
-      "kind": "observed",
-      "sourceRefs": [
-        {
-          "path": ".spectra/03-business-rules.md",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        },
-        {
-          "path": "app/application/receipt_ingestion.py",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        },
-        {
-          "path": "tests/test_ingestion.py",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        }
-      ],
-      "scope": "Aprender alias por coincidencia aceptada y reutilizarlos.",
-      "verification": "DEMONSTRATED",
-      "openQuestion": null,
-      "evidenceRefs": [
-        "docs/sdd-assessment/2026-11-07/reviewer-a.json#OBL-004",
-        "docs/sdd-assessment/2026-11-07/reviewer-b.json#OBL-004"
-      ]
-    },
-    {
-      "id": "US-003",
-      "obligationRefs": [
-        "OBL-005"
-      ],
-      "kind": "desired",
-      "sourceRefs": [
-        {
-          "path": ".spectra/05-contracts.md",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        },
-        {
-          "path": "app/main.py",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        }
-      ],
-      "scope": "Guardar y consultar compra confirmada desde la aplicación/API.",
-      "verification": "NOT_EVALUATED",
-      "openQuestion": "Revisión del propietario y cierre de brecha pendiente.",
-      "evidenceRefs": [
-        "docs/sdd-assessment/2026-11-07/reviewer-a.json#OBL-005",
-        "docs/sdd-assessment/2026-11-07/reviewer-b.json#OBL-005"
-      ]
-    },
-    {
-      "id": "INV-004",
-      "obligationRefs": [
-        "OBL-006"
-      ],
-      "kind": "desired",
-      "sourceRefs": [
-        {
-          "path": ".spectra/04-invariants.md",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        },
-        {
-          "path": "app/infrastructure/normalization/matchers.py",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        },
-        {
-          "path": "app/application/receipt_ingestion.py",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        }
-      ],
-      "scope": "Aislar datos y normalización entre familias.",
-      "verification": "FAILED",
-      "openQuestion": "Revisión del propietario y cierre de brecha pendiente.",
-      "evidenceRefs": [
-        "docs/sdd-assessment/2026-11-07/reviewer-a.json#OBL-006",
-        "docs/sdd-assessment/2026-11-07/reviewer-b.json#OBL-006"
-      ]
-    },
-    {
-      "id": "US-005",
-      "obligationRefs": [
-        "OBL-007"
-      ],
-      "kind": "desired",
-      "sourceRefs": [
-        {
-          "path": ".spectra/07-events.md",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        },
-        {
-          "path": "specs/01-architecture.md",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        }
-      ],
-      "scope": "Actualizar inventario mediante confirmación/evento sin duplicación.",
-      "verification": "NOT_EVALUATED",
-      "openQuestion": "Revisión del propietario y cierre de brecha pendiente.",
-      "evidenceRefs": [
-        "docs/sdd-assessment/2026-11-07/reviewer-a.json#OBL-007",
-        "docs/sdd-assessment/2026-11-07/reviewer-b.json#OBL-007"
-      ]
-    },
-    {
-      "id": "BR-005",
-      "obligationRefs": [
-        "OBL-008"
-      ],
-      "kind": "observed",
-      "sourceRefs": [
-        {
-          "path": ".spectra/03-business-rules.md",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        },
-        {
-          "path": "scripts/verify_adoption.py",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        },
-        {
-          "path": "data/purchases/makro-36300-captured-20261107.json",
-          "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-          "supports": "Fuente inspeccionada; límites y recibos específicos en ambos informes de revisión."
-        }
-      ],
-      "scope": "Conservar transcripción manual sin afirmar ingreso en BD ni stock y reconciliar importes.",
-      "verification": "DEMONSTRATED",
-      "openQuestion": null,
-      "evidenceRefs": [
-        "docs/sdd-assessment/2026-11-07/reviewer-a.json#OBL-008",
-        "docs/sdd-assessment/2026-11-07/reviewer-b.json#OBL-008"
-      ]
-    }
-  ],
+  "claims": [],
   "evidence": [
     {
-      "id": "regression",
-      "command": [
-        "/workspace/scratch/1778e4e08e2b/family-audit-venv/bin/python",
-        "-m",
-        "pytest",
-        "-q"
-      ],
-      "target_revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-      "exit_code": 0,
-      "outcome": "passed",
-      "output_ref": "regression.log",
-      "output_sha256": "4949bea7a482e974dbd0b1ddfd4e0e40d42c39ab6c29575d140ec5a38df7391f",
-      "producer": "Codex root local diagnostic runner",
-      "environment": "Disposable Python venv; SQLite tests/probes; no deployment"
-    },
-    {
-      "id": "adoption-record",
-      "command": [
-        "/workspace/scratch/1778e4e08e2b/family-audit-venv/bin/python",
-        "scripts/verify_adoption.py"
-      ],
-      "target_revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-      "exit_code": 0,
-      "outcome": "passed",
-      "output_ref": "adoption-record.log",
-      "output_sha256": "3fd247c149f9e88e8dbacbdfa4bb27a9c47be6b3ab7f17bb150b122c77a75d0f",
-      "producer": "Codex root local diagnostic runner",
-      "environment": "Disposable Python venv; SQLite tests/probes; no deployment"
-    },
-    {
-      "id": "spectra-validate",
-      "command": [
-        "node",
-        "/workspace/scratch/1778e4e08e2b/spectra-approved/bin/spectra.js",
-        "validate"
-      ],
-      "target_revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-      "exit_code": 0,
-      "outcome": "passed",
-      "output_ref": "spectra-validate.log",
-      "output_sha256": "da67cbb21eb17b3f2238b736ab700183c5e9de9279434146d8b49aa7dfe195cd",
-      "producer": "Codex root local diagnostic runner",
-      "environment": "Disposable Python venv; SQLite tests/probes; no deployment"
-    },
-    {
-      "id": "missing-date",
-      "command": [
-        "/workspace/scratch/1778e4e08e2b/family-audit-venv/bin/python",
-        "/workspace/scratch/1778e4e08e2b/family-audit-packet/probes.py",
-        "/workspace/scratch/1778e4e08e2b/family-ledger-conformance",
-        "missing-date"
-      ],
-      "target_revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-      "exit_code": 0,
-      "outcome": "passed",
-      "output_ref": "missing-date.log",
-      "output_sha256": "2b1ffbd4664b1265c33f483144491d86b02084ae2995652a9bff854cc3548b33",
-      "producer": "Codex root local diagnostic runner",
-      "environment": "Disposable Python venv; SQLite tests/probes; no deployment"
-    },
-    {
-      "id": "family-isolation",
-      "command": [
-        "/workspace/scratch/1778e4e08e2b/family-audit-venv/bin/python",
-        "/workspace/scratch/1778e4e08e2b/family-audit-packet/probes.py",
-        "/workspace/scratch/1778e4e08e2b/family-ledger-conformance",
-        "family-isolation"
-      ],
-      "target_revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
-      "exit_code": 1,
-      "outcome": "failed",
-      "output_ref": "family-isolation.log",
-      "output_sha256": "bb595944e2aa5326d5fdf3cfff8ea0181ee037be9b4ebc10d109e433df3d9580",
-      "producer": "Codex root local diagnostic runner",
-      "environment": "Disposable Python venv; SQLite tests/probes; no deployment"
+      "scope": "Remediation candidate delta",
+      "sourceSnapshotSha256": "7eb8f9b0f7ed0e80c5ba6994c2e51bf0aee8871fec2518c6640a3a38c7f4b606",
+      "receiptRef": "docs/sdd-assessment/remediation-v0.2/local-receipts.json"
     }
   ],
   "diagnostic": {
-    "status": "reviewed",
-    "inventoryRef": "docs/sdd-assessment/2026-11-07/audit.json",
-    "reviewReportRefs": [
-      "docs/sdd-assessment/2026-11-07/reviewer-a.json",
-      "docs/sdd-assessment/2026-11-07/reviewer-b.json"
-    ],
-    "reconciliationRef": "docs/sdd-assessment/2026-11-07/reconciliation.json",
+    "status": "review_incomplete",
+    "inventoryRef": null,
+    "reviewReportRefs": [],
+    "reconciliationRef": null,
     "limitations": [
-      "Diagnóstico analítico acotado; ratificación humana pendiente.",
-      "Scoped 8-obligation diagnostic; not exhaustive.",
-      "Rubric v0.1 is proposed methodology, not certification.",
-      "34 existing tests passed in local diagnostic environment; not PostgreSQL or deployment evidence.",
-      "Family isolation synthetic probe fails; no product fix in this change.",
-      "No organizational rating or valid isolated reconstruction trial."
+      "Fresh post-remediation reports and PostgreSQL CI evidence pending. Historical reports assess 0616d2b only."
     ]
   },
   "organizationalAssessment": {
@@ -530,31 +216,19 @@
   },
   "gaps": [
     {
-      "id": "BF-010",
-      "obligationRefs": [
-        "OBL-006"
-      ],
-      "impact": "Producto privado de otra familia reutilizado por normalización.",
-      "evidenceRefs": [
-        "docs/sdd-assessment/2026-11-07/family-isolation.log"
-      ],
+      "id": "LEGACY-ALIAS-PROVENANCE",
+      "impact": "Legacy global aliases lack family provenance.",
       "owner": "GuiMiran",
-      "closureCheck": "Sondas negativas entre familias en exact/fuzzy/IA/historial; global autorizado y regresión conservados.",
+      "closureCheck": "Owner reviews legacy global aliases before shared use.",
       "dependencies": [
-        "Contrato de visibilidad global/privada"
+        "Existing database operator review; no real DB migrated here."
       ]
     }
   ],
   "nextChanges": [
     {
-      "id": "CHANGE-ISOLATION-001",
-      "gapRefs": [
-        "BF-010"
-      ],
-      "scope": "Aislamiento familiar en normalización e historial, sujeto a contrato de visibilidad.",
-      "acceptance": "Las pruebas negativas A/B pasan, las globales autorizadas y regresión no cambian.",
-      "authorization": "Propuesta de corrección; no implementada en esta PR documental.",
-      "rollback": "Revert del futuro cambio de código; sin migración en esta revisión."
+      "scope": "OCR, connected UI, consumption/reservations, AI menu generation and normalized package-price comparison",
+      "status": "future_separate_contracts"
     }
   ],
   "review": {

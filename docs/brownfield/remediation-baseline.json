@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "project_version": "0.2.0",
+  "change_base_commit": "92c768697240d71c913e208c5ba231b97312b154",
+  "parent_baseline_sha256": "779fb1a541e0a1e8d6c5bd60d4dfa6b0807365736679cf9c8bedf1dc9bcff7b0",
+  "change_contract": "docs/changes/2026-11-07-remediation-contract.md",
+  "state": "candidate_pending_owner_review",
+  "scope": "Explicit authorized remediation; functional changes are intentional and tested. Historical diagnostic files are retained.",
+  "files": {
+    "app/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/admin.py": {
+      "sha256": "65d7b57069ec5098aacf383dcb293e3507677bfd1254b1db165bc6c4e1a4aaee",
+      "ast_sha256": "e619b84e1ad2f2895f9c1b5d7d760dd2533e1df196a6dd36dca226a670d3b37e"
+    },
+    "app/api/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/api/v1/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/application/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/application/receipt_commands.py": {
+      "sha256": "56a1e90e72a9f4194cd0613f98a6bca5433a021b01caee58e330e49f4e938b01",
+      "ast_sha256": "77a65d568c30ca89de15f36582d5204d9ebe5038325dae501a840076afb6adeb"
+    },
+    "app/application/receipt_ingestion.py": {
+      "sha256": "88af80580284fb87d7b781e94c274855a0e67401c9bfe196906cca8c0e98b222",
+      "ast_sha256": "cdfd4cc0e1b550bf9abee4181e5b32e02fb797e1c4367a2c5f8138043081ca51"
+    },
+    "app/core/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/core/auth.py": {
+      "sha256": "ed35f3be237f3ccbd19a54b1dc376e776c90405b334e6e7cbb223055d8ea94ce",
+      "ast_sha256": "9bf9910e44a979c11cb2f8efae85a23638a2ae0820d4c143a91494c05b1ee406"
+    },
+    "app/core/identity.py": {
+      "sha256": "146e786e81a6085a15961d6726a50f198f4672047dd3dd7c74de6774704320c3",
+      "ast_sha256": "ab22cd50ae341daea32d96071b6dade7406b98a3999485b54ba9fa561e78a52f"
+    },
+    "app/domain/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/domain/normalization/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/domain/normalization/pipeline.py": {
+      "sha256": "d497d273706cc6a9f97e81561d6c969473fe683cb072cd63c38962d96dc9a563",
+      "ast_sha256": "f0ba6b09aea04eeb273ddbba0060db3559221e42fc8f6fbb258ed2698a684b61"
+    },
+    "app/domain/receipts/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/domain/receipts/models.py": {
+      "sha256": "ab829e758093bfdd8a1ab78deb177adaccf67c9cadbbbe4c5698cd30de2af0c7",
+      "ast_sha256": "64dd972ecd67855b0001dc8559ad7df141e4e447cb0acbeda8a1da4300eda12e"
+    },
+    "app/domain/receipts/parser.py": {
+      "sha256": "9c8e85a9baa745911ff194e3cb7a4a4d77aeabfc96f84410b7226668d530ac1c",
+      "ast_sha256": "3830014acf6fc53bb13b060d99031c32cb253669e0c4d575b7e1d51350bf66a2"
+    },
+    "app/infrastructure/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/infrastructure/db/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/infrastructure/db/migrations.py": {
+      "sha256": "05e095772d8d15a6340f606b51cb28b63ffbc8ea25d5ed2dcd74e7874a6e191f",
+      "ast_sha256": "c3ca14f1fbb4f2a4d5a6514cb1e27341379b5a0f9475c1fbe4e6d20880b8e282"
+    },
+    "app/infrastructure/db/orm.py": {
+      "sha256": "78948b6d01fbce03a993d1f075e67eddccd28202f694ee9fef9e587790a28d61",
+      "ast_sha256": "b61008c7182f87cda43cf7efb772f6c5df0646945ef717eceedc394f2f30180d"
+    },
+    "app/infrastructure/db/session.py": {
+      "sha256": "73bc24e7c2217d86c46b3a8bf814ead62d00a6a77819ef557f4c06fb0521533f",
+      "ast_sha256": "b0ad8878708c2d9838822c1be5012a00776064e83983d28e314142a62749ea49"
+    },
+    "app/infrastructure/normalization/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/infrastructure/normalization/matchers.py": {
+      "sha256": "e87c99d5077ae17dc11af1a13f6da693e685e8221178f7c4e1f9b4bdbd80c2b1",
+      "ast_sha256": "8539eb088b1aeaf327aa7ba5f4119b637a04170acc5107d5f08b6d32409de11d"
+    },
+    "app/infrastructure/parsers/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/infrastructure/parsers/base.py": {
+      "sha256": "e3bc069ed56d65560227e1250a573fe72ef35e882adde315ebcabbec4520eacf",
+      "ast_sha256": "272b31c8c9e2289b2f6ed82cd6da49834a4d64e81d2b83ccc751f37de9d241da"
+    },
+    "app/infrastructure/parsers/lidl.py": {
+      "sha256": "0862f87ec0a42e6726263f41de021507a2561f468e66af1347765b7c54cb6b17",
+      "ast_sha256": "4c3b29074783402029ee4d367667393578a39468cdb705f4e4625ab85cb9c58d"
+    },
+    "app/infrastructure/parsers/makro.py": {
+      "sha256": "333f07eb356887b49fbf690dc0da74bfa7c369e0342215bafc069024df58f0c5",
+      "ast_sha256": "fb693ed1210776400ab0b06be1fba986dbe47e47d732b4d77b046b64270dc989"
+    },
+    "app/infrastructure/parsers/mercadona.py": {
+      "sha256": "ce8acab415573bbb8e737a91f923f50099b9b2c7787337b895cc383c2d643fd5",
+      "ast_sha256": "8ab2fab8eaf4463aebd9ec05cd470bb19f17a78d3d1a4381e63344aae2d7e49f"
+    },
+    "app/infrastructure/parsers/registry.py": {
+      "sha256": "db461325b4676ab49496041f032169364bbd8f7a1c0a5821b7f38d6053904c17",
+      "ast_sha256": "101f9eaee4c68d40363e2d40b1972895a38f7684cce94b83f67c1590b65a5cf5"
+    },
+    "app/main.py": {
+      "sha256": "8d57bcff9893b485a06b8b59634b6fca83e732bb7a2c9dad4b003041a525914a",
+      "ast_sha256": "10983b8fbd4f4c8316faeac0b76b079ccc13bc42a8c4c15df01a1b3f700cca0a"
+    },
+    "tests/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "tests/fixtures/lidl_ticket.txt": {
+      "sha256": "bc8822a132c6d1132d8997232835e9b2cf037bc4f16dc95092308d3b7063b195"
+    },
+    "tests/fixtures/makro_ticket.txt": {
+      "sha256": "9ea6edbbff8766d3f0a0577222d905f22c4496b80cdb1a4535d862ad4b1b3a0b"
+    },
+    "tests/fixtures/mercadona_ticket.txt": {
+      "sha256": "09f503430b4268ef4db2c10ae4175f19c261617e2dc5164700091ad49442fce2"
+    },
+    "tests/test_api.py": {
+      "sha256": "26462d304873d18a1da1b61678373a292bdffbad8c561a9d0185d14311f2c4b6",
+      "ast_sha256": "5dbebf68529b854a38654b94ec4bbc77acfcfcacfbcaea878573ba86e4b1370f"
+    },
+    "tests/test_db_session.py": {
+      "sha256": "3aeff99dea1d3f888e157508a73634f421d5cad272159a55e6f00ae3d46a401e",
+      "ast_sha256": "0a61dec550d501bb9d128081744b855be701096b202c5c7c6f0f85b0cae03cda"
+    },
+    "tests/test_family_isolation.py": {
+      "sha256": "939458818e2cfa30a4c57ca1a5e73d37bf882d3182b1a3588f025f881b5c4253",
+      "ast_sha256": "6e7d0f676a358122b61251ec52f118610ff9aa8d45a2f649ea5960c432dc4986"
+    },
+    "tests/test_ingestion.py": {
+      "sha256": "04b0270e5511ae6deb120cf159fa91e4c4fc332a65eb2ed0cac9617581a05364",
+      "ast_sha256": "9c19e12817ed0f9a1df6a8a86adccde6b97a05af5b6459929351f2a2d757de61"
+    },
+    "tests/test_lidl_parser.py": {
+      "sha256": "ec617cd24cdb7c6cf768be826e5674c37012d02aca0522c8b28e457e55c6350b",
+      "ast_sha256": "199455df76cb81988a49a5b83a023083e0244998dbac7bc960b4adbb0121b685"
+    },
+    "tests/test_makro_parser.py": {
+      "sha256": "262192e9054a459406ea8f8b760390043b0737389295a128a3c3592f439c6548",
+      "ast_sha256": "2f78d1803d06163e5bc56e837c92021c885d7e62dbefe55a4359ae8d32f5e98f"
+    },
+    "tests/test_mercadona_parser.py": {
+      "sha256": "8fe1144834f8180d117aba6c179d501ae76594d30da1e249d929bf5ceef009f1",
+      "ast_sha256": "2e7f67052c1b2f9fc46c76ec099697d7642bd6b4f36d25ac2444a82eb400caad"
+    },
+    "tests/test_migrations.py": {
+      "sha256": "b14b70bcb354047782d617b7f605ce36d4b1414abe393bdceb2f6ee1742a96ac",
+      "ast_sha256": "df45cea519f6dba6013162c7b2c7005865ceb0b91c9fa0ccfa9b12cf673b46c9"
+    },
+    "tests/test_postgres.py": {
+      "sha256": "2d685671d41f5fc656980ea32aac6b414d0f39469969013238fea349be3c226c",
+      "ast_sha256": "07320a87e4092d521d980e298f79f0ffd3768f62f41ea634bd8894eeb3853657"
+    },
+    "tests/test_receipt_api.py": {
+      "sha256": "b30794f8064879c3cc7c236417bf01ec980d90ecf88aa768c9a5c998a8398665",
+      "ast_sha256": "7f3ab1d446a057093367b04ec3e15d10ff22d6d4ed436be4909e89b1eefa090d"
+    },
+    "tests/test_receipt_validation_limits.py": {
+      "sha256": "bcc5912ee6e78330ce6c12ea2e0a7c96710b214389624e30d2e7380147b994db",
+      "ast_sha256": "8a185532b38af35068cf0b53462464ba48493006fdc6866c6be090fd1bca503f"
+    },
+    "scripts/verify_adoption.py": {
+      "sha256": "8453e10d6b01e225082146cb82819d320255029eab342b3dc1b8bc88beada39f",
+      "ast_sha256": "26406d6d1e896c0a09d284cdee9dbfee06e36cc44ab6d70ab98c68291671069a"
+    },
+    "specs/01-architecture.md": {
+      "sha256": "f5cf238ac2e5c5ef999e07725bc1f13bd8e5ecf6dcfd4b58252944e7b2946e98"
+    },
+    "specs/02-data-model.md": {
+      "sha256": "17dee14cce0b35d97f76ad82a402f70426e2c010fc0baca049179badeaaa624d"
+    },
+    "specs/03-receipt-service-openapi.yaml": {
+      "sha256": "34557dcfc91aa5900f4cfc7abbcb5486f5be74e4d060d1edff8028424c1655a1"
+    },
+    "specs/04-inventory-service-openapi.yaml": {
+      "sha256": "8f5627f37ae701da6855cfbca5e76ea4dab43f2a872e95d80c79f670a8aa1e67"
+    },
+    "specs/05-menu-ai-service-openapi.yaml": {
+      "sha256": "1c3c456c7f72d8d2cd6df2143765e8378b5f2346d4af304fc207cc87322657fb"
+    },
+    "specs/06-analytics-service-openapi.yaml": {
+      "sha256": "0b6a8434aadab6f3d748136e03e457d732ede77d0d69230fbc7b38a5e3207e02"
+    },
+    "pyproject.toml": {
+      "sha256": "6be33ccdb36201e6cef8d7ae364d8cccd45202083829d4b079c3fe305c8b473b"
+    },
+    "Dockerfile": {
+      "sha256": "e319fd9f5e3975b3819c0b06f19ab3f69bcddefe26b3482ab382ef0574cfed36"
+    },
+    "docker-compose.yml": {
+      "sha256": "eebd51755ac2634d318a682b2d70cf61b5530b975bdbbb4e0c03a49e6298b562"
+    },
+    ".github/workflows/spectra-brownfield.yml": {
+      "sha256": "164f4be4613b31820c7a13e3b490b577b68df000731b1a0b5b2b58cd80035d2d"
+    }
+  }
+}

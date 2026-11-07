@@ -1,0 +1,1 @@
+{"obligation": "OBL-006", "expected": "family B must not resolve private product owned by A", "receipt_owned_by_B": true, "resolved_private_product_owned_by_A": false, "passed": true, "environment": "SQLite in memory; no production data; session closes without commit"}

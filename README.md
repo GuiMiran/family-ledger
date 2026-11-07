@@ -6,18 +6,22 @@ El sistema operativo financiero de una familia. Fase 1 (MVP): reducir el
 desperdicio alimentario, optimizar las compras y medir el ahorro real —
 a partir de una sola foto del ticket.
 
-## Adopción Spectra · brownfield
+## Versión 0.2.0 — correcciones y flujo persistente
 
-Entrada para agentes: [AGENTS.md](AGENTS.md). Dominio en [13 capas Spectra](.spectra/00-vision.md), contratos técnicos originales en `specs/` y [baseline, brechas y evidencia](docs/brownfield/README.md).
+- Normalización, alias aprendidos e historial de precios limitados a catálogo global autorizado o familia propia.
+- API autenticada para guardar/consultar tickets, confirmar pendientes y proyectar compras a inventario y analítica básica.
+- Claves idempotentes por familia y transacciones con rollback; sin duplicar eventos ni inventario en reintentos.
+- Instalación editable corregida, SQLAlchemy/psycopg/PyJWT declarados y administración offline para esquema, familias y tokens.
 
-El código de persistencia existe, pero la API actual expone solo interpretación de texto y salud; no conecta confirmación con BD. PostgreSQL está definido en Compose. Esto no acredita despliegue, inventario ni analítica operativos.
+[Operación y contrato de API](docs/operations/api-v0.2.md) · [Base de datos/migración](docs/operations/database.md) · [Contrato de corrección](docs/changes/2026-11-07-remediation-contract.md).
 
-La [compra Makro de 363 EUR](data/purchases/makro-36300-captured-20261107.json) queda como transcripción pendiente de fecha, sin afirmar importación a una BD ni stock disponible. [Historial del cambio](docs/changes/2026-11-07-spectra-brownfield.md).
+Entrada para agentes: [AGENTS.md](AGENTS.md). Dominio: [13 capas Spectra](.spectra/00-vision.md). Protocolo: [registro de adopción](.spectra/adoption/record.json).
+
+El [diagnóstico GUIDO histórico](docs/sdd-assessment/2026-11-07/README.md) conserva el defecto original reproducido al commit 0616d2b; las correcciones posteriores requieren su propia evidencia. No asigna nivel organizativo ni acredita reconstrucción.
+
+La [compra Makro de 363 EUR](data/purchases/makro-36300-captured-20261107.json) sigue pendiente de fecha. No se ha desplegado ni importado a una base de datos privada. OCR de imagen, menús IA, consumo real de inventario y conversión de paquetes a €/kg siguen siendo capacidades futuras explícitas.
 
 Gobernanza: [Spectra](https://github.com/GuiMiran/spectra), [ecosistema GUIDO](https://github.com/GuiMiran/spectra/tree/main/docs/ecosystem).
-
-## Diagnóstico SDD acotado
-[GUIDO y conformidad 1.0.0](docs/sdd-assessment/2026-11-07/README.md): inventario, ocho obligaciones, dos revisiones independientes y recibos al commit 0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd. Las 34 pruebas existentes pasan, pero una sonda sintética demuestra un fallo de aislamiento entre familias en normalización. Sin nivel organizativo GUIDO, sin reconstrucción y sin corrección funcional en esta propuesta.
 
 ## Estado histórico declarado — Sprint 2
 
@@ -48,18 +52,17 @@ con el total (Makro contra base imponible, Lidl/Mercadona contra PVP).
 Si no cuadra → `pending_fields` con sugerencia. Nunca se pide
 reintroducir el ticket completo.
 
-**El raw nunca se pierde**: `raw_text` por línea y `raw_ocr` completo se
-conservan; si mañana mejora un parser, se reprocesan tickets antiguos.
+**El raw nunca se pierde**: `raw_text` por línea y los campos estructurados se conservan. El texto OCR completo no se almacena por la API estructurada actual; su retención requiere un contrato específico de captura y privacidad.
 
-## Ejecutar
+## Ejecutar la versión actual
 
 ```bash
-pip install -e ".[dev]"       # bloqueado actualmente por BF-002; ver diagnóstico
-pytest -q                        # 34 tests
+pip install -e ".[dev]"
+pytest -q                        # suite actual
 uvicorn app.main:app --reload    # docs: http://localhost:8000/docs
 ```
 
-Con Docker: `docker compose up` (API + PostgreSQL 16).
+Con Docker, seguir el [procedimiento explícito de inicialización](docs/operations/api-v0.2.md) antes de arrancar API + PostgreSQL 16.
 
 ## Estructura
 

@@ -167,7 +167,7 @@ def test_price_comparison_own_data(session, seed):
     ReceiptIngestionService(session, ai_proposer=ai).ingest(
         LidlParser().parse(LIDL), seed["family"].id
     )
-    comp = price_comparison(session, seed["macarrones"].id)
+    comp = price_comparison(session, seed["macarrones"].id, seed["family"].id)
     markets = {c["supermarket"]: c for c in comp}
     assert "Makro" in markets and "Lidl" in markets
     assert markets["Makro"]["avg_unit_price"] == Decimal("5.3900")  # pack 5 kg

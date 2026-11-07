@@ -128,12 +128,15 @@ class ProductAlias(TimestampMixin, Base):
     apuntan al mismo Product para poder comparar €/kg entre cadenas."""
     __tablename__ = "product_aliases"
     __table_args__ = (
-        UniqueConstraint("supermarket_id", "alias_text", name="uq_alias_per_market"),
+        UniqueConstraint("family_id", "product_id", "supermarket_id", "alias_text", name="uq_alias_scoped"),
         Index("ix_alias_text", "alias_text"),
         # En PostgreSQL, además: CREATE INDEX ... USING gin (alias_text gin_trgm_ops)
     )
     id: Mapped[uuid.UUID] = mapped_column(GUID, primary_key=True, default=uuid.uuid4)
     product_id: Mapped[uuid.UUID] = mapped_column(GUID, ForeignKey("products.id"))
+    family_id: Mapped[uuid.UUID | None] = mapped_column(
+        GUID, ForeignKey("families.id"), nullable=True
+    )  # NULL only for deliberately shared aliases
     supermarket_id: Mapped[uuid.UUID | None] = mapped_column(
         GUID, ForeignKey("supermarkets.id"), nullable=True
     )  # NULL = alias válido en cualquier cadena
@@ -234,3 +237,39 @@ class NormalizationReview(TimestampMixin, Base):
     )
     ai_proposal: Mapped[dict | None] = mapped_column(JSONField, nullable=True)
     status: Mapped[str] = mapped_column(String(12), default="pending")
+
+
+class ReceiptSubmission(TimestampMixin, Base):
+    """Idempotency is family scoped and survives process restarts."""
+    __tablename__ = "receipt_submissions"
+    __table_args__ = (UniqueConstraint("family_id", "key", name="uq_submission_family_key"),)
+    id: Mapped[uuid.UUID] = mapped_column(GUID, primary_key=True, default=uuid.uuid4)
+    family_id: Mapped[uuid.UUID] = mapped_column(GUID, ForeignKey("families.id"))
+    key: Mapped[str] = mapped_column(String(128))
+    request_digest: Mapped[str] = mapped_column(String(64))
+    receipt_id: Mapped[uuid.UUID] = mapped_column(GUID, ForeignKey("receipts.id"))
+    payload: Mapped[dict] = mapped_column(JSONField)
+
+
+class ReceiptEvent(TimestampMixin, Base):
+    __tablename__ = "receipt_events"
+    __table_args__ = (UniqueConstraint("receipt_id", "event_type", name="uq_receipt_event"),)
+    id: Mapped[uuid.UUID] = mapped_column(GUID, primary_key=True, default=uuid.uuid4)
+    family_id: Mapped[uuid.UUID] = mapped_column(GUID, ForeignKey("families.id"))
+    receipt_id: Mapped[uuid.UUID] = mapped_column(GUID, ForeignKey("receipts.id"))
+    event_type: Mapped[str] = mapped_column(String(64))
+    payload: Mapped[dict] = mapped_column(JSONField)
+    processed: Mapped[bool] = mapped_column(Boolean, default=False)
+
+
+class InventoryEntry(TimestampMixin, Base):
+    """Purchase projection; consumption/reservations remain a separate workflow."""
+    __tablename__ = "inventory_entries"
+    id: Mapped[uuid.UUID] = mapped_column(GUID, primary_key=True, default=uuid.uuid4)
+    family_id: Mapped[uuid.UUID] = mapped_column(GUID, ForeignKey("families.id"))
+    receipt_line_id: Mapped[uuid.UUID] = mapped_column(GUID, ForeignKey("receipt_lines.id"), unique=True)
+    product_id: Mapped[uuid.UUID | None] = mapped_column(GUID, ForeignKey("products.id"), nullable=True)
+    description: Mapped[str] = mapped_column(Text)
+    quantity: Mapped[Decimal] = mapped_column(Numeric(10, 3))
+    unit: Mapped[str] = mapped_column(String(8))
+    expiry_date: Mapped[date | None] = mapped_column(Date, nullable=True)

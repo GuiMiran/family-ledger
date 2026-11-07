@@ -21,7 +21,7 @@ import uuid
 from dataclasses import dataclass, field
 from decimal import Decimal
 
-from sqlalchemy import select
+from sqlalchemy import delete, or_, select
 from sqlalchemy.orm import Session
 
 from app.domain.normalization.pipeline import AIProductProposer
@@ -91,6 +91,46 @@ class ReceiptIngestionService:
         self.session.flush()
 
         result = IngestionResult(receipt_id=receipt.id, lines_total=len(parsed.lines))
+        self._write_lines(receipt, parsed, family_id, result)
+        self.session.flush()
+        return result
+
+    def update_pending(
+        self, receipt: Receipt, parsed: ParsedReceipt, family_id: uuid.UUID
+    ) -> IngestionResult:
+        """Replace a pending receipt in the caller's transaction, retaining its ID."""
+        if receipt.family_id != family_id or receipt.status != "pending_review":
+            raise ValueError("Only an owned pending receipt may be updated")
+        # Reviews refer to old lines and have no ORM delete cascade.
+        for line in list(receipt.lines):
+            self.session.execute(
+                delete(NormalizationReview).where(
+                    NormalizationReview.receipt_line_id == line.id
+                )
+            )
+            self.session.delete(line)
+        self.session.flush()
+        self.session.expire(receipt, ["lines"])
+
+        supermarket = self._resolve_supermarket(parsed.supermarket_key)
+        receipt.supermarket_id = supermarket.id if supermarket else None
+        receipt.purchase_date = parsed.purchase_date
+        receipt.total_amount = parsed.total_amount
+        receipt.total_vat = parsed.total_vat
+        receipt.total_discounts = parsed.total_discounts
+        receipt.payment_method = parsed.payment_method.value if parsed.payment_method else None
+        receipt.invoice_number = parsed.invoice_number
+        receipt.ocr_confidence = Decimal(str(parsed.overall_confidence))
+        receipt.status = "confirmed" if not parsed.pending_fields else "pending_review"
+        result = IngestionResult(receipt_id=receipt.id, lines_total=len(parsed.lines))
+        self._write_lines(receipt, parsed, family_id, result)
+        self.session.flush()
+        return result
+
+    def _write_lines(
+        self, receipt: Receipt, parsed: ParsedReceipt, family_id: uuid.UUID,
+        result: IngestionResult,
+    ) -> None:
 
         for pl in parsed.lines:
             line = ReceiptLine(
@@ -110,11 +150,8 @@ class ReceiptIngestionService:
             self.session.add(line)
             self.session.flush()
             self._normalize_line(
-                line, supermarket.id if supermarket else None, family_id, result
+                line, receipt.supermarket_id, family_id, result
             )
-
-        self.session.flush()
-        return result
 
     # ──────────────────────────────────────────────
     def _normalize_line(
@@ -125,13 +162,13 @@ class ReceiptIngestionService:
         result: IngestionResult,
     ) -> None:
         # 1. exact
-        if m := self.exact.match(line.description, supermarket_id):
+        if m := self.exact.match(line.description, supermarket_id, family_id):
             result.matched_exact += 1
             self._apply_match(line, m, supermarket_id, family_id, result, learn=False)
             return
 
         # 2. fuzzy
-        if m := self.fuzzy.match(line.description, supermarket_id):
+        if m := self.fuzzy.match(line.description, supermarket_id, family_id):
             result.matched_fuzzy += 1
             self._apply_match(
                 line, m, supermarket_id, family_id, result,
@@ -142,7 +179,8 @@ class ReceiptIngestionService:
         # 3. IA
         proposal = self.ai.propose(
             line.description,
-            {"supermarket_id": str(supermarket_id) if supermarket_id else None},
+            {"supermarket_id": str(supermarket_id) if supermarket_id else None,
+             "family_id": str(family_id)},
         )
         if proposal and proposal.get("confidence", 0) >= _AI_ACCEPT_THRESHOLD:
             product_id = self._resolve_ai_proposal(proposal, family_id)
@@ -166,7 +204,10 @@ class ReceiptIngestionService:
                 receipt_line_id=line.id,
                 alias_text=line.description,
                 supermarket_id=supermarket_id,
-                ai_proposal=proposal,
+                # An unaccepted provider response may contain an unauthorized
+                # product identifier or arbitrary text. Do not expose it in a
+                # family's review queue; the original receipt line is retained.
+                ai_proposal=None,
             )
         )
         result.sent_to_review += 1
@@ -187,15 +228,20 @@ class ReceiptIngestionService:
 
         if learn:
             exists = self.session.execute(
-                select(ProductAlias).where(
+                select(ProductAlias).join(
+                    Product, Product.id == ProductAlias.product_id
+                ).where(
                     ProductAlias.supermarket_id == supermarket_id,
                     ProductAlias.alias_text == line.description,
+                    ProductAlias.family_id == family_id,
+                    or_(Product.family_id.is_(None), Product.family_id == family_id),
                 )
-            ).scalar_one_or_none()
+            ).scalars().first()
             if not exists:
                 self.session.add(
                     ProductAlias(
                         product_id=m.product_id,
+                        family_id=family_id,
                         supermarket_id=supermarket_id,
                         alias_text=line.description,
                         match_type=m.match_type,
@@ -205,7 +251,8 @@ class ReceiptIngestionService:
                 result.aliases_learned += 1
 
         # precio unitario normalizado → historial de precios
-        if line.unit_price is not None and line.receipt.purchase_date:
+        if (line.receipt.status == "confirmed" and line.unit_price is not None
+                and line.receipt.purchase_date):
             self.session.add(
                 ProductPriceHistory(
                     product_id=m.product_id,
@@ -230,7 +277,14 @@ class ReceiptIngestionService:
         self, proposal: dict, family_id: uuid.UUID
     ) -> uuid.UUID | None:
         if pid := proposal.get("existing_product_id"):
-            return uuid.UUID(pid)
+            try:
+                product_id = uuid.UUID(str(pid))
+            except (TypeError, ValueError, AttributeError):
+                return None
+            product = self.session.get(Product, product_id)
+            if product is not None and product.family_id in (None, family_id):
+                return product.id
+            return None
         if new := proposal.get("new_product"):
             product = Product(
                 family_id=family_id,
@@ -244,10 +298,19 @@ class ReceiptIngestionService:
 
 
 # ────────────────────── Consulta: comparativa €/kg ──────────────────────
-def price_comparison(session: Session, product_id: uuid.UUID) -> list[dict]:
+def price_comparison(session: Session, product_id: uuid.UUID,
+                     family_id: uuid.UUID | None = None) -> list[dict]:
     """¿Dónde suele salir más barato este producto? Con los datos propios
     de la familia — sin depender de APIs de terceros."""
     from sqlalchemy import func as f
+
+    # There is no public family price-history endpoint. A caller without an
+    # explicit family scope receives no data, including for shared products.
+    if family_id is None:
+        return []
+    product = session.get(Product, product_id)
+    if product is None or product.family_id not in (None, family_id):
+        return []
 
     rows = session.execute(
         select(
@@ -258,7 +321,8 @@ def price_comparison(session: Session, product_id: uuid.UUID) -> list[dict]:
             ProductPriceHistory.unit,
         )
         .join(Supermarket, Supermarket.id == ProductPriceHistory.supermarket_id)
-        .where(ProductPriceHistory.product_id == product_id)
+        .where(ProductPriceHistory.product_id == product_id,
+               ProductPriceHistory.family_id == family_id)
         .group_by(Supermarket.name, ProductPriceHistory.unit)
         .order_by(f.avg(ProductPriceHistory.unit_price))
     ).all()
