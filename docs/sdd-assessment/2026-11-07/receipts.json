@@ -1,0 +1,83 @@
+{
+  "source_revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
+  "working_tree_clean_before_and_after": true,
+  "receipts": [
+    {
+      "id": "regression",
+      "command": [
+        "/workspace/scratch/1778e4e08e2b/family-audit-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q"
+      ],
+      "target_revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
+      "exit_code": 0,
+      "outcome": "passed",
+      "output_ref": "regression.log",
+      "output_sha256": "4949bea7a482e974dbd0b1ddfd4e0e40d42c39ab6c29575d140ec5a38df7391f",
+      "producer": "Codex root local diagnostic runner",
+      "environment": "Disposable Python venv; SQLite tests/probes; no deployment"
+    },
+    {
+      "id": "adoption-record",
+      "command": [
+        "/workspace/scratch/1778e4e08e2b/family-audit-venv/bin/python",
+        "scripts/verify_adoption.py"
+      ],
+      "target_revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
+      "exit_code": 0,
+      "outcome": "passed",
+      "output_ref": "adoption-record.log",
+      "output_sha256": "3fd247c149f9e88e8dbacbdfa4bb27a9c47be6b3ab7f17bb150b122c77a75d0f",
+      "producer": "Codex root local diagnostic runner",
+      "environment": "Disposable Python venv; SQLite tests/probes; no deployment"
+    },
+    {
+      "id": "spectra-validate",
+      "command": [
+        "node",
+        "/workspace/scratch/1778e4e08e2b/spectra-approved/bin/spectra.js",
+        "validate"
+      ],
+      "target_revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
+      "exit_code": 0,
+      "outcome": "passed",
+      "output_ref": "spectra-validate.log",
+      "output_sha256": "da67cbb21eb17b3f2238b736ab700183c5e9de9279434146d8b49aa7dfe195cd",
+      "producer": "Codex root local diagnostic runner",
+      "environment": "Disposable Python venv; SQLite tests/probes; no deployment"
+    },
+    {
+      "id": "missing-date",
+      "command": [
+        "/workspace/scratch/1778e4e08e2b/family-audit-venv/bin/python",
+        "/workspace/scratch/1778e4e08e2b/family-audit-packet/probes.py",
+        "/workspace/scratch/1778e4e08e2b/family-ledger-conformance",
+        "missing-date"
+      ],
+      "target_revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
+      "exit_code": 0,
+      "outcome": "passed",
+      "output_ref": "missing-date.log",
+      "output_sha256": "2b1ffbd4664b1265c33f483144491d86b02084ae2995652a9bff854cc3548b33",
+      "producer": "Codex root local diagnostic runner",
+      "environment": "Disposable Python venv; SQLite tests/probes; no deployment"
+    },
+    {
+      "id": "family-isolation",
+      "command": [
+        "/workspace/scratch/1778e4e08e2b/family-audit-venv/bin/python",
+        "/workspace/scratch/1778e4e08e2b/family-audit-packet/probes.py",
+        "/workspace/scratch/1778e4e08e2b/family-ledger-conformance",
+        "family-isolation"
+      ],
+      "target_revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
+      "exit_code": 1,
+      "outcome": "failed",
+      "output_ref": "family-isolation.log",
+      "output_sha256": "bb595944e2aa5326d5fdf3cfff8ea0181ee037be9b4ebc10d109e433df3d9580",
+      "producer": "Codex root local diagnostic runner",
+      "environment": "Disposable Python venv; SQLite tests/probes; no deployment"
+    }
+  ]
+}

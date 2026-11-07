@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0",
+  "agent": "sdd-auditor",
+  "agent_version": "0.1.0",
+  "repository": {
+    "path": "/workspace/scratch/1778e4e08e2b/family-ledger-conformance",
+    "commit": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
+    "files_inspected": 68
+  },
+  "scope": "Repository file presence only; observed does not imply quality or enforcement.",
+  "checks": [
+    {
+      "id": "project_readme",
+      "dimension": "documentation",
+      "label": "Project README",
+      "status": "observed",
+      "evidence": [
+        "README.md"
+      ],
+      "evidence_count": 1,
+      "recommendation": null
+    },
+    {
+      "id": "specifications",
+      "dimension": "documentation",
+      "label": "Versioned specifications",
+      "status": "observed",
+      "evidence": [
+        ".spectra/00-vision.md",
+        ".spectra/01-glossary.md",
+        ".spectra/02-stories.md",
+        ".spectra/03-business-rules.md",
+        ".spectra/04-invariants.md",
+        ".spectra/05-contracts.md",
+        ".spectra/06-policies.md",
+        ".spectra/07-events.md",
+        ".spectra/08-agents.md",
+        ".spectra/09-skills.md",
+        ".spectra/10-workflows.md",
+        ".spectra/11-acceptance-criteria.md",
+        ".spectra/12-trace.md",
+        "specs/01-architecture.md",
+        "specs/02-data-model.md",
+        "specs/03-receipt-service-openapi.yaml",
+        "specs/04-inventory-service-openapi.yaml",
+        "specs/05-menu-ai-service-openapi.yaml",
+        "specs/06-analytics-service-openapi.yaml"
+      ],
+      "evidence_count": 19,
+      "recommendation": null
+    },
+    {
+      "id": "contribution_policy",
+      "dimension": "governance",
+      "label": "Contribution guidance",
+      "status": "no_evidence",
+      "evidence": [],
+      "evidence_count": 0,
+      "recommendation": "Document the contribution and review process in CONTRIBUTING.md."
+    },
+    {
+      "id": "security_policy",
+      "dimension": "governance",
+      "label": "Security policy",
+      "status": "no_evidence",
+      "evidence": [],
+      "evidence_count": 0,
+      "recommendation": "Document security reporting in SECURITY.md."
+    },
+    {
+      "id": "ci_workflow",
+      "dimension": "automation",
+      "label": "CI workflow",
+      "status": "observed",
+      "evidence": [
+        ".github/workflows/spectra-brownfield.yml"
+      ],
+      "evidence_count": 1,
+      "recommendation": null
+    },
+    {
+      "id": "tests",
+      "dimension": "quality",
+      "label": "Versioned tests",
+      "status": "observed",
+      "evidence": [
+        "tests/test_api.py",
+        "tests/test_ingestion.py",
+        "tests/test_lidl_parser.py",
+        "tests/test_makro_parser.py",
+        "tests/test_mercadona_parser.py"
+      ],
+      "evidence_count": 5,
+      "recommendation": null
+    },
+    {
+      "id": "agent_contract",
+      "dimension": "agents",
+      "label": "Agent instructions or contract",
+      "status": "observed",
+      "evidence": [
+        "AGENTS.md"
+      ],
+      "evidence_count": 1,
+      "recommendation": null
+    },
+    {
+      "id": "trace_map",
+      "dimension": "traceability",
+      "label": "Explicit trace mapping",
+      "status": "observed",
+      "evidence": [
+        ".spectra/12-trace.md",
+        "docs/brownfield/traceability.md"
+      ],
+      "evidence_count": 2,
+      "recommendation": null
+    }
+  ],
+  "summary": {
+    "observed": 6,
+    "no_evidence": 2
+  },
+  "guido_scale": {
+    "organizational_level": null,
+    "migration_effort": null,
+    "reason": "Process, culture, adoption and actual practices require human assessment."
+  }
+}

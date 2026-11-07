@@ -1,0 +1,179 @@
+{
+  "rubric": "guido-scale-v0.1",
+  "scope": "Interpretación e ingesta de tickets y límites de confirmación/inventario/aislamiento de Family Ledger; revisión documental SDD acotada, no evaluación completa del producto.",
+  "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
+  "dimensions": {
+    "specCoverage": {
+      "status": "OBSERVED",
+      "evidence": [
+        "packet:scope.json — 8 mandatory obligations selected from product purpose/contracts before the current run; explicitly non-exhaustive",
+        "target:.spectra/02-stories.md — US-001 through US-005",
+        "target:.spectra/03-business-rules.md — BR-001 through BR-006",
+        "target:.spectra/04-invariants.md — INV-001 through INV-004",
+        "target:.spectra/11-acceptance-criteria.md — AC-001 through AC-007"
+      ],
+      "rationale": "Reviewer B independently mapped the eight supplied obligations to the pinned clauses. All eight have a relevant clause or acceptance criterion, but confirmation, isolation and inventory are explicitly objectives/pending rather than delivered features. This observes specification presence for a bounded denominator of eight, not completeness of the application or behavioral coverage. The selected inventory cannot support a whole-repository coverage percentage."
+    },
+    "specQuality": {
+      "status": "OBSERVED",
+      "evidence": [
+        "target:.spectra/03-business-rules.md — BR-001 limits net-amount reconciliation to the observed Makro format; BR-004 names confidence thresholds",
+        "target:.spectra/05-contracts.md — OP-002 explicitly leaves transaction commit/rollback to its caller; OP-004 is a target without an HTTP implementation",
+        "target:.spectra/04-invariants.md — INV-004 names isolation but leaves product-sharing/alias-ownership policy underspecified",
+        "target:.spectra/11-acceptance-criteria.md — AC-003 combines several preservation/learning claims in one criterion; AC-007 lacks an executed negative check in the checked-in baseline"
+      ],
+      "rationale": "The reviewed clauses distinguish observed behavior from targets and state useful limits, thresholds and monetary reconciliation policy. Important remaining quality gaps are the exact boundaries of global versus family-owned catalog data and the compound preservation criterion, whose assertions do not independently verify every described field. These observations concern the selected clauses only; they are not a general specification-quality rating."
+    },
+    "traceability": {
+      "status": "OBSERVED",
+      "evidence": [
+        "target:.spectra/12-trace.md — declared @spectra links and acceptance links; dashboard is explicitly static",
+        "target:docs/brownfield/traceability.md — responsibility map including unimplemented flows and SQLite limits",
+        "target:tests/test_makro_parser.py::test_weight_line_pollo,test_multi_quantity_line,test_totals_reconcile_no_pending",
+        "target:tests/test_ingestion.py::test_lidl_ai_normalization_then_free_second_time",
+        "packet:receipts.json — local regression, adoption-record, missing-date and isolation receipts at the pinned target revision",
+        "packet:regression.log,missing-date.log,family-isolation.log,adoption-record.log — output SHA-256 values independently recomputed by reviewer B and matched receipts"
+      ],
+      "rationale": "Source/criterion links can be inspected and several are connected to a fresh local run at the same declared revision. I inspected check logic and recomputed all five output hashes; I did not execute target code or authenticate an external CI authority. Receipts are produced by the root local diagnostic runner, not signed third-party attestations, and do not include a timestamp or source-input digest inventory for every check. The native 50% trace dashboard and EVIDENCE labels cannot be interpreted as executed acceptance coverage; significant untagged code and missing end-to-end chains remain outside its scan."
+    },
+    "invariantCoverage": {
+      "status": "OBSERVED",
+      "evidence": [
+        "packet:probes.py — synthetic missing-date and family-isolation challenges",
+        "packet:missing-date.log — absent date remains null with purchase_date pending; exit 0",
+        "packet:family-isolation.log — B-owned receipt resolves A-owned private product; expected isolation check exits 1",
+        "target:app/infrastructure/normalization/matchers.py::ExactMatcher.match — filters alias text and supermarket/global alias but not owning family",
+        "target:app/application/receipt_ingestion.py::_normalize_line — family_id not supplied to exact/fuzzy matching",
+        "packet:adoption-record.log — exact net/VAT/gross reconciliation and pending-record flags passed"
+      ],
+      "rationale": "Within the supplied eight-obligation scope, missing-date and transcription invariants have positive local challenges, and the private-product isolation invariant has a demonstrated counterexample. The failing probe uses synthetic families and SQLite in memory; it establishes a normalization/association boundary failure, not a deployed HTTP exploit or a production data incident. Broad multi-family read authorization, PostgreSQL behavior, event duplication and transaction rollback remain untested. A green 34-test regression does not close this mandatory failure."
+    },
+    "domainExtraction": {
+      "status": "OBSERVED",
+      "evidence": [
+        "packet:scope.json — frozen bounded obligation inventory, target/rubric/tool revisions and exclusions",
+        "target:.spectra/00-vision.md — observed parsing/internal persistence distinguished from planned OCR/confirmation/inventory/analytics",
+        "target:.spectra/03-business-rules.md — explicit net/VAT, pending-field and normalization rules",
+        "target:app/infrastructure/db/orm.py::Product — nullable family_id denotes global shared products",
+        "target:app/infrastructure/normalization/matchers.py — alias visibility is not constrained by that product ownership boundary",
+        "target:app/main.py — only parsing and health routes, so a manual receipt record is not evidence of application persistence"
+      ],
+      "rationale": "The pinned package exposes several business decisions explicitly and marks unfinished flows, allowing a reviewer to distinguish implementation from roadmap without later author explanations. Remaining knowledge includes permitted global/private alias sharing and precise confirmation/inventory/idempotency behavior. This is an inspection of a frozen input package, not a blind reconstruction or proof that the domain is exhaustively extracted."
+    },
+    "reconstructability": {
+      "status": "NOT_TESTED",
+      "evidence": [
+        "packet:scope.json — reconstruction excluded; no isolated builder/oracle protocol or reconstruction candidate supplied"
+      ],
+      "rationale": "No valid isolated reconstruction trial exists in this packet. The existing implementation, generated layers and passing regression cannot substitute for a reconstruction attempt with reserved independent tests. No failure or success is inferred."
+    }
+  },
+  "obligations": [
+    {
+      "id": "OBL-001",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        "target:.spectra/03-business-rules.md::BR-001; target:tests/test_makro_parser.py::test_weight_line_pollo,test_multi_quantity_line,test_vat_groups_resolved,test_totals_reconcile_no_pending",
+        "packet:receipts.json#regression and packet:regression.log — all 34 existing tests passed at the target revision; limited to selected fixture-format behavior"
+      ]
+    },
+    {
+      "id": "OBL-002",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        "target:.spectra/04-invariants.md::INV-002; target:app/infrastructure/parsers/makro.py::_assess_confidence",
+        "packet:probes.py#missing-date; packet:receipts.json#missing-date; packet:missing-date.log — date removed from known fixture remains null and is marked pending"
+      ]
+    },
+    {
+      "id": "OBL-003",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "NOT_EVALUATED",
+      "evidence": [
+        "target:.spectra/04-invariants.md::INV-003; target:app/application/receipt_ingestion.py::ingest — statically copies raw_text, description and line_total into ReceiptLine",
+        "target:tests/test_ingestion.py::test_review_queue_preserves_everything — asserts queue count/status and one alias text, but not per-unmatched-line preservation of description and monetary amount",
+        "packet:receipts.json#regression — aggregate run passed; no dedicated field-by-field preservation challenge or observed persisted values supplied"
+      ]
+    },
+    {
+      "id": "OBL-004",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        "target:.spectra/03-business-rules.md::BR-003,BR-004; target:tests/test_ingestion.py::test_makro_ingestion_exact_fuzzy_and_review,test_lidl_ai_normalization_then_free_second_time",
+        "packet:receipts.json#regression and packet:regression.log — existing exact/fuzzy/learned-alias checks passed; IA proposal is a stub and threshold-edge completeness is not asserted"
+      ]
+    },
+    {
+      "id": "OBL-005",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "NOT_EVALUATED",
+      "evidence": [
+        "target:.spectra/05-contracts.md::OP-004 and .spectra/11-acceptance-criteria.md::AC-004 explicitly target/pending",
+        "target:app/main.py — parse/health only; no executed HTTP confirmation-to-storage-and-query path supplied"
+      ]
+    },
+    {
+      "id": "OBL-006",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "FAILED",
+      "evidence": [
+        "target:.spectra/04-invariants.md::INV-004 and .spectra/11-acceptance-criteria.md::AC-007",
+        "packet:probes.py#family-isolation; packet:receipts.json#family-isolation; packet:family-isolation.log — B-owned receipt resolves an A-owned private product, expected boundary fails with exit 1",
+        "target:app/infrastructure/normalization/matchers.py::ExactMatcher.match and app/application/receipt_ingestion.py::_normalize_line explain the missing family filter; no remote exploit asserted"
+      ]
+    },
+    {
+      "id": "OBL-007",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "NOT_EVALUATED",
+      "evidence": [
+        "target:.spectra/07-events.md::EVT-001 and .spectra/11-acceptance-criteria.md::AC-006 mark event/inventory delivery pending",
+        "target:specs/01-architecture.md#3 describes desired confirmation/outbox/inventory flow; no executed event delivery or duplicate-inventory challenge supplied"
+      ]
+    },
+    {
+      "id": "OBL-008",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        "target:scripts/verify_adoption.py — checks 20 ordered lines, net/tax/gross, VAT group rounding and pending date/database/inventory flags",
+        "packet:receipts.json#adoption-record and packet:adoption-record.log — check passed for the one supplied transcription: 328.36 + 34.64 = 363.00; no database import performed"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "observation": "Highest-impact mandatory failure: at the pinned revision, a synthetic family-B receipt is associated with a private product owned by family A through an exact alias. The local isolation probe fails while the 34-test regression passes. This is a demonstrated internal normalization boundary failure, not evidence of a production incident.",
+      "nextAction": "Owner: Family Ledger maintainer. Define global versus family-private catalog/alias visibility, then implement tenant-aware exact, fuzzy and IA resolution plus family-aware price/query paths in a separately approved change. Preserve this failing packet as the baseline.",
+      "closureCheck": "Retain the exact OBL-006 counterexample and require it to pass after the fix; challenge exact/fuzzy/IA matching with two families, allow explicitly shared global products, and reject cross-family private associations. Add a PostgreSQL integration case and verify unchanged legitimate same-family normalization before claiming broader isolation."
+    },
+    {
+      "observation": "OBL-003 has convincing static assignment code and a passing queue test, but the supplied executed assertions do not verify every unmatched line's description, raw text and monetary amount. The method name 'preserves_everything' is stronger than the measured assertions.",
+      "nextAction": "Owner: receipt-ingestion maintainer. Add an independent preservation test that retrieves every persisted unmatched ReceiptLine and compares its source description/raw_text/line_total while checking the corresponding review entry.",
+      "closureCheck": "At a named revision, show field-by-field equality for multiple unmatched lines with different amounts, non-ASCII descriptions and mixed units, and a negative control that drops or mutates an amount must fail the test."
+    },
+    {
+      "observation": "Application confirmation/query and event-driven inventory are documented targets without executed end-to-end delivery evidence. Internal session writes, a prototype UI and the checked transcription do not demonstrate these flows.",
+      "nextAction": "Owner: application/API maintainer. Keep OBL-005 and OBL-007 pending and define bounded confirmation, authenticated query, transaction and duplicate-event contracts before connecting the flows.",
+      "closureCheck": "Produce independently checked HTTP-to-PostgreSQL confirmation/query receipts and an event-redelivery case with unchanged inventory after duplicate delivery; include rollback and authorization cases."
+    },
+    {
+      "observation": "The packet supplies output hashes and source revisions which reviewer B checked locally, but an aggregate pytest receipt and the static trace labels do not establish a complete per-obligation evidence chain or externally authenticated results.",
+      "nextAction": "Owner: SDD evidence maintainer. Preserve local-run provenance, add timestamp/input/environment digests and named per-check result mapping, and keep diagnostic review distinct from CI authority and organizational scoring.",
+      "closureCheck": "A later reviewer can follow each measured obligation to its selected rule, source revision, check logic and immutable input/output receipt, while unsupported obligations remain NOT_EVALUATED and reconstruction remains NOT_TESTED."
+    }
+  ],
+  "migration": "NOT_ESTIMATED",
+  "executionAuthorized": false
+}

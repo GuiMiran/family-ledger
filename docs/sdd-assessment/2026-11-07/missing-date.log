@@ -1,0 +1,1 @@
+{"obligation": "OBL-002", "expected": "null date and pending review", "purchase_date": "None", "pending_fields": ["purchase_date"], "passed": true}

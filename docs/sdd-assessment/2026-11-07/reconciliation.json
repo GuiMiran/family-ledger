@@ -1,0 +1,38 @@
+{
+  "source_revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
+  "rubric": "guido-scale-v0.1",
+  "guido_revision": "4566a3529d833ea037eecc62efe907325ada32e1",
+  "reviewers": [
+    "Codex subagent guido_review_a",
+    "Codex subagent guido_review_b"
+  ],
+  "method": "Two separately prompted analytical subagents inspecting the same frozen packet; neither was given the other report. Shared tooling/workspace; not a blinded reconstruction or a claim of model diversity.",
+  "reviewer_report_refs": [
+    "reviewer-a.json",
+    "reviewer-b.json"
+  ],
+  "comparable_obligations": 8,
+  "matching_outcomes": 8,
+  "disagreements": [],
+  "coordinator_outcomes": {
+    "OBL-001": "DEMONSTRATED",
+    "OBL-002": "DEMONSTRATED",
+    "OBL-003": "NOT_EVALUATED",
+    "OBL-004": "DEMONSTRATED",
+    "OBL-005": "NOT_EVALUATED",
+    "OBL-006": "FAILED",
+    "OBL-007": "NOT_EVALUATED",
+    "OBL-008": "DEMONSTRATED"
+  },
+  "coordinator": "Codex root",
+  "owner_review": "pending",
+  "organizational_level": null,
+  "reconstruction": "NOT_TESTED",
+  "limitations": [
+    "Scoped 8-obligation diagnostic; not exhaustive.",
+    "Rubric v0.1 is proposed methodology, not certification.",
+    "34 existing tests passed in local diagnostic environment; not PostgreSQL or deployment evidence.",
+    "Family isolation synthetic probe fails; no product fix in this change.",
+    "No organizational rating or valid isolated reconstruction trial."
+  ]
+}

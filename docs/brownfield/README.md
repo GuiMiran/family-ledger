@@ -3,8 +3,12 @@
 Fecha de observación: 2026-11-07. Baseline: `9b371ad1bf3c6caffa0f79cc82e2470f3cdd7a45`.
 Spectra 0.5.0 fijado en `c6d1f36d3ec98ab48e47cafeaf24b4039fdb2e85`.
 
-## Protocolo aplicado
-No se encontró un comando ni un protocolo publicado llamado brownfield en esa versión de Spectra. Esta adopción documenta explícitamente el procedimiento local: inventariar → preservar baseline → contrastar especificaciones/código/pruebas → extraer reglas observadas → separar objetivos → enlazar trazas → verificar → proponer PR. No se atribuye a Spectra una capacidad inexistente.
+## Protocolo vigente y diagnóstico
+[Mapeo de entregables y límites](protocol-conformance.md).
+La PR Spectra #32 ya fusionada publica el [protocolo 1.0.0](https://github.com/GuiMiran/spectra/blob/b7acc9a5ae1299a867db9a6a412d189eac056771/docs/guides/adoption-protocol.md). Esta propuesta mapea la adopción inicial a ese protocolo; ver [registro](../../.spectra/adoption/record.json) y [diagnóstico GUIDO](../sdd-assessment/2026-11-07/README.md). La aceptación de esta conformidad está pendiente de revisión.
+
+## Protocolo inicial aplicado
+En la baseline inicial no se encontró un comando ni un protocolo publicado llamado brownfield en aquella versión de Spectra. Esta adopción documenta explícitamente el procedimiento local: inventariar → preservar baseline → contrastar especificaciones/código/pruebas → extraer reglas observadas → separar objetivos → enlazar trazas → verificar → proponer PR. No se atribuye a Spectra una capacidad inexistente.
 
 1. Inventario reproducible: [baseline.json](baseline.json), hashes SHA-256 de los artefactos anteriores y AST de Python.
 2. Fuente original: [arquitectura](../../specs/01-architecture.md), [modelo](../../specs/02-data-model.md), contratos OpenAPI y código al commit indicado.
@@ -25,7 +29,7 @@ No se encontró un comando ni un protocolo publicado llamado brownfield en esa v
 | BF-007 | No existe configuración de CI en baseline | Esta adopción añade control estructural y pruebas de diagnóstico; no despliega |
 | BF-008 | Ticket de 363 EUR sin fecha de venta legible | Registro pendiente; no atribuir automáticamente a noviembre ni afirmar inserción BD |
 | BF-009 | Railway accesible: solo proyecto `guido-autonomous-intelligence`; no se identifica un despliegue Family Ledger | Observación limitada a la cuenta conectada; no descarta otros proveedores o equipos |
-| BF-010 | API y normalización no tienen evidencia negativa de aislamiento entre familias | Debe resolverse antes de conectar datos privados a una aplicación multiusuario |
+| BF-010 | Una sonda sintética de normalización reproduce asociación de compra B con producto privado A | Fallo demostrado OBL-006 / INV-004; pendiente corregir antes de conectar datos privados multiusuario |
 
 ## Orden de evolución propuesto
 1. Hacer reproducible la instalación, fijar dependencias y resolver creación de sesiones/migraciones.
