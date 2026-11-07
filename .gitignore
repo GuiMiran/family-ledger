@@ -7,3 +7,5 @@ venv/
 .env
 *.db
 .DS_Store
+
+.tools/

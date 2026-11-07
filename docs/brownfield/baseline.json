@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "repository": "GuiMiran/family-ledger",
+  "baseline_commit": "9b371ad1bf3c6caffa0f79cc82e2470f3cdd7a45",
+  "observed_on": "2026-11-07",
+  "spectra": {
+    "version": "0.5.0",
+    "repository": "GuiMiran/spectra",
+    "commit": "c6d1f36d3ec98ab48e47cafeaf24b4039fdb2e85"
+  },
+  "files": {
+    "Dockerfile": {
+      "sha256": "03ca9acdb8082c7e49d2c67cf54ba25b45136f20bd22df76437d509a158fe136"
+    },
+    "app/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/api/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/api/v1/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/application/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/application/receipt_ingestion.py": {
+      "sha256": "cf488c72481b4ed4206960bf2cdcfc7f60bb1165d5d62726a6646961293db5c3",
+      "ast_sha256": "8030e48f33971c827a8ba97e5136a646d5ee8664a5a84119b2d1324fd534b255"
+    },
+    "app/core/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/domain/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/domain/normalization/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/domain/normalization/pipeline.py": {
+      "sha256": "969f4b409b619e390c15a81bc7abb06a98a24b3b81ecab7086f0cf663146df64",
+      "ast_sha256": "a10616a26444491fdf91e79dccd6d8d78155d39355832e6bd08299076901b804"
+    },
+    "app/domain/receipts/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/domain/receipts/models.py": {
+      "sha256": "ab829e758093bfdd8a1ab78deb177adaccf67c9cadbbbe4c5698cd30de2af0c7",
+      "ast_sha256": "64dd972ecd67855b0001dc8559ad7df141e4e447cb0acbeda8a1da4300eda12e"
+    },
+    "app/domain/receipts/parser.py": {
+      "sha256": "9c8e85a9baa745911ff194e3cb7a4a4d77aeabfc96f84410b7226668d530ac1c",
+      "ast_sha256": "3830014acf6fc53bb13b060d99031c32cb253669e0c4d575b7e1d51350bf66a2"
+    },
+    "app/infrastructure/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/infrastructure/db/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/infrastructure/db/orm.py": {
+      "sha256": "26068e522a0f210589bbc4aff97aace0e11e854bae85c51b6fb87dd06f1f6ca9",
+      "ast_sha256": "9481ae97afed616415449ea77cb8d8fc9e4117e2ed20e273d600d0ffd45fd86e"
+    },
+    "app/infrastructure/normalization/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/infrastructure/normalization/matchers.py": {
+      "sha256": "3ba3175cd652339d6b9b8e7d829a406cb6b2b65a3241ef24d64e30a21eb7fc83",
+      "ast_sha256": "b72c1324f11dd1e5b534129f93bc32b5db5a1716212f78f931cf64cc02b8f37d"
+    },
+    "app/infrastructure/parsers/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "app/infrastructure/parsers/base.py": {
+      "sha256": "e3bc069ed56d65560227e1250a573fe72ef35e882adde315ebcabbec4520eacf",
+      "ast_sha256": "272b31c8c9e2289b2f6ed82cd6da49834a4d64e81d2b83ccc751f37de9d241da"
+    },
+    "app/infrastructure/parsers/lidl.py": {
+      "sha256": "0862f87ec0a42e6726263f41de021507a2561f468e66af1347765b7c54cb6b17",
+      "ast_sha256": "4c3b29074783402029ee4d367667393578a39468cdb705f4e4625ab85cb9c58d"
+    },
+    "app/infrastructure/parsers/makro.py": {
+      "sha256": "c1674b708730314bf7ba3e5b460452a9d5c60087f5041ec1bffebbf88d726e90",
+      "ast_sha256": "fb693ed1210776400ab0b06be1fba986dbe47e47d732b4d77b046b64270dc989"
+    },
+    "app/infrastructure/parsers/mercadona.py": {
+      "sha256": "ce8acab415573bbb8e737a91f923f50099b9b2c7787337b895cc383c2d643fd5",
+      "ast_sha256": "8ab2fab8eaf4463aebd9ec05cd470bb19f17a78d3d1a4381e63344aae2d7e49f"
+    },
+    "app/infrastructure/parsers/registry.py": {
+      "sha256": "db461325b4676ab49496041f032169364bbd8f7a1c0a5821b7f38d6053904c17",
+      "ast_sha256": "101f9eaee4c68d40363e2d40b1972895a38f7684cce94b83f67c1590b65a5cf5"
+    },
+    "app/main.py": {
+      "sha256": "b7fae750bb2358574b301120bf4ec3f9d6ab9f263e84cbe2c8f3064ba6cfe748",
+      "ast_sha256": "b98e2ebf6c12244cc83a5202611f8ce4724d90bb29d0621758ba59285a1baf00"
+    },
+    "docker-compose.yml": {
+      "sha256": "71c785e05782464e3a27ab619ff8cc973da61821d3916eaeffcdf3cd8e5d8899"
+    },
+    "pyproject.toml": {
+      "sha256": "3f61e47d8db7d7d29d587a43e87d27905914f1ac4e5e38a0c6120c3033a3525b"
+    },
+    "specs/01-architecture.md": {
+      "sha256": "f5cf238ac2e5c5ef999e07725bc1f13bd8e5ecf6dcfd4b58252944e7b2946e98"
+    },
+    "specs/02-data-model.md": {
+      "sha256": "17dee14cce0b35d97f76ad82a402f70426e2c010fc0baca049179badeaaa624d"
+    },
+    "specs/03-receipt-service-openapi.yaml": {
+      "sha256": "34557dcfc91aa5900f4cfc7abbcb5486f5be74e4d060d1edff8028424c1655a1"
+    },
+    "specs/04-inventory-service-openapi.yaml": {
+      "sha256": "8f5627f37ae701da6855cfbca5e76ea4dab43f2a872e95d80c79f670a8aa1e67"
+    },
+    "specs/05-menu-ai-service-openapi.yaml": {
+      "sha256": "1c3c456c7f72d8d2cd6df2143765e8378b5f2346d4af304fc207cc87322657fb"
+    },
+    "specs/06-analytics-service-openapi.yaml": {
+      "sha256": "0b6a8434aadab6f3d748136e03e457d732ede77d0d69230fbc7b38a5e3207e02"
+    },
+    "tests/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "ast_sha256": "3543b4693a36a1098850b8bc928887694ed59a6deb7d3dfd0339de01f55a77b6"
+    },
+    "tests/fixtures/lidl_ticket.txt": {
+      "sha256": "bc8822a132c6d1132d8997232835e9b2cf037bc4f16dc95092308d3b7063b195"
+    },
+    "tests/fixtures/makro_ticket.txt": {
+      "sha256": "9ea6edbbff8766d3f0a0577222d905f22c4496b80cdb1a4535d862ad4b1b3a0b"
+    },
+    "tests/fixtures/mercadona_ticket.txt": {
+      "sha256": "09f503430b4268ef4db2c10ae4175f19c261617e2dc5164700091ad49442fce2"
+    },
+    "tests/test_api.py": {
+      "sha256": "26462d304873d18a1da1b61678373a292bdffbad8c561a9d0185d14311f2c4b6",
+      "ast_sha256": "5dbebf68529b854a38654b94ec4bbc77acfcfcacfbcaea878573ba86e4b1370f"
+    },
+    "tests/test_ingestion.py": {
+      "sha256": "60f9a3050363da9227d4bacb4e07b13cc88275286cd1063796c0440abe90e457",
+      "ast_sha256": "871bc629c0225ac16610d96dee87774fbb3166d1b343c969d6307aa1bf3362fe"
+    },
+    "tests/test_lidl_parser.py": {
+      "sha256": "ec617cd24cdb7c6cf768be826e5674c37012d02aca0522c8b28e457e55c6350b",
+      "ast_sha256": "199455df76cb81988a49a5b83a023083e0244998dbac7bc960b4adbb0121b685"
+    },
+    "tests/test_makro_parser.py": {
+      "sha256": "262192e9054a459406ea8f8b760390043b0737389295a128a3c3592f439c6548",
+      "ast_sha256": "2f78d1803d06163e5bc56e837c92021c885d7e62dbefe55a4359ae8d32f5e98f"
+    },
+    "tests/test_mercadona_parser.py": {
+      "sha256": "8fe1144834f8180d117aba6c179d501ae76594d30da1e249d929bf5ceef009f1",
+      "ast_sha256": "2e7f67052c1b2f9fc46c76ec099697d7642bd6b4f36d25ac2444a82eb400caad"
+    }
+  },
+  "scope": "Brownfield adoption; source changes limited to trace comments. No deployment or database import."
+}

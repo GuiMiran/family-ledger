@@ -1,0 +1,9 @@
+# 11 · Criterios de aceptación
+Los enlaces son declaraciones de trazabilidad. La ejecución y su alcance se registran en docs/brownfield/verification.md.
+- AC-001 · US-001 BR-001 OP-001 SK-001 WF-001: DADO un texto Makro conocido, CUANDO se interpreta, ENTONCES pesos, cantidades, IVA y base concuerdan. Evidencia existente: tests/test_makro_parser.py, tests/test_api.py.
+- AC-002 · US-001 BR-002 INV-002 OP-001 POL-001 SK-001 WF-001: DADO texto con fecha/total ausentes o formato desconocido, CUANDO se interpreta, ENTONCES se devuelven campos pendientes. Evidencia parcial: tests/test_api.py::test_parse_endpoint_unknown_ticket; los casos de fecha/total faltantes no tienen prueba negativa dedicada.
+- AC-003 · US-002 BR-003 BR-004 INV-003 OP-002 POL-002 SK-002 WF-002: DADOS tickets y alias, CUANDO se ingieren, ENTONCES se conservan líneas, se aprenden alias y se crean revisiones. Evidencia existente: tests/test_ingestion.py. Ejecución SQLite; no certifica PostgreSQL ni aislamiento.
+- AC-004 · US-003 OP-004 POL-003: DADO un usuario y ticket revisado, CUANDO confirma desde la aplicación, ENTONCES se guarda una sola compra y puede consultarla. PENDIENTE: falta ruta conectada y prueba de extremo a extremo.
+- AC-005 · US-004 BR-005 BR-006 INV-001 INV-002 OP-003 POL-004 AG-001 SK-003 WF-003: DADO el registro de 363 EUR, CUANDO se verifica, ENTONCES las bases y los grupos fiscales cuadran y fecha/BD/existencias siguen pendientes. Control reproducible: scripts/verify_adoption.py.
+- AC-006 · US-005 EVT-001 WF-004: DADA una compra confirmada, CUANDO se entrega el evento, ENTONCES inventario y analítica se actualizan sin duplicación. PENDIENTE: no hay implementación ni prueba.
+- AC-007 · INV-004: DADAS dos familias, CUANDO una consulta o normaliza, ENTONCES nunca reutiliza datos privados de la otra. PENDIENTE: no existe prueba negativa suficiente.

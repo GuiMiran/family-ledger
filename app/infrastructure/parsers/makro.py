@@ -1,3 +1,8 @@
+# @spectra BR-001
+# @spectra BR-002
+# @spectra INV-002
+# @spectra POL-001
+# @spectra SK-001
 """Parser de tickets/facturas Makro (Makro Distribución Mayorista, S.A.).
 
 Formato validado contra ticket real de Makro Barcelona (Zona Franca).

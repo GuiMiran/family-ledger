@@ -6,7 +6,17 @@ El sistema operativo financiero de una familia. Fase 1 (MVP): reducir el
 desperdicio alimentario, optimizar las compras y medir el ahorro real —
 a partir de una sola foto del ticket.
 
-## Estado actual — Sprint 2 completado
+## Adopción Spectra · brownfield
+
+Entrada para agentes: [AGENTS.md](AGENTS.md). Dominio en [13 capas Spectra](.spectra/00-vision.md), contratos técnicos originales en `specs/` y [baseline, brechas y evidencia](docs/brownfield/README.md).
+
+El código de persistencia existe, pero la API actual expone solo interpretación de texto y salud; no conecta confirmación con BD. PostgreSQL está definido en Compose. Esto no acredita despliegue, inventario ni analítica operativos.
+
+La [compra Makro de 363 EUR](data/purchases/makro-36300-captured-20261107.json) queda como transcripción pendiente de fecha, sin afirmar importación a una BD ni stock disponible. [Historial del cambio](docs/changes/2026-11-07-spectra-brownfield.md).
+
+Gobernanza: [Spectra](https://github.com/GuiMiran/spectra), [ecosistema GUIDO](https://github.com/GuiMiran/spectra/tree/main/docs/ecosystem).
+
+## Estado histórico declarado — Sprint 2
 
 | Sprint | Entregable | Estado |
 |---|---|---|
@@ -15,7 +25,7 @@ a partir de una sola foto del ticket.
 | 2 | Persistencia PostgreSQL (SQLAlchemy 2.0) + normalización de productos + parser Lidl | ✅ |
 | — | Prototipo UI navegable (`/prototype`) | ✅ |
 
-**34 tests en verde**, validados contra **dos tickets reales del 04/07/2026**:
+**34 tests declarados en el README histórico**; la ejecución actual se registra en [verificación brownfield](docs/brownfield/verification.md). Las fixtures originales corresponden a **dos tickets reales del 04/07/2026**:
 Makro Barcelona (17 líneas, 211,87 €) y Lidl El Prat (48 líneas, 151,46 €).
 
 ## Lo esencial del diseño
@@ -41,7 +51,7 @@ conservan; si mañana mejora un parser, se reprocesan tickets antiguos.
 ## Ejecutar
 
 ```bash
-pip install -e ".[dev]"
+pip install -e ".[dev]"       # bloqueado actualmente por BF-002; ver diagnóstico
 pytest -q                        # 34 tests
 uvicorn app.main:app --reload    # docs: http://localhost:8000/docs
 ```
