@@ -1,0 +1,6 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> family-ledger-web@0.3.0 build
+> tsc -b && vite build
+
+src/main.tsx(21,528): error TS1117: An object literal cannot have multiple properties with the same name.

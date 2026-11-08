@@ -15,7 +15,7 @@ from app.infrastructure.db.orm import Base, Family, ProductAlias
 from app.core.identity import ALIAS_QUARANTINE_FAMILY_ID, ALIAS_QUARANTINE_FAMILY_NAME
 
 TEMP_ALIASES = "_product_aliases_v020"
-NEW_TABLES = {"receipt_submissions", "receipt_events", "inventory_entries"}
+NEW_TABLES = {"receipt_submissions", "receipt_events", "inventory_entries", "shopping_profiles", "price_observations", "shopping_audits"}
 CORE_TABLES = set(Base.metadata.tables) - NEW_TABLES
 LEGACY_UNIQUE = ["supermarket_id", "alias_text"]
 SCOPED_UNIQUE = ["family_id", "product_id", "supermarket_id", "alias_text"]

@@ -6,10 +6,10 @@
   "project": {
     "name": "Family Ledger",
     "repository": "https://github.com/GuiMiran/family-ledger",
-    "version": "0.2.0"
+    "version": "0.3.0"
   },
   "scope": {
-    "objective": "Mapear adopción previa al protocolo 1.0.0 y registrar diagnóstico acotado reproducible.",
+    "objective": "Evolución brownfield autorizada: comparador familiar por CP, fuentes con procedencia y asesor acotado, conservando diagnóstico histórico.",
     "behaviors": [
       "Interpretar líneas Makro con pesos y cantidades y reconciliar base neta con IVA declarado.",
       "Mantener fecha desconocida pendiente en lugar de inventarla.",
@@ -18,35 +18,37 @@
       "Guardar y consultar compra confirmada desde la aplicación/API.",
       "Aislar datos y normalización entre familias.",
       "Actualizar inventario mediante confirmación/evento sin duplicación.",
-      "Conservar transcripción manual sin afirmar ingreso en BD ni stock y reconciliar importes."
+      "Conservar transcripción manual sin afirmar ingreso en BD ni stock y reconciliar importes.",
+      "Comparar cesta con IVA/kg/l/unidad, frescura, zona, packs y cobertura explícita.",
+      "Asesorar sin comprar ni confundir ahorro potencial con realizado."
     ],
     "exclusions": [
-      "Reconstrucción aislada no ejecutada; NOT_TESTED",
-      "Sin evaluación organizativa ni nivel G1–G5",
-      "Sin despliegue ni BD PostgreSQL real",
-      "Sin cambios de lógica de producto",
+      "Reconstrucción aislada NOT_TESTED; sin nivel organizativo G1–G5",
+      "Sin despliegue ni migración de BD productiva",
+      "OCR de imagen, consumo de inventario, menús y predicción pendientes",
+      "Sin garantía de stock ni seis cadenas conectadas",
       "Sin certificación normativa ni auditoría de seguridad completa"
     ],
     "owner": "GuiMiran"
   },
   "authorization": {
-    "source": "Instrucciones del usuario en esta sesión: formalizar el protocolo, continuar tras fusionarlo y usar GUIDO si es necesario.",
+    "source": "Usuario: quiere estas funciones en la app, agente si aporta valor, CP08038 y cesta especificada. Contrato de cambio 2026-11-08-shopping-agent-08038.",
     "allowedActions": [
-      "Inspección",
-      "Auditoría y pruebas locales sintéticas",
-      "Dos revisiones analíticas independientes",
-      "Documentación y PR revisable"
+      "Implementación en rama y PR revisable",
+      "Pruebas sintéticas y consulta de escaparates públicos",
+      "Documentación y trazabilidad",
+      "Trabajo delegado autorizado previamente"
     ],
-    "executionPolicy": "No despliegue, cambio funcional ni datos productivos; el diagnóstico no concede autoridad adicional."
+    "executionPolicy": "Sin despliegue, compra, pago, merge ni datos productivos; no eludir controles de acceso de fuentes."
   },
   "baseline": {
-    "commit": "92c768697240d71c913e208c5ba231b97312b154",
-    "snapshotRef": "docs/brownfield/remediation-baseline.json",
-    "snapshotSha256": "7eb8f9b0f7ed0e80c5ba6994c2e51bf0aee8871fec2518c6640a3a38c7f4b606",
-    "workingTreeDeltaRef": "docs/changes/2026-11-07-remediation-contract.md",
+    "commit": "b6084dcbfde7122cc51c85e96683207ddb4c08e0",
+    "snapshotRef": "docs/brownfield/shopping-baseline.json",
+    "snapshotSha256": "ceabd9dde6832ac5cc1249dd366c6719ff7ea0a1790ba2d616eb74324ac4577d",
+    "workingTreeDeltaRef": "docs/changes/2026-11-08-shopping-agent-08038.md",
     "limitations": [
-      "Runtime candidate is an explicit tested delta from this commit, not an unchanged historical baseline.",
-      "Original 0.1 adoption/diagnosis preserved in record-v0.1.json and docs/sdd-assessment/2026-11-07/."
+      "Candidato funcional explícito posterior a 0.2.0; baselines anteriores inmutables.",
+      "Reportes C/D evalúan b6084dc y no califican este comparador."
     ]
   },
   "tooling": {
@@ -198,10 +200,14 @@
   "diagnostic": {
     "status": "review_incomplete",
     "inventoryRef": null,
-    "reviewReportRefs": [],
+    "reviewReportRefs": [
+      "docs/sdd-assessment/remediation-v0.2/reviewer-c.json",
+      "docs/sdd-assessment/remediation-v0.2/reviewer-d.json"
+    ],
     "reconciliationRef": null,
     "limitations": [
-      "Fresh post-remediation reports and PostgreSQL CI evidence pending. Historical reports assess 0616d2b only."
+      "C/D: ocho obligaciones seleccionadas en b6084dc, reconstrucción no probada.",
+      "Comparador0.3.0 requiere revisión propia; pruebas sintéticas y smoke vivo tienen alcance específico."
     ]
   },
   "organizationalAssessment": {
@@ -227,14 +233,14 @@
   ],
   "nextChanges": [
     {
-      "scope": "OCR, connected UI, consumption/reservations, AI menu generation and normalized package-price comparison",
+      "scope": "Fuentes adicionales verificadas, acceso renovable, OCR real, consumo/reservas y menús",
       "status": "future_separate_contracts"
     }
   ],
   "review": {
     "reviewer": null,
     "reviewedRevision": null,
-    "scope": "Conformidad documental 1.0.0 y diagnóstico del commit indicado.",
+    "scope": "Candidato de comparador y asesor; revisión pendiente del propietario.",
     "decision": "pending_owner_review",
     "recordRef": null
   }

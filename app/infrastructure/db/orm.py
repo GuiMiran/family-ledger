@@ -273,3 +273,27 @@ class InventoryEntry(TimestampMixin, Base):
     quantity: Mapped[Decimal] = mapped_column(Numeric(10, 3))
     unit: Mapped[str] = mapped_column(String(8))
     expiry_date: Mapped[date | None] = mapped_column(Date, nullable=True)
+
+
+# @spectra INV-006
+class ShoppingProfileRow(TimestampMixin, Base):
+    __tablename__ = "shopping_profiles"
+    family_id: Mapped[uuid.UUID] = mapped_column(GUID, ForeignKey("families.id"), primary_key=True)
+    payload: Mapped[dict] = mapped_column(JSONField)
+
+
+class PriceObservationRow(TimestampMixin, Base):
+    """Snapshots belong to the requesting household, including personalized quotes."""
+    __tablename__ = "price_observations"
+    __table_args__ = (Index("ix_price_observations_family", "family_id"),)
+    id: Mapped[uuid.UUID] = mapped_column(GUID, primary_key=True, default=uuid.uuid4)
+    family_id: Mapped[uuid.UUID] = mapped_column(GUID, ForeignKey("families.id"))
+    payload: Mapped[dict] = mapped_column(JSONField)
+
+
+class ShoppingAuditRow(TimestampMixin, Base):
+    __tablename__ = "shopping_audits"
+    __table_args__ = (Index("ix_shopping_audits_family", "family_id"),)
+    id: Mapped[uuid.UUID] = mapped_column(GUID, primary_key=True, default=uuid.uuid4)
+    family_id: Mapped[uuid.UUID] = mapped_column(GUID, ForeignKey("families.id"))
+    payload: Mapped[dict] = mapped_column(JSONField)

@@ -9,3 +9,6 @@
 - BR-007 MUST: La identidad familiar proviene de token firmado, con emisor, audiencia y caducidad; no del cuerpo. Catálogo global autorizado o propio y alias de propiedad compatible. Contrato de corrección 0.2.0; AC-008.
 - BR-008 MUST: Misma clave/cuerpo/familia devuelve una compra; clave reutilizada con otro contenido produce conflicto. Claves de familias distintas son independientes. AC-009.
 - BR-009 MUST: Campos requeridos y reconciliación se verifican en servidor; ausencia de fecha mantiene pendiente y sin proyección. Confirmación válida conserva el ID. AC-010.
+
+- BR-010 MUST: Normalizar IVA incluido por kg/l/unidad, mínimos de compra y peso variable; cashback no reduce desembolso. Productos de distinto grupo, tamaño o variante no compiten. AC-011.
+- BR-011 MUST: Precios sin prueba del CP solicitado son referencias; fecha futura, antigüedad excesiva, promoción caducada o requisito no cumplido impiden clasificar la oferta como elegible. AC-012.

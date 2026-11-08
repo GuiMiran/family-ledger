@@ -19,7 +19,7 @@ Entrada para agentes: [AGENTS.md](AGENTS.md). Dominio: [13 capas Spectra](.spect
 
 El [diagnóstico GUIDO histórico](docs/sdd-assessment/2026-11-07/README.md) conserva el defecto original reproducido al commit 0616d2b; las correcciones posteriores requieren su propia evidencia. No asigna nivel organizativo ni acredita reconstrucción.
 
-La [compra Makro de 363 EUR](data/purchases/makro-36300-captured-20261107.json) sigue pendiente de fecha. No se ha desplegado ni importado a una base de datos privada. OCR de imagen, menús IA, consumo real de inventario y conversión de paquetes a €/kg siguen siendo capacidades futuras explícitas.
+La [compra Makro de 363 EUR](data/purchases/makro-36300-captured-20261107.json) sigue pendiente de fecha. No se ha desplegado ni importado a una base de datos privada. OCR de imagen, menús IA y consumo real de inventario siguen pendientes. El candidato 0.3.0 incorpora conversión de formatos a €/kg/l/unidad para observaciones de fuentes, con cobertura explícita.
 
 Gobernanza: [Spectra](https://github.com/GuiMiran/spectra), [ecosistema GUIDO](https://github.com/GuiMiran/spectra/tree/main/docs/ecosystem).
 
@@ -45,7 +45,8 @@ gratis** (test `test_lidl_ai_normalization_then_free_second_time`).
 
 **Historial de precios propio** (`product_price_history`): la comparativa
 €/kg entre supermercados sale de los tickets de la propia familia — sin
-depender de APIs de terceros que no existen oficialmente.
+requerir una conexión externa. La existencia o disponibilidad de APIs de terceros
+debe verificarse por cadena; el comparador de fuentes se documenta por separado.
 
 **Reconciliación al céntimo**: cada parser valida que las líneas cuadren
 con el total (Makro contra base imponible, Lidl/Mercadona contra PVP).
@@ -92,3 +93,13 @@ tests/
 
 ---
 Guido Miranda · GUIDO SDD Engineering Stack · CC BY-NC-ND 4.0
+
+## Candidato 0.3.0 · Comparador y asesor familiar
+
+Pantalla móvil React PWA, cesta editable para 08038, hasta tres ofertas por cadena
+y globales, kg/l/unidad con IVA, formatos y peso variable. Asesor de reglas con
+auditoría y datos aislados por familia. [Operación y límites](docs/operations/shopping-v0.3.md),
+[contrato Spectra](docs/changes/2026-11-08-shopping-agent-08038.md) y
+[decisión de arquitectura](docs/adr/0003-shopping-pwa.md). Mercadona: adaptador experimental
+de escaparate público; otras fuentes requieren configuración. No equivale a seis
+integraciones, OCR real, despliegue ni ahorro anual demostrado.

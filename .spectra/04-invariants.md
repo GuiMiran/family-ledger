@@ -5,3 +5,5 @@
 - INV-004 MUST: Las operaciones de una familia deben aislarse de las de otra familia. El diagnóstico histórico 0616d2b reproduce fallo OBL-006. Corrección 0.2.0: productos y alias globales autorizados o propios; contexto familiar en exact/fuzzy/IA/historial y API. Criterio negativo en tests/test_family_isolation.py y tests/test_receipt_api.py; no certifica seguridad integral. AC-007.
 
 - INV-005 MUST: Compra, líneas, idempotencia, evento y proyección se confirman juntos o se revierten juntos; reintentos no duplican proyección. AC-009 y AC-010.
+
+- INV-006 MUST: Perfil, observaciones personalizadas y auditoría de compras pertenecen exclusivamente a la familia autenticada. Una recomendación no crea compra, pago, inventario ni ahorro realizado. AC-013.

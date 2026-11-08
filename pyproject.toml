@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "family-ledger"
-version = "0.2.0"
+version = "0.3.0"
 description = "El sistema operativo financiero de una familia. Cada euro tiene un propósito."
 requires-python = ">=3.12"
 dependencies = [
@@ -15,6 +15,7 @@ dependencies = [
     "SQLAlchemy>=2,<3",
     "psycopg[binary]>=3,<4",
     "PyJWT>=2.9,<3",
+    "httpx[socks]>=0.27,<1",
 ]
 
 [project.optional-dependencies]
