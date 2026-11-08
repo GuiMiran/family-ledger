@@ -44,7 +44,7 @@
   "baseline": {
     "commit": "b6084dcbfde7122cc51c85e96683207ddb4c08e0",
     "snapshotRef": "docs/brownfield/shopping-baseline.json",
-    "snapshotSha256": "ceabd9dde6832ac5cc1249dd366c6719ff7ea0a1790ba2d616eb74324ac4577d",
+    "snapshotSha256": "459b207e83e6f0d35a6b12914c55c89ac9b556edc60d0bcc0285784e5b76f41b",
     "workingTreeDeltaRef": "docs/changes/2026-11-08-shopping-agent-08038.md",
     "limitations": [
       "Candidato funcional explícito posterior a 0.2.0; baselines anteriores inmutables.",

@@ -21,3 +21,9 @@ no invitation, customer account, private feed token or proxy address.
 Existing C/D diagnosis reports archived in ../../sdd-assessment/remediation-v0.2
 refer only to b6084dc's eight selected obligations. No GUIDO level or reconstruction
 claim is issued for this new feature. Spectra trace percentages are static links.
+
+Initial CI 42456699074 ran all 236 Python tests with PostgreSQL successfully,
+but failed the frontend typecheck on a duplicated coverage-label key.
+`github-ci-initial.json` preserves that failure; the duplicate is removed and
+the fresh local web-build.log confirms corrected compilation. Overall CI success
+requires the subsequent complete run; Python success alone is not pipeline success.
