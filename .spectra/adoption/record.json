@@ -41,7 +41,7 @@
   "baseline": {
     "commit": "cdc848dcc7194a615f0926d15143c7648dcbfa00",
     "snapshotRef": "docs/brownfield/mobile-baseline.json",
-    "snapshotSha256": "c5a4d8eda9caaa806dcb66835f9c8f9f61196b45be750db5b811d2cae2b49027",
+    "snapshotSha256": "c7a48dd1b05a489ab400e54a3a7c728dc90587c3156ab982e772fef70ad1316f",
     "workingTreeDeltaRef": "docs/changes/2026-11-09-mobile-family-app.md",
     "limitations": [
       "Historical metadata/report text was privacy-redacted under owner instruction; not original byte-exact evidence.",

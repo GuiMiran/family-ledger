@@ -379,7 +379,7 @@
       "ast_sha256": "d8bf9994c95e499812951d2753a4e4cec340c4b9f23de30539ede168cda69fb4"
     },
     "scripts/verify_mobile_ui.py": {
-      "ast_sha256": "91a961a82050e167beec10fc556313e8a29a6c54a528602e2ee8c59039673267"
+      "ast_sha256": "18616417f6a3fcfae089b6beb2973584d9c9a8e10016341c7dff91dc925fd3aa"
     },
     "specs/01-architecture.md": {
       "sha256": "7a251e68785f70fdce8c6ab953a4b5fecdbf555c7f90d3bab2d100f6735eea04"

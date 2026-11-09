@@ -29,7 +29,7 @@ def route_handler(route):
  else:raise AssertionError(path)
  route.fulfill(json=data,headers={'Cache-Control':'no-store'})
 with sync_playwright() as p:
- browser=p.chromium.launch(headless=True,executable_path=os.environ.get('UI_BROWSER_EXECUTABLE') or shutil.which('google-chrome') or shutil.which('chromium'),args=['--no-sandbox','--single-process','--no-zygote'])
+ browser=p.chromium.launch(headless=True,executable_path=os.environ.get('UI_BROWSER_EXECUTABLE') or shutil.which('google-chrome') or shutil.which('chromium'),args=['--no-sandbox'] + (['--single-process','--no-zygote'] if os.environ.get('UI_BROWSER_SINGLE_PROCESS') == '1' else []))
  page=browser.new_page(viewport={'width':390,'height':844},device_scale_factor=1)
  def static_route(route):
   file=(ROOT/'web/dist') / (urlsplit(route.request.url).path.lstrip('/') or 'index.html')
