@@ -51,7 +51,9 @@ Tests sintéticos: tests/test_capture.py, test_capture_real.py, test_dashboard.p
 regresión y PostgreSQL dedicados en CI. El smoke real renderiza una imagen nueva
 de un ticket enteramente sintético y verifica OCR→borrador→compra→inventario sin
 duplicar en reintentos. No usa fotos privadas. Browser smoke verifica navegación,
-alta y captura con datos sintéticos en una base de datos efímera.
+alta y captura con respuestas API simuladas y datos sintéticos; no acredita un
+recorrido de navegador contra PostgreSQL ni OCR real. El OCR real se prueba por
+separado mediante TestClient y una base de datos SQLite efímera.
 
 Publicación del código no actualiza una instancia fijada a un commit. Revisar y
 fusionar PR, desplegar la revisión aprobada y comprobar HTTP/BD antes de anunciar
