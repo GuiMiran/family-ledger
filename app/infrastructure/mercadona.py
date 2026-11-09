@@ -173,7 +173,9 @@ class MercadonaProvider:
                     raise _FeedError("invalid_data")
                 return body, response.headers
 
-        if selected:
+        if selected and not profile.configured:
+            status = "profile_incomplete"
+        if selected and profile.configured:
             try:
                 proxy_options = {"proxy": self._proxy} if self._proxy else {}
                 with self._factory(transport=self._transport, follow_redirects=False,

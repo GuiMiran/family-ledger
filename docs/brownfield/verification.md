@@ -1,3 +1,5 @@
+> PRIVACY-REDACTED HISTORICAL MATERIAL (2026-11-09). Private case details have been removed. This public copy is not byte-original evidence, its former file digests are withdrawn, and it does not re-certify historical outcomes. See docs/data-privacy.md.
+
 # Verificación de la adopción
 
 Ejecución local: 2026-11-07. Baseline de producto: `9b371ad1bf3c6caffa0f79cc82e2470f3cdd7a45`.
@@ -7,7 +9,7 @@ Herramienta: Spectra 0.5.0 al commit `c6d1f36d3ec98ab48e47cafeaf24b4039fdb2e85`.
 |---|---|---|
 | `spectra validate` | PASS | 13 capas, unicidad y referencias de IDs |
 | `spectra trace` | Generado | 39 definiciones, 32 elementos trazables, 16 con artefacto y criterio enlazado |
-| `python scripts/verify_adoption.py` | PASS | AST Python de baseline conservado; demás contratos anteriores conservados; 20 líneas, base 328,36, IVA 34,64, total 363,00 EUR |
+| `python scripts/verify_adoption.py` | Resultado histórico redactado | Salida particular retirada; no se presenta un PASS nuevo ni se conservan importes privados |
 | `python -m pytest -q` | 34 passed, 1 warning, 0,73 s | Regresión original con dependencias de diagnóstico; persistencia en SQLite |
 | `pip install -e ".[dev]"` | FAIL preexistente | Setuptools detecta múltiples paquetes superiores; BF-002 |
 | PostgreSQL real / HTTP → persistencia | No ejecutado | Sin sesión configurada en API ni destino desplegado identificado |
@@ -33,4 +35,4 @@ El 50 % que muestra la matriz es enlace estático de artefactos y criterios, **n
 
 El control AST es una barrera para esta adopción sin cambios funcionales. Un cambio funcional posterior autorizado debe versionar de forma explícita su nuevo baseline y evidencia; no debe desactivar el control silenciosamente. La matriz se regenera al cerrar una iteración y puede avanzar su historial.
 
-No se ejecutó despliegue, migración, inserción en BD remota ni actualización de existencias. La fecha real del ticket sigue pendiente.
+No se ejecutó despliegue, migración, inserción en BD remota ni actualización de existencias. Los detalles de la transacción particular fueron retirados.

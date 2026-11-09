@@ -1,105 +1,40 @@
 # Family Ledger
 
-> **"Cada euro tiene un propósito."**
+Family Ledger ayuda a cada familia a registrar compras, normalizar productos y comparar ofertas equivalentes con sus propios datos privados.
 
-El sistema operativo financiero de una familia. Fase 1 (MVP): reducir el
-desperdicio alimentario, optimizar las compras y medir el ahorro real —
-a partir de una sola foto del ticket.
+## Perfiles privados
 
-## Versión 0.2.0 — correcciones y flujo persistente
+Una familia nueva empieza sin código postal, cesta ni tiendas seleccionadas. El alta inicial solicita esos datos explícitamente antes de recoger precios o ejecutar el asesor. El nombre mostrado y las preferencias pertenecen a la familia autenticada; los ejemplos no se cargan como valores iniciales de producción.
 
-- Normalización, alias aprendidos e historial de precios limitados a catálogo global autorizado o familia propia.
-- API autenticada para guardar/consultar tickets, confirmar pendientes y proyectar compras a inventario y analítica básica.
-- Claves idempotentes por familia y transacciones con rollback; sin duplicar eventos ni inventario en reintentos.
-- Instalación editable corregida, SQLAlchemy/psycopg/PyJWT declarados y administración offline para esquema, familias y tokens.
+El código y las pruebas públicas usan ejemplos sintéticos. Los tickets, preferencias y observaciones particulares se conservan fuera del repositorio. Consulta [privacidad y límites del historial](docs/data-privacy.md).
 
-[Operación y contrato de API](docs/operations/api-v0.2.md) · [Base de datos/migración](docs/operations/database.md) · [Contrato de corrección](docs/changes/2026-11-07-remediation-contract.md).
+## Capacidades y límites
 
-Entrada para agentes: [AGENTS.md](AGENTS.md). Dominio: [13 capas Spectra](.spectra/00-vision.md). Protocolo: [registro de adopción](.spectra/adoption/record.json).
+- Parsers de texto para formatos Makro, Lidl y Mercadona; un formato conocido no demuestra OCR real de una imagen.
+- API autenticada para compras pendientes/confirmadas, lectura por familia y confirmación con claves idempotentes.
+- Normalización exacta, aproximada y propuesta mediante un puerto de IA; los alias aprendidos y el historial se limitan a la familia autorizada.
+- Evento interno y proyección transaccional de compras confirmadas. No representa consumo ni saldo físico completo de existencias.
+- Comparador React de ofertas por kg/l/unidad, formatos, impuestos, zona y vigencia. El asesor inicial aplica reglas y no realiza pedidos.
+- Adaptador experimental de escaparate público y contrato de feed configurable. No se afirman integraciones oficiales ni cobertura de todas las cadenas.
 
-El [diagnóstico GUIDO histórico](docs/sdd-assessment/2026-11-07/README.md) conserva el defecto original reproducido al commit 0616d2b; las correcciones posteriores requieren su propia evidencia. No asigna nivel organizativo ni acredita reconstrucción.
+[API de tickets](docs/operations/api-v0.2.md) · [Base de datos](docs/operations/database.md) · [Comparador](docs/operations/shopping-v0.3.md) · [Fuentes](docs/operations/price-sources.md).
 
-La [compra Makro de 363 EUR](data/purchases/makro-36300-captured-20261107.json) sigue pendiente de fecha. No se ha desplegado ni importado a una base de datos privada. OCR de imagen, menús IA y consumo real de inventario siguen pendientes. El candidato 0.3.0 incorpora conversión de formatos a €/kg/l/unidad para observaciones de fuentes, con cobertura explícita.
+## Desarrollo
 
-Gobernanza: [Spectra](https://github.com/GuiMiran/spectra), [ecosistema GUIDO](https://github.com/GuiMiran/spectra/tree/main/docs/ecosystem).
-
-## Estado histórico declarado — Sprint 2
-
-| Sprint | Entregable | Estado |
-|---|---|---|
-| Specs | Arquitectura + modelo de datos + 4 contratos OpenAPI (`/specs`) | ✅ |
-| 1 | Parsers Makro + Mercadona, ParserRegistry, API de parsing | ✅ |
-| 2 | Persistencia PostgreSQL (SQLAlchemy 2.0) + normalización de productos + parser Lidl | ✅ |
-| — | Prototipo UI navegable (`/prototype`) | ✅ |
-
-**34 tests declarados en el README histórico**; la ejecución actual se registra en [verificación brownfield](docs/brownfield/verification.md). Las fixtures originales corresponden a **dos tickets reales del 04/07/2026**:
-Makro Barcelona (17 líneas, 211,87 €) y Lidl El Prat (48 líneas, 151,46 €).
-
-## Lo esencial del diseño
-
-**Normalización de productos** (`product_aliases`): "MACARRONS RATLLATS"
-(Lidl, catalán) y "MACARRON PLUMA 3 ARO 5KG" (Makro) acaban en el mismo
-producto canónico. Pipeline en cascada: exact → fuzzy → IA → cola de
-revisión. Cada resolución se aprende como alias: **la segunda vez es
-gratis** (test `test_lidl_ai_normalization_then_free_second_time`).
-
-**Historial de precios propio** (`product_price_history`): la comparativa
-€/kg entre supermercados sale de los tickets de la propia familia — sin
-requerir una conexión externa. La existencia o disponibilidad de APIs de terceros
-debe verificarse por cadena; el comparador de fuentes se documenta por separado.
-
-**Reconciliación al céntimo**: cada parser valida que las líneas cuadren
-con el total (Makro contra base imponible, Lidl/Mercadona contra PVP).
-Si no cuadra → `pending_fields` con sugerencia. Nunca se pide
-reintroducir el ticket completo.
-
-**El raw nunca se pierde**: `raw_text` por línea y los campos estructurados se conservan. El texto OCR completo no se almacena por la API estructurada actual; su retención requiere un contrato específico de captura y privacidad.
-
-## Ejecutar la versión actual
-
-```bash
-pip install -e ".[dev]"
-pytest -q                        # suite actual
-uvicorn app.main:app --reload    # docs: http://localhost:8000/docs
+```sh
+python -m pip install -e ".[dev]"
+python -m pytest -q
+uvicorn app.main:app --reload
 ```
 
-Con Docker, seguir el [procedimiento explícito de inicialización](docs/operations/api-v0.2.md) antes de arrancar API + PostgreSQL 16.
+La inicialización del esquema, provisión de familias y emisión de tokens son operaciones explícitas; sigue el procedimiento de la API. PostgreSQL se califica por ejecuciones específicas y no por resultados SQLite. No hay despliegue autorizado por este README: la publicación queda bloqueada hasta validar el alta y aislamiento de perfiles privados.
 
-## Estructura
+La aplicación web está en `web/`. El archivo `prototype/FamilyLedgerApp.jsx` es una **demostración sintética no productiva** que importa únicamente `prototype/demo-data.json`; no conecta una cuenta ni importa compras.
 
-```
-specs/                    arquitectura, modelo de datos, contratos OpenAPI
-app/
-  domain/                 modelos + puertos (sin frameworks)
-    receipts/             ParsedReceipt, puerto ReceiptParser
-    normalization/        MatchResult, puertos ProductMatcher / AIProductProposer
-  application/            receipt_ingestion: persistir + normalizar + precios
-  infrastructure/
-    parsers/              makro.py, lidl.py, mercadona.py, registry.py
-    normalization/        ExactMatcher, FuzzyMatcher (difflib→pg_trgm), stub IA
-    db/                   ORM SQLAlchemy 2.0 (PostgreSQL / SQLite en tests)
-prototype/                FamilyLedgerApp.jsx — UI navegable (5 pantallas)
-tests/
-  fixtures/               tickets reales: makro, lidl, mercadona
-```
+## Especificaciones y evidencia
 
-## Roadmap
+[AGENTS.md](AGENTS.md) orienta el trabajo. Las [capas Spectra](.spectra/00-vision.md) distinguen comportamiento observado y objetivos. El [contrato del comparador](docs/changes/2026-11-08-shopping-comparator.md) y el [contrato de privacidad](docs/changes/2026-11-09-private-profiles.md) delimitan sus cambios.
 
-- **Sprint 3**: OCRProvider real (foto → texto) + endpoints completos del
-  contrato Receipt Service + evento `ReceiptConfirmed`
-- **Sprint 4**: Inventory Service (despensa, congelador, ledger de movimientos)
-- **Sprint 5**: Menu/AI Service (Claude) + Analytics (vistas materializadas)
-- **Fase 2+**: comparador multi-super, predicción de hábitos, Flutter
+El [diagnóstico histórico](docs/sdd-assessment/2026-11-07/README.md) conserva hallazgos metodológicos y límites, con datos particulares redactados. Las copias públicas modificadas no son evidencia original byte a byte ni una recertificación. No se asigna nivel organizativo ni resultado de reconstrucción.
 
----
-Guido Miranda · GUIDO SDD Engineering Stack · CC BY-NC-ND 4.0
-
-## Candidato 0.3.0 · Comparador y asesor familiar
-
-Pantalla móvil React PWA, cesta editable para 08038, hasta tres ofertas por cadena
-y globales, kg/l/unidad con IVA, formatos y peso variable. Asesor de reglas con
-auditoría y datos aislados por familia. [Operación y límites](docs/operations/shopping-v0.3.md),
-[contrato Spectra](docs/changes/2026-11-08-shopping-agent-08038.md) y
-[decisión de arquitectura](docs/adr/0003-shopping-pwa.md). Mercadona: adaptador experimental
-de escaparate público; otras fuentes requieren configuración. No equivale a seis
-integraciones, OCR real, despliegue ni ahorro anual demostrado.
+Licencia: CC BY-NC-ND 4.0.

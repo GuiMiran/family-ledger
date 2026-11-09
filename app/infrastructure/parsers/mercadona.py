@@ -1,29 +1,8 @@
-"""Parser de tickets Mercadona (factura simplificada).
+"""Mercadona-format receipt parser.
 
-Formato habitual del ticket Mercadona:
-
-    MERCADONA, S.A.   A-46103834
-    AVDA. EJEMPLO, 1 BARCELONA
-    TELÉFONO: 93...
-    04/07/2026 18:23  OP: 1234567
-    FACTURA SIMPLIFICADA: 2308-013-141414
-    Descripción              P. Unit  Importe
-    1 LECHE ENTERA 6X1L               5,10
-    2 GALLETA RELIEVE          1,22   2,44
-    0,536 kg
-    PLATANO                    2,29   1,23      ← peso a veces en 2 líneas
-    0,536 kg PLATANO 2,29 €/kg 1,23             ← o en 1 línea
-    TOTAL (€)                         45,67
-    TARJETA BANCARIA                  45,67
-    IVA  BASE IMPONIBLE (€)  CUOTA (€)
-    4%       10,00              0,40
-    10%      20,00              2,00
-    TOTAL    30,00              2,40
-
-Particularidades:
-- Precios de línea CON IVA incluido (al contrario que Makro).
-- Si cantidad = 1, la columna P.Unit suele venir vacía.
-- Productos a peso: cantidad en kg + €/kg.
+Synthetic format examples are maintained only in tests/fixtures. Receipt line
+prices include VAT; quantity and weight formats, missing fields and totals are
+validated without embedding an individual's shopping record in source code.
 """
 from __future__ import annotations
 

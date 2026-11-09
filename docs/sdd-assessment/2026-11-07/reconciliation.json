@@ -34,5 +34,10 @@
     "34 existing tests passed in local diagnostic environment; not PostgreSQL or deployment evidence.",
     "Family isolation synthetic probe fails; no product fix in this change.",
     "No organizational rating or valid isolated reconstruction trial."
-  ]
+  ],
+  "privacy_redaction": {
+    "status": "REDACTED_HISTORICAL_COPY",
+    "notice": "PRIVACY-REDACTED HISTORICAL MATERIAL (2026-11-09). Private case details have been removed. This public copy is not byte-original evidence, its former file digests are withdrawn, and it does not re-certify historical outcomes. See docs/data-privacy.md.",
+    "original_byte_integrity_claim": "WITHDRAWN"
+  }
 }

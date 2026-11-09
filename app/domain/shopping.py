@@ -1,3 +1,4 @@
+# @spectra BR-012
 # @spectra BR-010
 # @spectra BR-011
 """Source-backed shopping comparisons; no network access or purchase actions."""
@@ -29,25 +30,12 @@ class BasketItem(BaseModel):
     ean: str | None = Field(default=None, max_length=32)
 
 
-def default_basket() -> list[BasketItem]:
-    return [BasketItem(key=key, label=label, comparison_group=group, unit=unit,
-                       desired_quantity=quantity, brand=brand)
-            for key, label, group, unit, quantity, brand in [
-                ("whole_milk", "Leche entera", "milk_whole_uht", "l", "1", None),
-                ("sliced_beef", "Vacuno fileteado", "beef_sliced", "kg", "1", None),
-                ("fresh_cheese", "Queso fresco", "cheese_fresh", "kg", "1", None),
-                ("puleva_max", "Puleva Max", "puleva_max", "l", "1", "Puleva"),
-                ("eggs", "Huevos (tamaño pendiente)", "eggs_size_pending", "unit", "12", None),
-                ("chicken_breast", "Pechuga fresca sin hueso", "chicken_breast_fresh_boneless", "kg", "1", None),
-                ("rice", "Arroz largo", "rice_long", "kg", "1", None),
-                ("pasta", "Pasta seca de trigo", "pasta_dry_wheat", "kg", "1", None),
-            ]]
-
 
 class ShoppingProfile(BaseModel):
-    postal_code: str = Field(default="08038", pattern=r"^[0-9]{5}$")
-    preferred_stores: list[Store] = Field(default_factory=lambda: list(Store), max_length=6)
-    basket: list[BasketItem] = Field(default_factory=default_basket, max_length=30)
+    postal_code: str | None = Field(default=None, pattern=r"^[0-9]{5}$")
+    family_name: str | None = Field(default=None, min_length=1, max_length=200)
+    preferred_stores: list[Store] = Field(default_factory=list, max_length=6)
+    basket: list[BasketItem] = Field(default_factory=list, max_length=30)
     club_memberships: list[Store] = Field(default_factory=list, max_length=6)
     coupons_enabled: bool = False
     max_age_hours: int = Field(default=24, gt=0, le=168)
@@ -63,6 +51,19 @@ class ShoppingProfile(BaseModel):
                     unique.append(store)
             return unique
         return value
+
+    @field_validator("family_name")
+    @classmethod
+    def nonblank_family_name(cls, value):
+        if value is not None:
+            value = value.strip()
+            if not value:
+                raise ValueError("family_name must not be blank")
+        return value
+
+    @property
+    def configured(self) -> bool:
+        return bool(self.postal_code and self.preferred_stores and self.basket)
 
     @model_validator(mode="after")
     def unique_keys(self):

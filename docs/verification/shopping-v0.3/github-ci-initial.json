@@ -12,5 +12,10 @@
     "postgresql": "real PostgreSQL16 service; four qualification tests ran"
   },
   "frontend": "failure TS1117 duplicate partial key in coverage labels; corrected in following revision",
-  "excerpt": "2026-11-08T06:56:14.3434781Z 236 passed, 1 warning in 5.71s\n2026-11-08T06:56:17.7650656Z ##[error]src/main.tsx(21,528): error TS1117: An object literal cannot have multiple properties with the same name.\n2026-11-08T06:56:17.7890873Z ##[error]Process completed with exit code 1."
+  "excerpt": "2026-11-08T06:56:14.3434781Z 236 passed, 1 warning in 5.71s\n2026-11-08T06:56:17.7650656Z ##[error]src/main.tsx(21,528): error TS1117: An object literal cannot have multiple properties with the same name.\n2026-11-08T06:56:17.7890873Z ##[error]Process completed with exit code 1.",
+  "privacy_redaction": {
+    "status": "REDACTED_HISTORICAL_COPY",
+    "notice": "PRIVACY-REDACTED HISTORICAL MATERIAL (2026-11-09). Private case details have been removed. This public copy is not byte-original evidence, its former file digests are withdrawn, and it does not re-certify historical outcomes. See docs/data-privacy.md.",
+    "original_byte_integrity_claim": "WITHDRAWN"
+  }
 }

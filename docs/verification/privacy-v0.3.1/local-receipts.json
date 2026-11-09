@@ -1,0 +1,18 @@
+{
+  "source_base": "36b1a25d97553cb84ce0101815af00cc60a33145",
+  "snapshot_sha256": "043f2872db5f5c5b6001ce011bc416a5f461aba105a8564dbc649f6544dd0761",
+  "local_tests": {
+    "passed": 234,
+    "skipped": 4,
+    "reason": "Disposable PostgreSQL service not present locally; CI executes these tests."
+  },
+  "frontend_typecheck_build": "passed",
+  "spectra_validate": "passed",
+  "privacy_guard": "passed",
+  "real_household_data_included": false,
+  "examples": "New explicit synthetic JSON and receipt fixtures; no automatic profile seed.",
+  "existing_profile_data": "Persisted family profiles remain private and are loaded by JWT family identity.",
+  "history_rewrite": false,
+  "deployment": false,
+  "browser_visual_check": "not_run"
+}

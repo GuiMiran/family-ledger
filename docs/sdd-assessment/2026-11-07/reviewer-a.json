@@ -1,6 +1,6 @@
 {
   "rubric": "guido-scale-v0.1",
-  "scope": "Interpretación e ingesta de tickets y límites de confirmación/inventario/aislamiento de Family Ledger; revisión documental SDD acotada, no evaluación completa del producto.",
+  "scope": "PRIVACY-REDACTED HISTORICAL MATERIAL (2026-11-09). Private case details have been removed. This public copy is not byte-original evidence, its former file digests are withdrawn, and it does not re-certify historical outcomes. See docs/data-privacy.md. Interpretación e ingesta de tickets y límites de confirmación/inventario/aislamiento de Family Ledger; revisión documental SDD acotada, no evaluación completa del producto.",
   "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
   "dimensions": {
     "specCoverage": {
@@ -160,7 +160,7 @@
       "outcome": "DEMONSTRATED",
       "evidence": [
         "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:scripts/verify_adoption.py",
-        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:data/purchases/makro-36300-captured-20261107.json",
+        "PRIVACY REDACTED: private transaction details or its artifact reference removed. Historical methodology/outcome only; no current re-certification or byte-original claim.",
         "evidence-packet:adoption-record.log",
         "evidence-packet:receipts.json#adoption-record"
       ]

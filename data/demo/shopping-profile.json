@@ -1,0 +1,18 @@
+{
+  "kind": "synthetic_mock_data",
+  "auto_load": false,
+  "notice": "Entirely fictional example. Not a personal profile, postcode or purchase; never loaded automatically for an authenticated household.",
+  "profile": {
+    "family_name": "Familia de demostración",
+    "postal_code": "00000",
+    "preferred_stores": ["carrefour"],
+    "basket": [
+      {"key": "demo_coffee", "label": "Café de ejemplo", "comparison_group": "demo_coffee", "unit": "kg", "desired_quantity": "0.5"},
+      {"key": "demo_rice", "label": "Arroz de ejemplo", "comparison_group": "rice_long", "unit": "kg", "desired_quantity": "2"}
+    ],
+    "club_memberships": [],
+    "coupons_enabled": false,
+    "max_age_hours": 24,
+    "max_budget": "25.00"
+  }
+}

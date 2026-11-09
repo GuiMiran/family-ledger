@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "family-ledger"
-version = "0.3.0"
+version = "0.3.1"
 description = "El sistema operativo financiero de una familia. Cada euro tiene un propósito."
 requires-python = ">=3.12"
 dependencies = [

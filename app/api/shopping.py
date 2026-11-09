@@ -1,3 +1,6 @@
+# @spectra US-008
+# @spectra INV-007
+# @spectra OP-006
 # @spectra US-006
 # @spectra US-007
 # @spectra INV-006
@@ -41,10 +44,12 @@ def install_shopping_routes(api, database, collector=None):
     api.state.shopping_collector = collector
 
     def profile_for(session, family_id):
-        if session.get(Family, family_id) is None:
+        family = session.get(Family, family_id)
+        if family is None:
             raise HTTPException(403, "Family is not provisioned")
         row = session.get(ShoppingProfileRow, family_id)
-        return ShoppingProfile.model_validate(row.payload) if row else ShoppingProfile()
+        profile = ShoppingProfile.model_validate(row.payload) if row else ShoppingProfile()
+        return profile.model_copy(update={"family_name": family.name})
 
     def view(session, family_id, profile):
         rows = session.scalars(select(PriceObservationRow).where(PriceObservationRow.family_id == family_id)).all()
@@ -65,7 +70,10 @@ def install_shopping_routes(api, database, collector=None):
     @api.put("/api/v1/shopping/profile")
     def save_profile(body: ShoppingProfile, family_id: uuid.UUID = Depends(current_family), session: Session = Depends(database)):
         profile_for(session, family_id)
-        session.execute(select(Family).where(Family.id == family_id).with_for_update()).scalar_one()
+        family = session.execute(select(Family).where(Family.id == family_id).with_for_update()).scalar_one()
+        if body.family_name is not None:
+            family.name = body.family_name
+        body = body.model_copy(update={"family_name": family.name})
         row = session.get(ShoppingProfileRow, family_id)
         if row:
             row.payload = body.model_dump(mode="json")
@@ -80,6 +88,8 @@ def install_shopping_routes(api, database, collector=None):
 
     def collect(session, family_id):
         profile = profile_for(session, family_id)
+        if not profile.configured:
+            raise HTTPException(422, "Configure postcode, stores and basket before requesting prices")
         # Release read transaction while the bounded network collectors run.
         session.rollback()
         configured = api.state.shopping_collector or ShoppingCollector()

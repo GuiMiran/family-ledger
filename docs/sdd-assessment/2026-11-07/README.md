@@ -1,3 +1,5 @@
+> PRIVACY-REDACTED HISTORICAL MATERIAL (2026-11-09). Private case details have been removed. This public copy is not byte-original evidence, its former file digests are withdrawn, and it does not re-certify historical outcomes. See docs/data-privacy.md.
+
 # Diagnóstico GUIDO y conformidad Spectra
 
 Repositorio: Family Ledger **0.1.0**. Commit evaluado: `0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd`.
@@ -9,7 +11,7 @@ Se seleccionaron 8 obligaciones de interpretación, ingesta y límites de confir
 
 El auditor GUIDO se ejecutó desde un checkout separado y escribió [audit.json](audit.json) y [audit.md](audit.md) fuera del objetivo. Observó 6/8 categorías de archivos; no encontró coincidencias para las políticas de contribución y seguridad. Eso no demuestra ausencia de esas prácticas ni otorga una nota SDD.
 
-Se conservaron [recibos](receipts.json), resultados y [huellas del paquete original](manifest.json), con objetivo limpio antes y después de ejecutar. Los informes [A](reviewer-a.json) y [B](reviewer-b.json) se produjeron independientemente y se validaron contra el [esquema de GUIDO](report-schema.json). Los revisores son subagentes analíticos de Codex; no se afirma diversidad de modelos ni aislamiento de reconstrucción.
+La ejecución histórica produjo [recibos](receipts.json), resultados y un [manifiesto](manifest.json). Las copias públicas actuales están redactadas; las huellas originales fueron retiradas y no autentican estas copias. Los informes [A](reviewer-a.json) y [B](reviewer-b.json) se produjeron independientemente y se validaron contra el [esquema de GUIDO](report-schema.json). Los revisores son subagentes analíticos de Codex; no se afirma diversidad de modelos ni aislamiento de reconstrucción.
 
 ## Resultados por obligación
 | Obligación | Revisor A | Revisor B | Reconciliación provisional | Justificación |
@@ -23,7 +25,7 @@ Se conservaron [recibos](receipts.json), resultados y [huellas del paquete origi
 | OBL-007 | NOT_EVALUATED | NOT_EVALUATED | NOT_EVALUATED | Coinciden las dos revisiones sobre el mismo paquete y alcance. |
 | OBL-008 | DEMONSTRATED | DEMONSTRATED | DEMONSTRATED | Coinciden las dos revisiones sobre el mismo paquete y alcance. |
 
-Coincidencia de resultados: **8/8 obligaciones comparables**. No se convierte en porcentaje de madurez. Discrepancias: ninguna en los estados de estas ocho obligaciones; los matices y límites originales se conservan en ambos informes.
+Coincidencia de resultados: **8/8 obligaciones comparables**. No se convierte en porcentaje de madurez. Discrepancias: ninguna en los estados de estas ocho obligaciones; los hallazgos y límites metodológicos se conservan en las copias redactadas.
 
 ## Seis dimensiones
 | Dimensión | Revisor A | Revisor B |

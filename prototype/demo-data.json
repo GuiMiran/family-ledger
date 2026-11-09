@@ -1,0 +1,17 @@
+{
+  "kind": "NON-PRODUCTION SYNTHETIC DEMO",
+  "provenance": "Wholly fictional data created for this demo; not copied or scaled from a household receipt.",
+  "family_label": "Hogar de demostración",
+  "store_label": "Tienda imaginaria",
+  "receipt_label": "Ejemplo ficticio A",
+  "currency": "EUR",
+  "lines": [
+    {"id": "demo-oats", "description": "Copos de avena ficticios", "quantity": "1 bolsa", "amount": 3.17},
+    {"id": "demo-pears", "description": "Peras ficticias", "quantity": "1 caja", "amount": 4.62},
+    {"id": "demo-lentils", "description": "Lentejas ficticias", "quantity": "2 tarros", "amount": 2.83}
+  ],
+  "pantry": [
+    {"id": "demo-oats", "description": "Copos de avena ficticios", "quantity": "1 bolsa", "location": "Despensa de ejemplo"},
+    {"id": "demo-lentils", "description": "Lentejas ficticias", "quantity": "2 tarros", "location": "Despensa de ejemplo"}
+  ]
+}

@@ -14,7 +14,7 @@
       "exit_code": 0,
       "outcome": "passed",
       "output_ref": "regression.log",
-      "output_sha256": "4949bea7a482e974dbd0b1ddfd4e0e40d42c39ab6c29575d140ec5a38df7391f",
+      "output_sha256": "[historical digest withdrawn after privacy redaction]",
       "producer": "Codex root local diagnostic runner",
       "environment": "Disposable Python venv; SQLite tests/probes; no deployment"
     },
@@ -28,7 +28,7 @@
       "exit_code": 0,
       "outcome": "passed",
       "output_ref": "adoption-record.log",
-      "output_sha256": "3fd247c149f9e88e8dbacbdfa4bb27a9c47be6b3ab7f17bb150b122c77a75d0f",
+      "output_sha256": "[historical digest withdrawn after privacy redaction]",
       "producer": "Codex root local diagnostic runner",
       "environment": "Disposable Python venv; SQLite tests/probes; no deployment"
     },
@@ -43,7 +43,7 @@
       "exit_code": 0,
       "outcome": "passed",
       "output_ref": "spectra-validate.log",
-      "output_sha256": "da67cbb21eb17b3f2238b736ab700183c5e9de9279434146d8b49aa7dfe195cd",
+      "output_sha256": "[historical digest withdrawn after privacy redaction]",
       "producer": "Codex root local diagnostic runner",
       "environment": "Disposable Python venv; SQLite tests/probes; no deployment"
     },
@@ -59,7 +59,7 @@
       "exit_code": 0,
       "outcome": "passed",
       "output_ref": "missing-date.log",
-      "output_sha256": "2b1ffbd4664b1265c33f483144491d86b02084ae2995652a9bff854cc3548b33",
+      "output_sha256": "[historical digest withdrawn after privacy redaction]",
       "producer": "Codex root local diagnostic runner",
       "environment": "Disposable Python venv; SQLite tests/probes; no deployment"
     },
@@ -75,9 +75,14 @@
       "exit_code": 1,
       "outcome": "failed",
       "output_ref": "family-isolation.log",
-      "output_sha256": "bb595944e2aa5326d5fdf3cfff8ea0181ee037be9b4ebc10d109e433df3d9580",
+      "output_sha256": "[historical digest withdrawn after privacy redaction]",
       "producer": "Codex root local diagnostic runner",
       "environment": "Disposable Python venv; SQLite tests/probes; no deployment"
     }
-  ]
+  ],
+  "privacy_redaction": {
+    "status": "REDACTED_HISTORICAL_COPY",
+    "notice": "PRIVACY-REDACTED HISTORICAL MATERIAL (2026-11-09). Private case details have been removed. This public copy is not byte-original evidence, its former file digests are withdrawn, and it does not re-certify historical outcomes. See docs/data-privacy.md.",
+    "original_byte_integrity_claim": "WITHDRAWN"
+  }
 }

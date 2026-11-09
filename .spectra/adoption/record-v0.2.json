@@ -9,7 +9,7 @@
     "version": "0.2.0"
   },
   "scope": {
-    "objective": "Mapear adopción previa al protocolo 1.0.0 y registrar diagnóstico acotado reproducible.",
+    "objective": "Privacy-redacted historical adoption record. Personal example content removed; original byte-exact evidence claims withdrawn. Mapear adopción previa al protocolo 1.0.0 y registrar diagnóstico acotado reproducible.",
     "behaviors": [
       "Interpretar líneas Makro con pesos y cantidades y reconciliar base neta con IVA declarado.",
       "Mantener fecha desconocida pendiente en lugar de inventarla.",
@@ -42,11 +42,12 @@
   "baseline": {
     "commit": "92c768697240d71c913e208c5ba231b97312b154",
     "snapshotRef": "docs/brownfield/remediation-baseline.json",
-    "snapshotSha256": "7eb8f9b0f7ed0e80c5ba6994c2e51bf0aee8871fec2518c6640a3a38c7f4b606",
+    "snapshotSha256": null,
     "workingTreeDeltaRef": "docs/changes/2026-11-07-remediation-contract.md",
     "limitations": [
       "Runtime candidate is an explicit tested delta from this commit, not an unchanged historical baseline.",
-      "Original 0.1 adoption/diagnosis preserved in record-v0.1.json and docs/sdd-assessment/2026-11-07/."
+      "Original 0.1 adoption/diagnosis preserved in record-v0.1.json and docs/sdd-assessment/2026-11-07/.",
+      "Privacy redaction: historical file digests are not current-content qualification; see docs/data-privacy.md."
     ]
   },
   "tooling": {

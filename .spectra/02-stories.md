@@ -7,3 +7,5 @@
 
 - US-006 MUST: Como responsable de compras quiero comparar hasta tres ofertas vigentes por cadena y globales para mi cesta y CP, separando referencias sin localización. AC-011 y AC-012. Candidato 0.3.0; cobertura por cadena explícita.
 - US-007 SHOULD: Como responsable de compras quiero un asesor que calcule el desembolso de mi cesta sin comprar ni inventar ahorro conseguido. AC-013. Asesor determinista inicial, sin modelo de lenguaje.
+
+- US-008 MUST: Como familia nueva quiero configurar y editar mi propio nombre, zona, tiendas y cesta sin heredar preferencias ajenas ni una demostración. AC-014. Contrato de privacidad vigente.

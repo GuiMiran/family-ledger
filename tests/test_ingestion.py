@@ -1,14 +1,6 @@
-"""Integración: persistencia + normalización con los DOS tickets reales
-(Makro 211,87 € y Lidl 151,46 €, ambos del 04/07/2026).
+"""Synthetic ingestion: exact/fuzzy matching, review, learned aliases and prices.
 
-Historia que valida este test:
-  1. Ingesta Makro con aliases previos → exact para conocidos,
-     fuzzy para variantes ('POLLO PECHUGA VC MC' ≈ 'POLLO PECHUGA'),
-     resto a cola de revisión (nunca se pierde el raw_text).
-  2. Ingesta Lidl con IA → 'MACARRONS RATLLATS' (catalán) se mapea al
-     canónico 'Macarrones' vía AIProposer y el alias queda APRENDIDO.
-  3. Re-ingesta Lidl SIN IA → ahora es match exact: la segunda vez es gratis.
-  4. price_comparison responde '¿dónde compro más barato?' con datos propios.
+Fixtures are wholly fictional; no family purchase history is public test data.
 """
 import uuid
 from datetime import date
@@ -37,7 +29,7 @@ LIDL = (FIXTURES / "lidl_ticket.txt").read_text(encoding="utf-8")
 
 
 class FakeAIProposer(AIProductProposer):
-    """Simula a Claude resolviendo el cruce catalán/castellano entre cadenas."""
+    """Deterministic synthetic proposer; no external AI calls."""
 
     def __init__(self, mapping: dict[str, uuid.UUID]):
         self.mapping = mapping
@@ -63,33 +55,33 @@ def session():
 
 @pytest.fixture
 def seed(session):
-    family = Family(name="Familia Miranda", members_count=5)
+    family = Family(name="Synthetic Test Household", members_count=2)
     makro = Supermarket(name="Makro", parser_key="makro")
     lidl = Supermarket(name="Lidl", parser_key="lidl")
     mercadona = Supermarket(name="Mercadona", parser_key="mercadona")
 
-    macarrones = Product(canonical_name="Macarrones", default_unit="unit")
-    espaguetis = Product(canonical_name="Espaguetis", default_unit="unit")
-    pechuga = Product(
-        canonical_name="Pechuga de pollo", default_unit="kg",
+    alpha = Product(canonical_name="Synthetic Alpha", default_unit="unit")
+    beta = Product(canonical_name="Synthetic Beta", default_unit="unit")
+    delta = Product(
+        canonical_name="Synthetic Delta", default_unit="kg",
         typical_shelf_life_days=3, is_freezable=True,
     )
-    session.add_all([family, makro, lidl, mercadona, macarrones, espaguetis, pechuga])
+    session.add_all([family, makro, lidl, mercadona, alpha, beta, delta])
     session.flush()
 
     # aliases "aprendidos" en compras anteriores
     session.add_all([
-        ProductAlias(product_id=macarrones.id, supermarket_id=makro.id,
-                     alias_text="MACARRON PLUMA 3 ARO 5KG", match_type="manual"),
-        ProductAlias(product_id=espaguetis.id, supermarket_id=makro.id,
-                     alias_text="SPAGHETTI ARO 5KG", match_type="manual"),
-        ProductAlias(product_id=pechuga.id, supermarket_id=None,  # global
-                     alias_text="POLLO PECHUGA", match_type="manual"),
+        ProductAlias(product_id=alpha.id, supermarket_id=makro.id,
+                     alias_text="ORBITA QX ALFA", match_type="manual"),
+        ProductAlias(product_id=beta.id, supermarket_id=makro.id,
+                     alias_text="VECTOR ZY BETA", match_type="manual"),
+        ProductAlias(product_id=delta.id, supermarket_id=None,  # global
+                     alias_text="SINTETICO DELTA", match_type="manual"),
     ])
     session.flush()
     return {
         "family": family, "makro": makro, "lidl": lidl,
-        "macarrones": macarrones, "espaguetis": espaguetis, "pechuga": pechuga,
+        "alpha": alpha, "beta": beta, "delta": delta,
     }
 
 
@@ -98,43 +90,41 @@ def test_makro_ingestion_exact_fuzzy_and_review(session, seed):
     svc = ReceiptIngestionService(session)
     res = svc.ingest(parsed, seed["family"].id)
 
-    assert res.lines_total == 17
-    # macarrones + espaguetis (alias previo) = 2 exact.
-    # 1ª línea de pollo → fuzzy (≈'POLLO PECHUGA') y APRENDE el alias;
-    # las líneas 2 y 3 del mismo ticket ya entran como exact → 4 exact, 1 fuzzy.
+    assert res.lines_total == 8
+    # Two known aliases, then one fuzzy delta alias learned for its next two rows.
     assert res.matched_exact == 4
     assert res.matched_fuzzy == 1
-    assert res.sent_to_review == 12    # el resto, con raw_text conservado
+    assert res.sent_to_review == 3    # el resto, con raw_text conservado
     # el alias fuzzy se aprende UNA sola vez (dedupe)
     assert res.aliases_learned == 1
 
     receipt = session.get(Receipt, res.receipt_id)
     assert receipt.status == "confirmed"          # cuadró al céntimo
-    assert receipt.total_amount == Decimal("211.87")
+    assert receipt.total_amount == Decimal("36.12")
 
-    # la caducidad impresa del jamón llega a la BD
-    jamon = session.execute(
-        select(ReceiptLine).where(ReceiptLine.description.like("%JAMON%"))
+    # Synthetic printed expiry metadata survives persistence
+    gamma = session.execute(
+        select(ReceiptLine).where(ReceiptLine.description.like("%GAMMA%"))
     ).scalar_one()
-    assert jamon.expiry_date == date(2027, 1, 17)
+    assert gamma.expiry_date == date(2030, 2, 15)
 
-    # 5 puntos de precio: 2 exact + 3 fuzzy con unit_price
+    # Five price points: two known aliases and three weighted delta rows
     assert res.price_points_created == 5
-    pechuga_prices = session.execute(
+    delta_prices = session.execute(
         select(ProductPriceHistory).where(
-            ProductPriceHistory.product_id == seed["pechuga"].id
+            ProductPriceHistory.product_id == seed["delta"].id
         )
     ).scalars().all()
-    assert len(pechuga_prices) == 3
-    assert all(p.unit_price == Decimal("5.3900") for p in pechuga_prices)
-    assert all(p.unit == "kg" for p in pechuga_prices)
+    assert len(delta_prices) == 3
+    assert all(p.unit_price == Decimal("8.0000") for p in delta_prices)
+    assert all(p.unit == "kg" for p in delta_prices)
 
 
 def test_lidl_ai_normalization_then_free_second_time(session, seed):
-    # 1ª ingesta Lidl: la IA resuelve el cruce catalán → castellano
+    # First ingestion resolves fictional cross-store aliases with a deterministic stub
     ai = FakeAIProposer({
-        "MACARRONS RATLLATS": seed["macarrones"].id,
-        "SPAGHETTI INTEGRAL": seed["espaguetis"].id,
+        "ALFA CATALITIC QX": seed["alpha"].id,
+        "BETA HELICOIDAL ZY": seed["beta"].id,
     })
     parsed = LidlParser().parse(LIDL)
     res1 = ReceiptIngestionService(session, ai_proposer=ai).ingest(
@@ -147,33 +137,31 @@ def test_lidl_ai_normalization_then_free_second_time(session, seed):
     # 2ª ingesta (misma compra recurrente): SIN IA → ahora es exact.
     res2 = ReceiptIngestionService(session).ingest(parsed, seed["family"].id)
     matched_before_review = res2.matched_exact
-    assert matched_before_review >= 2  # macarrons + spaghetti ya aprendidos
-    mac_line = session.execute(
+    assert matched_before_review >= 2  # both synthetic aliases have been learned
+    alpha_line = session.execute(
         select(ReceiptLine)
-        .where(ReceiptLine.description == "MACARRONS RATLLATS")
+        .where(ReceiptLine.description == "ALFA CATALITIC QX")
         .order_by(ReceiptLine.created_at.desc())
     ).scalars().first()
-    assert mac_line.match_type == "exact"
+    assert alpha_line.match_type == "exact"
 
 
 def test_price_comparison_own_data(session, seed):
-    """'¿Dónde compro más barato los macarrones?' — con datos propios,
-    sin APIs de terceros. (Nota: unidades distintas se agrupan aparte;
-    el paquete Makro de 5 kg y el de Lidl son formatos diferentes.)"""
+    """Compare only synthetic historical unit prices within the family."""
     ReceiptIngestionService(session).ingest(
         MakroParser().parse(MAKRO), seed["family"].id
     )
-    ai = FakeAIProposer({"MACARRONS RATLLATS": seed["macarrones"].id})
+    ai = FakeAIProposer({"ALFA CATALITIC QX": seed["alpha"].id})
     ReceiptIngestionService(session, ai_proposer=ai).ingest(
         LidlParser().parse(LIDL), seed["family"].id
     )
-    comp = price_comparison(session, seed["macarrones"].id, seed["family"].id)
+    comp = price_comparison(session, seed["alpha"].id, seed["family"].id)
     markets = {c["supermarket"]: c for c in comp}
     assert "Makro" in markets and "Lidl" in markets
-    assert markets["Makro"]["avg_unit_price"] == Decimal("5.3900")  # pack 5 kg
-    assert markets["Lidl"]["avg_unit_price"] == Decimal("1.0900")   # pack 500 g
+    assert markets["Makro"]["avg_unit_price"] == Decimal("1.8000")
+    assert markets["Lidl"]["avg_unit_price"] == Decimal("2.7500")
     # ordenado de más barato a más caro
-    assert comp[0]["supermarket"] == "Lidl"
+    assert comp[0]["supermarket"] == "Makro"
 
 
 def test_review_queue_preserves_everything(session, seed):
@@ -181,6 +169,6 @@ def test_review_queue_preserves_everything(session, seed):
         MakroParser().parse(MAKRO), seed["family"].id
     )
     reviews = session.execute(select(NormalizationReview)).scalars().all()
-    assert len(reviews) == 12
+    assert len(reviews) == 3
     assert all(r.status == "pending" for r in reviews)
-    assert any("HEINZ" in r.alias_text for r in reviews)
+    assert any("ZETA" in r.alias_text for r in reviews)

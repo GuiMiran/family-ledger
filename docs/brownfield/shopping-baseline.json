@@ -4,7 +4,7 @@
   "change_base_commit": "b6084dcbfde7122cc51c85e96683207ddb4c08e0",
   "parent_baseline_sha256": "779fb1a541e0a1e8d6c5bd60d4dfa6b0807365736679cf9c8bedf1dc9bcff7b0",
   "parent_remediation_baseline_sha256": "7eb8f9b0f7ed0e80c5ba6994c2e51bf0aee8871fec2518c6640a3a38c7f4b606",
-  "change_contract": "docs/changes/2026-11-08-shopping-agent-08038.md",
+  "change_contract": "docs/changes/2026-11-08-shopping-comparator.md",
   "state": "candidate_pending_owner_review",
   "scope": "Authorized shopping comparator and bounded advisor; historical baselines and diagnosis retained. Not proof of deployment or six source integrations.",
   "files": {
@@ -295,5 +295,6 @@
     "web/vite.config.ts": {
       "sha256": "e0648882b513a4b4d4f4e228be88d0ff7abe865ce32dde9708083ab4549c19cf"
     }
-  }
+  },
+  "privacy_state": "Historical metadata retained with personal paths redacted; active content baseline superseded by privacy-baseline.json."
 }

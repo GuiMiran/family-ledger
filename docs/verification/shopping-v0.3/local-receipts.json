@@ -1,6 +1,6 @@
 {
   "base_commit": "b6084dcbfde7122cc51c85e96683207ddb4c08e0",
-  "candidate_snapshot_sha256": "459b207e83e6f0d35a6b12914c55c89ac9b556edc60d0bcc0285784e5b76f41b",
+  "candidate_snapshot_sha256": "[historical digest withdrawn after privacy redaction]",
   "local_python": {
     "passed": 232,
     "skipped": 4,
@@ -18,15 +18,15 @@
     "trace": "static-links only, not behavior certification"
   },
   "live_prices": {
-    "source": "Mercadona anonymous public storefront",
-    "postcode": "08038",
-    "receipt": "mercadona-live-final.json",
-    "offers": 61,
-    "eligible_basket_groups": 6,
-    "other_chains": "no configured source; not connected",
-    "limitations": "Momentary sample. Not reserved stock, guaranteed future price or exhaustive Barcelona market."
+    "status": "PRIVACY_REDACTED",
+    "evidence": "Household-specific live observations withdrawn; no current price or locality claim."
   },
   "deployment": false,
   "production_database_operation": false,
-  "purchase_executed": false
+  "purchase_executed": false,
+  "privacy_redaction": {
+    "status": "REDACTED_HISTORICAL_COPY",
+    "notice": "PRIVACY-REDACTED HISTORICAL MATERIAL (2026-11-09). Private case details have been removed. This public copy is not byte-original evidence, its former file digests are withdrawn, and it does not re-certify historical outcomes. See docs/data-privacy.md.",
+    "original_byte_integrity_claim": "WITHDRAWN"
+  }
 }

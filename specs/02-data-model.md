@@ -17,7 +17,7 @@ Convenciones:
 |---|---|---|
 | id | UUID PK | |
 | name | TEXT | "Familia Miranda" |
-| members_count | SMALLINT | 5 — usado para KPI coste/persona |
+| members_count | SMALLINT | Configurable por familia — usado para KPI coste/persona |
 | created_at / updated_at | TIMESTAMPTZ | |
 
 ### `users`

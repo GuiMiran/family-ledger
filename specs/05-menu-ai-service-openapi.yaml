@@ -12,12 +12,10 @@ info:
       se propone ese plato ("usa el pollo que caduca el jueves").
     - La IA es un proveedor desacoplado (interfaz AIProvider). El prompt recibe:
       inventario con caducidades + histórico de menús aceptados/rechazados +
-      tamaño de familia (5) — nunca datos personales innecesarios.
+      tamaño configurable de la familia — nunca datos personales innecesarios.
 
-    Caso real de referencia (ticket Makro 04/07/2026):
-    - 6,87 kg de pollo/picada/burger llegan el mismo día → el planner debe
-      sugerir congelar parte inmediatamente y repartir el resto en menús
-      de la semana, no proponer 5 días seguidos de pollo.
+    Ejemplo sintético: si una compra supera el consumo previsto, sugerir repartir
+    el inventario entre menús y congelación según preferencias y capacidad.
 
 servers:
   - url: /api/v1
@@ -251,7 +249,7 @@ components:
           enum: [suggested, accepted, rejected, cooked]
         ai_rationale:
           type: string
-          description: '"Usa las 2,37 kg de pechuga que caducan el 8/07"'
+          description: '"Usa primero el lote de ejemplo próximo a caducar"'
         urgency_score:
           type: number
           minimum: 0

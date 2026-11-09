@@ -1,6 +1,6 @@
 {
   "rubric": "guido-scale-v0.1",
-  "scope": "Family Ledger receipt interpretation/ingestion, confirmation, purchase inventory projection and family isolation. Frozen inventory: docs/sdd-assessment/2026-11-07/scope.json, exactly eight mandatory obligations selected from product purpose/contracts before current test outcomes; not repository-wide or exhaustive. Post-remediation existing-implementation review by independent reviewer D, 2026-11-07, read-only candidate source mapped by parent to public commit. Trusted rubric GUIDO commit 4566a3529d833ea037eecc62efe907325ada32e1. Original scope.json revision and historical reports remain baseline evidence only. No target code executed or modified by this reviewer. Deployment, real OCR, connected UI, consumption/reservations, external broker, production data, security certification and reconstruction excluded.",
+  "scope": "PRIVACY-REDACTED HISTORICAL MATERIAL (2026-11-09). Private case details have been removed. This public copy is not byte-original evidence, its former file digests are withdrawn, and it does not re-certify historical outcomes. See docs/data-privacy.md. Family Ledger receipt interpretation/ingestion, confirmation, purchase inventory projection and family isolation. Frozen inventory: docs/sdd-assessment/2026-11-07/scope.json, exactly eight mandatory obligations selected from product purpose/contracts before current test outcomes; not repository-wide or exhaustive. Post-remediation existing-implementation review by independent reviewer D, 2026-11-07, read-only candidate source mapped by parent to public commit. Trusted rubric GUIDO commit 4566a3529d833ea037eecc62efe907325ada32e1. Original scope.json revision and historical reports remain baseline evidence only. No target code executed or modified by this reviewer. Deployment, real OCR, connected UI, consumption/reservations, external broker, production data, security certification and reconstruction excluded.",
   "revision": "b6084dcbfde7122cc51c85e96683207ddb4c08e0",
   "dimensions": {
     "specCoverage": {
@@ -27,9 +27,9 @@
     "traceability": {
       "status": "OBSERVED",
       "evidence": [
-        "docs/brownfield/remediation-baseline.json; docs/sdd-assessment/remediation-v0.2/local-receipts.json (source base 92c768697240d71c913e208c5ba231b97312b154; candidate digest 7eb8f9b0f7ed0e80c5ba6994c2e51bf0aee8871fec2518c6640a3a38c7f4b606). Parent evaluator supplied public-commit mapping to b6084dcbfde7122cc51c85e96683207ddb4c08e0; local older HEAD is not the assessed revision.",
-        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
-        "docs/sdd-assessment/remediation-v0.2/family-isolation-after.log (sha256 376a59ee184aeb8b4e98b05fa9a3f063e3e67912024a036370cfd21949f3bca5 verified)",
+        "docs/brownfield/remediation-baseline.json; docs/sdd-assessment/remediation-v0.2/local-receipts.json (source base 92c768697240d71c913e208c5ba231b97312b154; candidate digest [historical digest withdrawn after privacy redaction]). Parent evaluator supplied public-commit mapping to b6084dcbfde7122cc51c85e96683207ddb4c08e0; local older HEAD is not the assessed revision.",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 [historical digest withdrawn after privacy redaction] verified by reviewer D)",
+        "docs/sdd-assessment/remediation-v0.2/family-isolation-after.log (sha256 [historical digest withdrawn after privacy redaction] verified)",
         ".spectra/11-acceptance-criteria.md",
         "docs/brownfield/traceability.md",
         "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent.",
@@ -40,7 +40,7 @@
     "invariantCoverage": {
       "status": "OBSERVED",
       "evidence": [
-        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 [historical digest withdrawn after privacy redaction] verified by reviewer D)",
         "tests/test_receipt_api.py",
         "tests/test_family_isolation.py",
         "tests/test_receipt_validation_limits.py",
@@ -58,7 +58,7 @@
         ".spectra/05-contracts.md",
         "docs/changes/2026-11-07-remediation-contract.md",
         "docs/operations/api-v0.2.md",
-        "data/purchases/makro-36300-captured-20261107.json"
+        "PRIVACY REDACTED: private transaction details or its artifact reference removed. Historical methodology/outcome only; no current re-certification or byte-original claim."
       ],
       "rationale": "Decision review distinguishes explicit current rules from missing knowledge: packaged quantities preserve declared units, VAT uses printed group rounding, sale date remains unknown, global/private aliases require compatible ownership, legacy uncertain ownership stays quarantined, and inventory means purchases rather than consumption balance. Actual sale date, legacy alias provenance and package conversion cannot be guessed. Source-informed review is not proof that a blinded builder can reconstruct these decisions."
     },
@@ -79,7 +79,7 @@
         "app/infrastructure/parsers/makro.py parse/_score",
         "tests/test_makro_parser.py::test_weight_line_pollo, test_multi_quantity_line, test_vat_groups_resolved, test_totals_reconcile_no_pending",
         "tests/test_api.py::test_parse_endpoint_makro",
-        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 [historical digest withdrawn after privacy redaction] verified by reviewer D)",
         "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent."
       ]
     },
@@ -93,7 +93,7 @@
         "app/infrastructure/parsers/makro.py::_score (direct source review: null date produces pending field)",
         "app/application/receipt_commands.py::validated_receipt",
         "tests/test_receipt_api.py::test_undated_pending_has_no_stock_then_confirmation_projects_once",
-        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 [historical digest withdrawn after privacy redaction] verified by reviewer D)",
         "Demonstrated undated structured API input and parent-rerun current Makro missing-date probe. No dedicated parser missing-total negative test claimed.",
         "Parent evaluator communication 2026-11-07: reran current missing-date synthetic probe and verifier on unchanged candidate; passed, purchase_date=None and pending purchase_date. Reviewer D did not execute target code; parent report supplies execution provenance."
       ]
@@ -107,7 +107,7 @@
         ".spectra/04-invariants.md INV-003; AC-003",
         "app/application/receipt_ingestion.py::_write_lines/_normalize_line",
         "tests/test_family_isolation.py::test_unknown_lines_retain_exact_description_amount_and_review_links (two lines assert raw text, description, quantities, exact amounts, review links and null product IDs)",
-        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 [historical digest withdrawn after privacy redaction] verified by reviewer D)",
         "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent."
       ]
     },
@@ -121,7 +121,7 @@
         "app/application/receipt_ingestion.py::_apply_match; app/infrastructure/normalization/matchers.py",
         "tests/test_ingestion.py::test_makro_ingestion_exact_fuzzy_and_review, test_lidl_ai_normalization_then_free_second_time",
         "tests/test_family_isolation.py::test_learned_alias_is_private_even_for_a_shared_product",
-        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 [historical digest withdrawn after privacy redaction] verified by reviewer D)",
         "AI provider is synthetic; no claim about external model accuracy.",
         "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent."
       ]
@@ -135,7 +135,7 @@
         ".spectra/05-contracts.md OP-004; AC-004",
         "app/main.py::create_receipt/confirm_receipt/get_receipt/list_receipts",
         "tests/test_receipt_api.py::test_file_database_survives_application_recreation, test_undated_pending_has_no_stock_then_confirmation_projects_once",
-        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 [historical digest withdrawn after privacy redaction] verified by reviewer D)",
         "Demonstrated API and persistent SQLite plus PostgreSQL restart check; connected UI and deployed environment NOT_EVALUATED.",
         "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent."
       ]
@@ -150,8 +150,8 @@
         "app/infrastructure/normalization/matchers.py::_visible_aliases; app/application/receipt_ingestion.py::_resolve_ai_proposal/price_comparison; app/main.py family filters",
         "tests/test_family_isolation.py (exact/fuzzy/product-and-alias visibility, market precedence, AI rejection, learned aliases and scoped history)",
         "tests/test_receipt_api.py::test_family_scope_comes_from_token_not_body_and_keys_are_per_family",
-        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
-        "docs/sdd-assessment/remediation-v0.2/family-isolation-after.log (original A/B challenge now passes; verified hash)",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 [historical digest withdrawn after privacy redaction] verified by reviewer D)",
+        "docs/sdd-assessment/remediation-v0.2/family-isolation-after.log (original A/B challenge now passes; historical hash claim withdrawn for redacted public copy)",
         "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent."
       ]
     },
@@ -164,7 +164,7 @@
         ".spectra/07-events.md EVT-001; .spectra/04-invariants.md INV-005; AC-006",
         "app/application/receipt_commands.py::project_confirmed; app/main.py::save_command; ORM event/inventory/submission uniqueness",
         "tests/test_receipt_api.py::test_same_key_retries_once_and_conflicting_body_rejected, test_undated_pending_has_no_stock_then_confirmation_projects_once, test_confirmation_failure_restores_original_pending_lines, test_file_database_survives_application_recreation; inventory-flush injected-failure test",
-        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 [historical digest withdrawn after privacy redaction] verified by reviewer D)",
         "Sequential retries/rollback demonstrated locally; current verified PostgreSQL 16 CI additionally demonstrates four-worker same-key create and confirmation with checked receipt/line/submission/event/inventory cardinalities. No external broker or arbitrary-load equivalence claimed.",
         "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent."
       ]
@@ -176,10 +176,10 @@
       "outcome": "DEMONSTRATED",
       "evidence": [
         ".spectra/03-business-rules.md BR-005/BR-006; .spectra/04-invariants.md INV-001/INV-002; AC-005",
-        "data/purchases/makro-36300-captured-20261107.json",
-        "Reviewer D independent read-only stdlib Decimal arithmetic on 2026-11-07: 20 lines sum 328.36; tax-group bases match line grouping; all three declared VAT values match ROUND_HALF_UP at group level; VAT sum 34.64; net + VAT = 363.00. Null purchase_date, pending purchase_date, pending_review status, database_imported=false, inventory_confirmed=false directly verified. No target imports or code execution.",
+        "PRIVACY REDACTED: private transaction details or its artifact reference removed. Historical methodology/outcome only; no current re-certification or byte-original claim.",
+        "PRIVACY REDACTED: private transaction details or its artifact reference removed. Historical methodology/outcome only; no current re-certification or byte-original claim.",
         "scripts/verify_adoption.py inspected as control definition; its historical PASS is not attributed to candidate execution.",
-        "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent. Current verify_adoption PASS: 20 lines; net 328.36; VAT 34.64; gross 363.00; no DB import."
+        "PRIVACY REDACTED: private transaction details or its artifact reference removed. Historical methodology/outcome only; no current re-certification or byte-original claim."
       ]
     }
   ],

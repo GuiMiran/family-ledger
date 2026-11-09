@@ -1,3 +1,4 @@
+"""Wholly fictional Mercadona-format fixture; no household case data."""
 from datetime import date, time
 from decimal import Decimal
 from pathlib import Path
@@ -24,12 +25,12 @@ def test_registry_detects_mercadona():
 
 
 def test_header(parsed):
-    assert parsed.purchase_date == date(2026, 7, 4)
-    assert parsed.purchase_time == time(18, 23)
-    assert parsed.total_amount == Decimal("22.12")
-    assert parsed.total_vat == Decimal("1.40")
+    assert parsed.purchase_date == date(2030, 1, 2)
+    assert parsed.purchase_time == time(10, 15)
+    assert parsed.total_amount == Decimal("32.24")
+    assert parsed.total_vat == Decimal("1.94")
     assert parsed.payment_method == "card"
-    assert parsed.invoice_number == "2308-013-141414"
+    assert parsed.invoice_number == "0000-000-000001"
 
 
 def test_lines_count(parsed):
@@ -38,34 +39,34 @@ def test_lines_count(parsed):
 
 def test_unit_line_without_price(parsed):
     """Cantidad 1 → columna P.Unit vacia → unit_price = total."""
-    leche = next(l for l in parsed.lines if "LECHE" in l.description)
-    assert leche.quantity == Decimal("1")
-    assert leche.line_total == Decimal("5.10")
-    assert leche.unit_price == Decimal("5.10")
+    alpha = next(l for l in parsed.lines if "ALFA" in l.description)
+    assert alpha.quantity == Decimal("1")
+    assert alpha.line_total == Decimal("7.75")
+    assert alpha.unit_price == Decimal("7.75")
 
 
 def test_unit_line_with_price(parsed):
-    galleta = next(l for l in parsed.lines if "GALLETA" in l.description)
-    assert galleta.quantity == Decimal("2")
-    assert galleta.unit_price == Decimal("1.22")
-    assert galleta.line_total == Decimal("2.44")
+    beta = next(l for l in parsed.lines if "BETA" in l.description)
+    assert beta.quantity == Decimal("3")
+    assert beta.unit_price == Decimal("1.65")
+    assert beta.line_total == Decimal("4.95")
 
 
 def test_weight_split_two_lines(parsed):
-    """'0,536 kg' en renglon propio + 'PLATANO 2,29 1,23' debajo."""
-    platano = next(l for l in parsed.lines if "PLATANO" in l.description)
-    assert platano.unit == Unit.KG
-    assert platano.quantity == Decimal("0.536")
-    assert platano.unit_price == Decimal("2.29")
-    assert platano.line_total == Decimal("1.23")
+    """Synthetic weight on its own row precedes description and amounts."""
+    epsilon = next(l for l in parsed.lines if "EPSILON" in l.description)
+    assert epsilon.unit == Unit.KG
+    assert epsilon.quantity == Decimal("0.720")
+    assert epsilon.unit_price == Decimal("4.50")
+    assert epsilon.line_total == Decimal("3.24")
 
 
 def test_weight_single_line(parsed):
-    pollo = next(l for l in parsed.lines if "POLLO" in l.description)
-    assert pollo.unit == Unit.KG
-    assert pollo.quantity == Decimal("1.240")
-    assert pollo.unit_price == Decimal("3.95")
-    assert pollo.line_total == Decimal("4.90")
+    zeta = next(l for l in parsed.lines if "ZETA" in l.description)
+    assert zeta.unit == Unit.KG
+    assert zeta.quantity == Decimal("1.125")
+    assert zeta.unit_price == Decimal("6.00")
+    assert zeta.line_total == Decimal("6.75")
 
 
 def test_totals_reconcile(parsed):

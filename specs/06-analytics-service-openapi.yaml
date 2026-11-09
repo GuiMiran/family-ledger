@@ -11,7 +11,7 @@ info:
     - Fuente: vistas materializadas refrescadas al confirmar cada ticket
       (mv_monthly_spend, mv_price_evolution, mv_family_kpis).
     - Todas las cifras monetarias en EUR, NUMERIC — nunca float.
-    - members_count de la familia (5) alimenta los KPIs per cápita.
+    - members_count configurado por la familia alimenta los KPIs per cápita.
 
 servers:
   - url: /api/v1
@@ -83,7 +83,7 @@ paths:
                           items:
                             type: object
                             properties:
-                              month: { type: string, example: '2026-07' }
+                              month: { type: string, example: '2030-01' }
                               amount: { type: number }
 
   /analytics/spend/breakdown:

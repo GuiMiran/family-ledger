@@ -5,7 +5,7 @@
 # @spectra SK-001
 """Parser de tickets/facturas Makro (Makro Distribución Mayorista, S.A.).
 
-Formato validado contra ticket real de Makro Barcelona (Zona Franca).
+Formato cubierto por facturas sintéticas, sin datos de compras familiares.
 
 Particularidades del formato Makro:
 - Es factura, no ticket simple: precios de línea SIN IVA, desglose al pie.
@@ -16,8 +16,8 @@ Particularidades del formato Makro:
     'BC GTIN: <gtin> Lote: <lote>'
     'Fecha consumo preferente: <YYMMDD>'  ← caducidad impresa, va directa
       al inventario sin estimación.
-- Descuentos globales: línea 'COMPRA MÁS PAGA MENOS  1,29-  1  <codigo>'.
-- Grupos de IVA: '153,12  1=10,00%  15,31' → grupo 1 = 10%.
+- Descuentos globales: línea 'DESCUENTO SIMULADO  1,00-  1  <codigo>'.
+- Grupos de IVA: '23,00  1=10,00%  2,30' → grupo 1 = 10%.
 - Totales: 'Importe' (base), 'Total a pagar' (con IVA), 'Tarjeta' (pago).
 """
 from __future__ import annotations
@@ -189,7 +189,7 @@ class MakroParser(ReceiptParser):
 
             current = None  # línea no reconocida corta la asociación de sublíneas
 
-        # Resolver IVA por grupo (1=10%, 5=4% en el ticket de referencia)
+        # Resolver IVA por grupo (1=10%, 5=4% en el ejemplo sintético)
         for line in parsed_lines:
             group = imp_groups.get(line.line_number)
             if group and group in vat_by_group:

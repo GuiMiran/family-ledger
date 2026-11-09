@@ -1,3 +1,5 @@
+> PRIVACY-REDACTED HISTORICAL MATERIAL (2026-11-09). Private case details have been removed. This public copy is not byte-original evidence, its former file digests are withdrawn, and it does not re-certify historical outcomes. See docs/data-privacy.md.
+
 # Mapa brownfield de evidencia
 | Dominio | Artefactos existentes | Pruebas existentes | Límite |
 |---|---|---|---|
@@ -5,7 +7,7 @@
 | Parsing Lidl/Mercadona | parsers correspondientes y registry | `tests/test_lidl_parser.py`, `tests/test_mercadona_parser.py` | No OCR real |
 | API de parsing | `app/main.py` | `tests/test_api.py` | Sin confirmación ni BD |
 | Ingesta y normalización | `app/application/receipt_ingestion.py`, ORM, matchers | `tests/test_ingestion.py` | SQLite, llamador gestiona transacción |
-| Registro de 363 EUR | `data/purchases/makro-36300-captured-20261107.json` | `scripts/verify_adoption.py` | Sin importación ni stock confirmado |
+| Transcripción privada histórica | Retirada del árbol público | Evidencia particular redactada | No acredita importación ni existencias |
 | Prototipo visual | `prototype/FamilyLedgerApp.jsx` | Sin prueba de conexión API | No aplicación desplegada |
 | Inventario/menús/analítica | contratos `specs/04` a `06` | Sin prueba ejecutable de entrega | Objetivo |
 

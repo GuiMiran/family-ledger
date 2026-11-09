@@ -6,21 +6,15 @@
   "project": {
     "name": "Family Ledger",
     "repository": "https://github.com/GuiMiran/family-ledger",
-    "version": "0.3.0"
+    "version": "0.3.1"
   },
   "scope": {
-    "objective": "Evolución brownfield autorizada: comparador familiar por CP, fuentes con procedencia y asesor acotado, conservando diagnóstico histórico.",
+    "objective": "Authorized privacy separation and configurable family onboarding; synthetic public examples only.",
     "behaviors": [
-      "Interpretar líneas Makro con pesos y cantidades y reconciliar base neta con IVA declarado.",
-      "Mantener fecha desconocida pendiente en lugar de inventarla.",
-      "Conservar descripción e importes de líneas no normalizadas en la ingesta.",
-      "Aprender alias por coincidencia aceptada y reutilizarlos.",
-      "Guardar y consultar compra confirmada desde la aplicación/API.",
-      "Aislar datos y normalización entre familias.",
-      "Actualizar inventario mediante confirmación/evento sin duplicación.",
-      "Conservar transcripción manual sin afirmar ingreso en BD ni stock y reconciliar importes.",
-      "Comparar cesta con IVA/kg/l/unidad, frescura, zona, packs y cobertura explícita.",
-      "Asesorar sin comprar ni confundir ahorro potencial con realizado."
+      "Load the authenticated family profile or an empty onboarding state.",
+      "Configure name, postcode, selected stores and basket for that family.",
+      "Reject price collection until the profile is configured.",
+      "Keep real household data outside Git and publish only explicit synthetic examples."
     ],
     "exclusions": [
       "Reconstrucción aislada NOT_TESTED; sin nivel organizativo G1–G5",
@@ -32,7 +26,7 @@
     "owner": "GuiMiran"
   },
   "authorization": {
-    "source": "Usuario: quiere estas funciones en la app, agente si aporta valor, CP08038 y cesta especificada. Contrato de cambio 2026-11-08-shopping-agent-08038.",
+    "source": "Owner requested removing personal case data from reusable code and public documentation, separating a private JSON from synthetic examples, and loading configurable family profiles.",
     "allowedActions": [
       "Implementación en rama y PR revisable",
       "Pruebas sintéticas y consulta de escaparates públicos",
@@ -42,13 +36,13 @@
     "executionPolicy": "Sin despliegue, compra, pago, merge ni datos productivos; no eludir controles de acceso de fuentes."
   },
   "baseline": {
-    "commit": "b6084dcbfde7122cc51c85e96683207ddb4c08e0",
-    "snapshotRef": "docs/brownfield/shopping-baseline.json",
-    "snapshotSha256": "459b207e83e6f0d35a6b12914c55c89ac9b556edc60d0bcc0285784e5b76f41b",
-    "workingTreeDeltaRef": "docs/changes/2026-11-08-shopping-agent-08038.md",
+    "commit": "36b1a25d97553cb84ce0101815af00cc60a33145",
+    "snapshotRef": "docs/brownfield/privacy-baseline.json",
+    "snapshotSha256": "043f2872db5f5c5b6001ce011bc416a5f461aba105a8564dbc649f6544dd0761",
+    "workingTreeDeltaRef": "docs/changes/2026-11-09-private-profiles.md",
     "limitations": [
-      "Candidato funcional explícito posterior a 0.2.0; baselines anteriores inmutables.",
-      "Reportes C/D evalúan b6084dc y no califican este comparador."
+      "Historical metadata/report text was privacy-redacted under owner instruction; not original byte-exact evidence.",
+      "This patch does not remove data from old Git commits or archived copies."
     ]
   },
   "tooling": {
@@ -190,13 +184,7 @@
     }
   ],
   "claims": [],
-  "evidence": [
-    {
-      "scope": "Remediation candidate delta",
-      "sourceSnapshotSha256": "7eb8f9b0f7ed0e80c5ba6994c2e51bf0aee8871fec2518c6640a3a38c7f4b606",
-      "receiptRef": "docs/sdd-assessment/remediation-v0.2/local-receipts.json"
-    }
-  ],
+  "evidence": [],
   "diagnostic": {
     "status": "review_incomplete",
     "inventoryRef": null,
@@ -206,8 +194,8 @@
     ],
     "reconciliationRef": null,
     "limitations": [
-      "C/D: ocho obligaciones seleccionadas en b6084dc, reconstrucción no probada.",
-      "Comparador0.3.0 requiere revisión propia; pruebas sintéticas y smoke vivo tienen alcance específico."
+      "Previous reports cover prior revisions and were privacy-redacted.",
+      "Current privacy and onboarding qualification requires the new test/build receipt."
     ]
   },
   "organizationalAssessment": {
@@ -240,7 +228,7 @@
   "review": {
     "reviewer": null,
     "reviewedRevision": null,
-    "scope": "Candidato de comparador y asesor; revisión pendiente del propietario.",
+    "scope": "Privacy and configurable onboarding change; pending review.",
     "decision": "pending_owner_review",
     "recordRef": null
   }

@@ -1,5 +1,4 @@
-"""Tests del parser Lidl contra el ticket real de referencia
-(El Prat de Llobregat, 04/07/2026, 151,46 EUR, 48 lineas)."""
+"""Wholly fictional Lidl format cases: units, weights, discounts and VAT."""
 from datetime import date, time
 from decimal import Decimal
 from pathlib import Path
@@ -26,58 +25,58 @@ def test_registry_detects_lidl():
 
 
 def test_header(parsed):
-    assert parsed.purchase_date == date(2026, 7, 4)
-    assert parsed.purchase_time == time(19, 59)
-    assert parsed.total_amount == Decimal("151.46")
+    assert parsed.purchase_date == date(2030, 1, 2)
+    assert parsed.purchase_time == time(12, 34)
+    assert parsed.total_amount == Decimal("28.65")
     assert parsed.payment_method == "card"
-    assert parsed.total_discounts == Decimal("2.18")
+    assert parsed.total_discounts == Decimal("0.80")
 
 
 def test_all_lines_detected(parsed):
-    assert len(parsed.lines) == 48
+    assert len(parsed.lines) == 6
 
 
 def test_multi_unit_line(parsed):
-    mac = next(l for l in parsed.lines if "MACARRONS" in l.description)
-    assert mac.quantity == Decimal("2")
-    assert mac.unit_price == Decimal("1.09")
-    assert mac.line_total == Decimal("2.18")
+    alpha = next(l for l in parsed.lines if "ALFA" in l.description)
+    assert alpha.quantity == Decimal("3")
+    assert alpha.unit_price == Decimal("2.75")
+    assert alpha.line_total == Decimal("8.25")
 
 
 def test_weight_subline_converts_to_kg(parsed):
-    filet = next(l for l in parsed.lines if "ANOLL" in l.description)
-    assert filet.unit == Unit.KG
-    assert filet.quantity == Decimal("0.472")
-    assert filet.unit_price == Decimal("17.59")
-    assert filet.line_total == Decimal("8.30")
+    delta = next(l for l in parsed.lines if "DELTA" in l.description)
+    assert delta.unit == Unit.KG
+    assert delta.quantity == Decimal("0.650")
+    assert delta.unit_price == Decimal("10.00")
+    assert delta.line_total == Decimal("6.50")
 
 
 def test_all_weight_items(parsed):
     kg_items = [l for l in parsed.lines if l.unit == Unit.KG]
-    assert len(kg_items) == 5  # anoll, alberginia, llom, banana, carbasso
+    assert len(kg_items) == 2  # synthetic DELTA and ETA
 
 
 def test_discount_sublines_attached(parsed):
-    xampu = next(l for l in parsed.lines if "H&S" in l.description)
-    assert xampu.discount_amount == Decimal("1.10")
-    gel = next(l for l in parsed.lines if "GEL DE BANY" in l.description)
-    assert gel.discount_amount == Decimal("0.30")
-    assert gel.promotion_text and "LIDL PLUS" in gel.promotion_text.upper()
-    assert parsed.discount_lines_total == Decimal("2.18")
+    epsilon = next(l for l in parsed.lines if "EPSILON" in l.description)
+    assert epsilon.discount_amount == Decimal("0.55")
+    zeta = next(l for l in parsed.lines if "ZETA" in l.description)
+    assert zeta.discount_amount == Decimal("0.25")
+    assert zeta.promotion_text and "LIDL PLUS" in zeta.promotion_text.upper()
+    assert parsed.discount_lines_total == Decimal("0.80")
 
 
 def test_vat_letters_resolved(parsed):
-    pa = next(l for l in parsed.lines if l.description == "PA RATLLAT")
-    mac = next(l for l in parsed.lines if "MACARRONS" in l.description)
-    cola = next(l for l in parsed.lines if l.description == "COLA 2L")
-    assert pa.vat_rate == Decimal("4")     # A
-    assert mac.vat_rate == Decimal("10")   # B
-    assert cola.vat_rate == Decimal("21")  # C
+    beta = next(l for l in parsed.lines if l.description == "BETA HELICOIDAL ZY")
+    alpha = next(l for l in parsed.lines if "ALFA" in l.description)
+    epsilon = next(l for l in parsed.lines if l.description == "EPSILON RADIANT VX")
+    assert beta.vat_rate == Decimal("4")     # A
+    assert alpha.vat_rate == Decimal("10")   # B
+    assert epsilon.vat_rate == Decimal("21")  # C
 
 
 def test_totals_reconcile(parsed):
-    """suma lineas (153,64) - descuentos (2,18) == TOTAL (151,46)."""
-    assert parsed.lines_sum() == Decimal("153.64")
+    """Synthetic gross lines less two attached discounts reconcile exactly."""
+    assert parsed.lines_sum() == Decimal("29.45")
     assert parsed.lines_sum() - parsed.discount_lines_total == parsed.total_amount
     critical = [p for p in parsed.pending_fields
                 if p.field_path in ("total_amount", "purchase_date")]
