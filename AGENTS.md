@@ -31,3 +31,6 @@ Contrato: docs/changes/2026-11-08-shopping-comparator.md. Dominio: app/domain/sh
 
 ## Privacidad y alta
 El contrato docs/changes/2026-11-09-private-profiles.md autoriza retirar datos particulares y prima sobre instrucciones históricas de conservar esos datos. GET usa la familia del JWT y devuelve su registro o alta vacía, sin cargar demos. Una familia comienza con perfil vacío; la recogida y el asesor requieren configuración completa. El prototipo importa demo-data.json y no conecta cuentas. Despliegue bloqueado hasta verificar alta, edición y aislamiento. La redacción del árbol actual no elimina Git antiguo ni textos de PR.
+
+## Aplicación móvil 0.4.0
+Contrato: docs/changes/2026-11-09-mobile-family-app.md. Pantallas en web/src/mobile.tsx y main.tsx; dashboard de registros en app/api/dashboard.py; extracción privada en app/api/capture.py y puerto/adaptador OCR. El runtime Docker instala Tesseract spa/cat/eng. No sustituir datos vacíos por cifras de las capturas de referencia. Las fotos originales no se conservan, el OCR no guarda compras y los menús/congelación física siguen pendientes. Leer docs/operations/mobile-app-v0.4.md.

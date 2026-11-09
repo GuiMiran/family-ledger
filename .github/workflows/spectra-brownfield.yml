@@ -44,6 +44,10 @@ jobs:
           python scripts/verify_adoption.py
       - name: Install declared application and test dependencies
         run: python -m pip install -e ".[dev]"
+      - name: Install local OCR runtime for synthetic image qualification
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-spa tesseract-ocr-cat tesseract-ocr-eng fonts-dejavu-core
       - name: Regression and PostgreSQL qualification
         run: python -m pytest -q
       - name: Build mobile comparator
@@ -51,3 +55,18 @@ jobs:
         run: |
           npm ci
           npm run build
+      - name: Browser interaction qualification
+        env:
+          UI_SCREENSHOT_DIR: .artifacts/ui
+        run: |
+          if ! command -v google-chrome >/dev/null && ! command -v chromium >/dev/null; then
+            python -m playwright install --with-deps chromium
+          fi
+          python scripts/verify_mobile_ui.py
+      - name: Upload synthetic UI review screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-mobile-ui
+          path: .artifacts/ui
+          if-no-files-found: ignore

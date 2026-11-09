@@ -7,6 +7,8 @@ RUN npm run build
 
 FROM python:3.12-slim
 WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-spa tesseract-ocr-cat tesseract-ocr-eng && rm -rf /var/lib/apt/lists/*
+ENV OMP_THREAD_LIMIT=1
 COPY pyproject.toml .
 COPY app ./app
 RUN pip install --no-cache-dir .

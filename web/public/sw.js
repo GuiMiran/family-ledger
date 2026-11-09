@@ -1,5 +1,5 @@
 // Shell only. Never cache API responses, invitations or family data.
-const CACHE='family-ledger-shell-v2-private-profiles';
+const CACHE='family-ledger-shell-v3-mobile';
 const SHELL=['/','/manifest.webmanifest','/icon.svg'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)));self.skipWaiting();});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('family-ledger-shell-')&&key!==CACHE).map(key=>caches.delete(key)))));self.clients.claim();});

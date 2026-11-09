@@ -14,3 +14,5 @@
 - BR-011 MUST: Precios sin prueba del CP solicitado son referencias; fecha futura, antigüedad excesiva, promoción caducada o requisito no cumplido impiden clasificar la oferta como elegible. AC-012.
 
 - BR-012 MUST: Perfil nuevo sin CP, cesta ni tiendas; la familia los configura explícitamente. Recogida y asesor requieren configuración completa. Ejemplos sintéticos separados, nunca semillas productivas. AC-014.
+
+- BR-013 MUST: El OCR local valida imagen, tamaño, resolución, concurrencia y tiempo; no conserva el original ni consulta un proveedor externo. Una lectura no usable pide repetir la foto; no inventa líneas ni pide rehacer todo el ticket. AC-016.

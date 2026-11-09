@@ -6,27 +6,30 @@
   "project": {
     "name": "Family Ledger",
     "repository": "https://github.com/GuiMiran/family-ledger",
-    "version": "0.3.1"
+    "version": "0.4.0"
   },
   "scope": {
-    "objective": "Authorized privacy separation and configurable family onboarding; synthetic public examples only.",
+    "objective": "Mobile family shell and bounded local photo OCR, preserving family isolation and configurable comparator.",
     "behaviors": [
       "Load the authenticated family profile or an empty onboarding state.",
       "Configure name, postcode, selected stores and basket for that family.",
       "Reject price collection until the profile is configured.",
-      "Keep real household data outside Git and publish only explicit synthetic examples."
+      "Keep real household data outside Git and publish only explicit synthetic examples.",
+      "Navigate five mobile views with truthful empty states.",
+      "Extract a photo without database writes, then explicitly review and save using idempotency.",
+      "Summarize confirmed stored receipts without claiming measured savings or physical stock."
     ],
     "exclusions": [
       "Reconstrucción aislada NOT_TESTED; sin nivel organizativo G1–G5",
       "Sin despliegue ni migración de BD productiva",
-      "OCR de imagen, consumo de inventario, menús y predicción pendientes",
+      "Consumo de inventario, congelador físico, menús y predicción pendientes",
       "Sin garantía de stock ni seis cadenas conectadas",
       "Sin certificación normativa ni auditoría de seguridad completa"
     ],
     "owner": "GuiMiran"
   },
   "authorization": {
-    "source": "Owner requested removing personal case data from reusable code and public documentation, separating a private JSON from synthetic examples, and loading configurable family profiles.",
+    "source": "Owner approved implementing the mobile family app based on supplied visual references, retaining private family profiles.",
     "allowedActions": [
       "Implementación en rama y PR revisable",
       "Pruebas sintéticas y consulta de escaparates públicos",
@@ -36,10 +39,10 @@
     "executionPolicy": "Sin despliegue, compra, pago, merge ni datos productivos; no eludir controles de acceso de fuentes."
   },
   "baseline": {
-    "commit": "36b1a25d97553cb84ce0101815af00cc60a33145",
-    "snapshotRef": "docs/brownfield/privacy-baseline.json",
-    "snapshotSha256": "043f2872db5f5c5b6001ce011bc416a5f461aba105a8564dbc649f6544dd0761",
-    "workingTreeDeltaRef": "docs/changes/2026-11-09-private-profiles.md",
+    "commit": "cdc848dcc7194a615f0926d15143c7648dcbfa00",
+    "snapshotRef": "docs/brownfield/mobile-baseline.json",
+    "snapshotSha256": "d7203ac8b191dd7ee9f9592f71de62d9157e478857f43a10b7555f3b0e5104b6",
+    "workingTreeDeltaRef": "docs/changes/2026-11-09-mobile-family-app.md",
     "limitations": [
       "Historical metadata/report text was privacy-redacted under owner instruction; not original byte-exact evidence.",
       "This patch does not remove data from old Git commits or archived copies."
@@ -194,8 +197,9 @@
     ],
     "reconciliationRef": null,
     "limitations": [
-      "Previous reports cover prior revisions and were privacy-redacted.",
-      "Current privacy and onboarding qualification requires the new test/build receipt."
+      "Historical reports are not a current 0.4.0 maturity evaluation.",
+      "Current qualification uses synthetic images and mocked browser APIs; real household images and production deployment are not qualified.",
+      "Trace retains two critical and two major legacy manual-transcription evidence gaps."
     ]
   },
   "organizationalAssessment": {
@@ -221,14 +225,14 @@
   ],
   "nextChanges": [
     {
-      "scope": "Fuentes adicionales verificadas, acceso renovable, OCR real, consumo/reservas y menús",
+      "scope": "Acceso renovable, fuentes adicionales verificadas, consumo/congelación, menús y ahorro medido",
       "status": "future_separate_contracts"
     }
   ],
   "review": {
     "reviewer": null,
     "reviewedRevision": null,
-    "scope": "Privacy and configurable onboarding change; pending review.",
+    "scope": "Mobile application and local photo OCR candidate; pending owner review.",
     "decision": "pending_owner_review",
     "recordRef": null
   }

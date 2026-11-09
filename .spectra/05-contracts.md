@@ -7,3 +7,5 @@
 - OP-005 MUST · Comparar compras: PRE familia autenticada y provisionada, perfil válido; POST ofertas por grupo y cobertura explícita. Actualización usa fuentes configuradas por operador; consulta usa snapshot propio; asesor registra plan sin compra. AC-011 AC-012 AC-013.
 
 - OP-006 MUST · Configurar perfil: PRE familia autenticada; POST GET devuelve su perfil persistido o alta vacía, PUT valida zona y conserva sus propias preferencias; ERROR recogida/asesor sin configuración completa se rechazan antes de contactar fuentes. US-008; AC-014.
+
+- OP-007 MUST · Extraer foto: PRE familia autenticada/provisionada e imagen JPEG/PNG/WebP válida; POST borrador o error sanitizado con petición de nueva captura; sin escritura en BD. AC-016.

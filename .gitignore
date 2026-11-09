@@ -24,3 +24,5 @@ private-data/
 data/purchases/
 
 web/node_modules
+
+.artifacts/

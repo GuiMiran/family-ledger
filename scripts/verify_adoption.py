@@ -14,7 +14,10 @@ def require(condition, message):
         raise SystemExit(message)
 
 
-baseline = json.loads((ROOT / 'docs/brownfield/privacy-baseline.json').read_text())
+baseline_path = ROOT / 'docs/brownfield/mobile-baseline.json'
+if not baseline_path.is_file():
+    baseline_path = ROOT / 'docs/brownfield/privacy-baseline.json'
+baseline = json.loads(baseline_path.read_text())
 require((ROOT / baseline['change_contract']).is_file(), 'Privacy change contract missing')
 for relative, expected in baseline['parent_metadata_sha256'].items():
     require(hashlib.sha256((ROOT / relative).read_bytes()).hexdigest() == expected,
