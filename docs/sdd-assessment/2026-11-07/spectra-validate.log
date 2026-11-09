@@ -1,0 +1,9 @@
+
+[1m[33m  SPECTRA VALIDATE[0m
+
+[90m  ─────────────────────────────────────────────────────────────[0m
+  [90mChecks[0m · layer presence · ID uniqueness · cross-reference integrity · stub content
+[90m  ─────────────────────────────────────────────────────────────[0m
+
+[32m  ✔  All checks passed — specs are valid[0m
+

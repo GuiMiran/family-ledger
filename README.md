@@ -16,6 +16,9 @@ La [compra Makro de 363 EUR](data/purchases/makro-36300-captured-20261107.json) 
 
 Gobernanza: [Spectra](https://github.com/GuiMiran/spectra), [ecosistema GUIDO](https://github.com/GuiMiran/spectra/tree/main/docs/ecosystem).
 
+## Diagnóstico SDD acotado
+[GUIDO y conformidad 1.0.0](docs/sdd-assessment/2026-11-07/README.md): inventario, ocho obligaciones, dos revisiones independientes y recibos al commit 0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd. Las 34 pruebas existentes pasan, pero una sonda sintética demuestra un fallo de aislamiento entre familias en normalización. Sin nivel organizativo GUIDO, sin reconstrucción y sin corrección funcional en esta propuesta.
+
 ## Estado histórico declarado — Sprint 2
 
 | Sprint | Entregable | Estado |

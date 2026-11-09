@@ -1,0 +1,95 @@
+{
+  "scope": "Interpretación e ingesta de tickets y límites de confirmación/inventario/aislamiento de Family Ledger; revisión documental SDD acotada, no evaluación completa del producto.",
+  "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
+  "rubric": "guido-scale-v0.1",
+  "guido_commit": "4566a3529d833ea037eecc62efe907325ada32e1",
+  "spectra_protocol_commit": "b7acc9a5ae1299a867db9a6a412d189eac056771",
+  "selection": "Obligaciones elegidas desde el propósito y contratos del producto y las capas originales antes de ejecutar la regresión actual; no se deriva el denominador de las pruebas que pasan. Inventario acotado de 8 obligaciones; no exhaustivo.",
+  "obligations": [
+    {
+      "id": "OBL-001",
+      "description": "Interpretar líneas Makro con pesos y cantidades y reconciliar base neta con IVA declarado.",
+      "mandatory": true,
+      "specRefs": [
+        "BR-001",
+        "AC-001"
+      ]
+    },
+    {
+      "id": "OBL-002",
+      "description": "Mantener fecha desconocida pendiente en lugar de inventarla.",
+      "mandatory": true,
+      "specRefs": [
+        "BR-002",
+        "INV-002",
+        "AC-002"
+      ]
+    },
+    {
+      "id": "OBL-003",
+      "description": "Conservar descripción e importes de líneas no normalizadas en la ingesta.",
+      "mandatory": true,
+      "specRefs": [
+        "INV-003",
+        "AC-003"
+      ]
+    },
+    {
+      "id": "OBL-004",
+      "description": "Aprender alias por coincidencia aceptada y reutilizarlos.",
+      "mandatory": true,
+      "specRefs": [
+        "BR-003",
+        "BR-004",
+        "AC-003"
+      ]
+    },
+    {
+      "id": "OBL-005",
+      "description": "Guardar y consultar compra confirmada desde la aplicación/API.",
+      "mandatory": true,
+      "specRefs": [
+        "US-003",
+        "OP-004",
+        "AC-004"
+      ]
+    },
+    {
+      "id": "OBL-006",
+      "description": "Aislar datos y normalización entre familias.",
+      "mandatory": true,
+      "specRefs": [
+        "INV-004",
+        "AC-007"
+      ]
+    },
+    {
+      "id": "OBL-007",
+      "description": "Actualizar inventario mediante confirmación/evento sin duplicación.",
+      "mandatory": true,
+      "specRefs": [
+        "US-005",
+        "EVT-001",
+        "AC-006"
+      ]
+    },
+    {
+      "id": "OBL-008",
+      "description": "Conservar transcripción manual sin afirmar ingreso en BD ni stock y reconciliar importes.",
+      "mandatory": true,
+      "specRefs": [
+        "BR-005",
+        "INV-001",
+        "AC-005"
+      ]
+    }
+  ],
+  "exclusions": [
+    "Reconstrucción aislada no ejecutada; NOT_TESTED",
+    "Sin evaluación organizativa ni nivel G1–G5",
+    "Sin despliegue ni BD PostgreSQL real",
+    "Sin cambios de lógica de producto",
+    "Sin certificación normativa ni auditoría de seguridad completa"
+  ],
+  "authority": "El usuario pidió aplicar el protocolo tras fusionarlo y usar el agente GUIDO si es necesario. La ejecución del diagnóstico está autorizada por esa tarea, pero los informes no conceden permisos nuevos: executionAuthorized=false."
+}

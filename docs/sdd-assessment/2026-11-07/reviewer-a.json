@@ -1,0 +1,193 @@
+{
+  "rubric": "guido-scale-v0.1",
+  "scope": "Interpretación e ingesta de tickets y límites de confirmación/inventario/aislamiento de Family Ledger; revisión documental SDD acotada, no evaluación completa del producto.",
+  "revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
+  "dimensions": {
+    "specCoverage": {
+      "status": "OBSERVED",
+      "evidence": [
+        "evidence-packet:scope.json",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/03-business-rules.md",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/04-invariants.md",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/05-contracts.md",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/11-acceptance-criteria.md"
+      ],
+      "rationale": "Revisión independiente de las 8 obligaciones acotadas del paquete frente a las cláusulas: todas tienen referencias explícitas; confirmación API, inventario y aislamiento se señalan como objetivos o pendientes. Denominador 8, elegido antes de esta regresión según el paquete; no acredita exhaustividad del producto ni cumplimiento de esas cláusulas."
+    },
+    "specQuality": {
+      "status": "OBSERVED",
+      "evidence": [
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/03-business-rules.md",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/04-invariants.md",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/05-contracts.md",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/11-acceptance-criteria.md",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:app/infrastructure/parsers/makro.py::_score"
+      ],
+      "rationale": "Las cláusulas revisadas distinguen estado observado y objetivo y son vinculables a ejemplos. Queda conocimiento implícito: la reconciliación Makro admite tolerancia de 0,05 en código mientras BR-001 no concreta tolerancia; la política de productos globales frente a privados requiere precisión antes de implementar aislamiento. La validación estructural no resuelve estas ambigüedades."
+    },
+    "traceability": {
+      "status": "OBSERVED",
+      "evidence": [
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/12-trace.md",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:tests/test_makro_parser.py",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:tests/test_ingestion.py",
+        "evidence-packet:receipts.json",
+        "evidence-packet:regression.log",
+        "evidence-packet:missing-date.log",
+        "evidence-packet:family-isolation.log"
+      ],
+      "rationale": "Se inspeccionaron enlaces de cláusula a código y aserciones existentes y se contrastaron recibos locales al mismo commit. Los cinco hashes de logs coinciden con receipts.json. El 50% y el estado EVIDENCE de la matriz son declaraciones estáticas, no cobertura conductual. La regresión local no acredita CI remota, PostgreSQL ni todos los criterios compuestos."
+    },
+    "invariantCoverage": {
+      "status": "OBSERVED",
+      "evidence": [
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/04-invariants.md",
+        "evidence-packet:probes.py",
+        "evidence-packet:missing-date.log",
+        "evidence-packet:family-isolation.log",
+        "evidence-packet:adoption-record.log"
+      ],
+      "rationale": "El desafío de fecha ausente satisface la parte acotada INV-002; el verificador manual concilia la transcripción INV-001. La prueba sintética de aislamiento viola INV-004 al asociar una línea de B al producto privado de A. La conservación íntegra de importes de líneas no normalizadas carece de aserción independiente específica en el paquete. No se extrapolan estos resultados a toda la aplicación."
+    },
+    "domainExtraction": {
+      "status": "OBSERVED",
+      "evidence": [
+        "evidence-packet:scope.json",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/00-vision.md",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/01-glossary.md",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/07-events.md",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/10-workflows.md",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:app/infrastructure/normalization/matchers.py"
+      ],
+      "rationale": "El paquete congelado y la inspección separan parser/ingesta interna observados de confirmación/inventario deseados y fecha desconocida. No hace falta consultar al autor para identificar estos límites. Siguen faltando decisiones suficientemente explícitas de propiedad/visibilidad de alias y productos; no se declara extracción completa del dominio ni reconstrucción."
+    },
+    "reconstructability": {
+      "status": "NOT_TESTED",
+      "evidence": [
+        "evidence-packet:scope.json"
+      ],
+      "rationale": "No hubo constructor aislado, inputs permitidos congelados ni oracle reservado. La revisión de código y las pruebas del original no son ensayo de reconstrucción."
+    }
+  },
+  "obligations": [
+    {
+      "id": "OBL-001",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:tests/test_makro_parser.py::test_weight_line_pollo",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:tests/test_makro_parser.py::test_multi_quantity_line",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:tests/test_makro_parser.py::test_totals_reconcile_no_pending",
+        "evidence-packet:regression.log",
+        "evidence-packet:receipts.json#regression"
+      ]
+    },
+    {
+      "id": "OBL-002",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:app/infrastructure/parsers/makro.py::_score",
+        "evidence-packet:probes.py#missing-date",
+        "evidence-packet:missing-date.log",
+        "evidence-packet:receipts.json#missing-date"
+      ]
+    },
+    {
+      "id": "OBL-003",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "NOT_EVALUATED",
+      "evidence": [
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:app/application/receipt_ingestion.py::ingest",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:tests/test_ingestion.py::test_review_queue_preserves_everything",
+        "Static preservation code and queue-count/alias assertions inspected; no independent assertion verifies description AND line amount for every unnormalized line."
+      ]
+    },
+    {
+      "id": "OBL-004",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:tests/test_ingestion.py::test_makro_ingestion_exact_fuzzy_and_review",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:tests/test_ingestion.py::test_lidl_ai_normalization_then_free_second_time",
+        "evidence-packet:regression.log",
+        "evidence-packet:receipts.json#regression"
+      ]
+    },
+    {
+      "id": "OBL-005",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "NOT_EVALUATED",
+      "evidence": [
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:app/main.py",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/11-acceptance-criteria.md#AC-004",
+        "Only parsing and health routes observed; no confirm/query end-to-end execution receipt."
+      ]
+    },
+    {
+      "id": "OBL-006",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "FAILED",
+      "evidence": [
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:app/infrastructure/normalization/matchers.py::ExactMatcher.match",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:app/application/receipt_ingestion.py::_normalize_line",
+        "evidence-packet:probes.py#family-isolation",
+        "evidence-packet:family-isolation.log",
+        "evidence-packet:receipts.json#family-isolation"
+      ]
+    },
+    {
+      "id": "OBL-007",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "NOT_EVALUATED",
+      "evidence": [
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/07-events.md",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:.spectra/10-workflows.md",
+        "Event delivery/inventory implementation and idempotency execution evidence are absent from this packet."
+      ]
+    },
+    {
+      "id": "OBL-008",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:scripts/verify_adoption.py",
+        "target@0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd:data/purchases/makro-36300-captured-20261107.json",
+        "evidence-packet:adoption-record.log",
+        "evidence-packet:receipts.json#adoption-record"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "observation": "OBL-006 FAILED: el recibo sintético muestra que una compra de la familia B se normaliza al producto privado de A. ExactMatcher no filtra por familia; el servicio aplica la coincidencia. Alcance demostrado: sesión SQLite en memoria y normalización interna, no explotación remota ni incidente productivo.",
+      "nextAction": "Prioridad: especificar propiedad/visibilidad global y privada y corregir filtrado de coincidencias en exact/fuzzy/IA y accesos relacionados antes de exponer ingesta multiusuario.",
+      "closureCheck": "Mantener el caso de dos familias como regresión negativa; exigir que B no resuelva producto privado de A, que el alias privado no se aprenda/reutilice cruzado y que el producto global permitido siga funcionando; repetir en PostgreSQL con recibos al nuevo commit."
+    },
+    {
+      "observation": "OBL-003 NOT_EVALUATED: existe escritura explícita de raw_text, descripción e importe y pasan pruebas de cola, pero las aserciones revisadas no comprueban los importes y descripciones de todas las líneas no normalizadas.",
+      "nextAction": "Añadir una prueba independiente de conservación exacta de campos para líneas desconocidas y su vínculo con revisión.",
+      "closureCheck": "Con datos sintéticos distintos por línea, comparar valores originales frente a ReceiptLine y la revisión; introducir una mutación de importe o descripción y comprobar que el control la detecta."
+    },
+    {
+      "observation": "OBL-005 y OBL-007 permanecen NOT_EVALUATED: el contrato de confirmación existe como objetivo, pero la API observada solo interpreta texto y no demuestra ingreso, consulta ni actualización de inventario.",
+      "nextAction": "Planificar un slice autenticado de confirmación/consulta separado de la adopción documental, con transacción, aislamiento e idempotencia definidos antes de conectarlo.",
+      "closureCheck": "Prueba de extremo a extremo en PostgreSQL que confirme, consulte y procese una repetición sin duplicar compra ni inventario, con rechazo entre familias."
+    },
+    {
+      "observation": "El paquete permite observaciones SDD acotadas, no una calificación organizativa. La matriz estática no representa por sí misma ejecución; la tolerancia de reconciliación y decisiones de privacidad siguen parcialmente implícitas.",
+      "nextAction": "Conservar procedencia por regla, explicitar tolerancias y política de visibilidad, y enlazar obligaciones a recibos específicos sin convertir el 50% estático en una medida de calidad.",
+      "closureCheck": "Revisión de cláusulas al nuevo commit con ejemplos límite y recibos identificados por obligación; registrar desconocidos y mantener reconstrucción NOT_TESTED hasta un ensayo válido."
+    }
+  ],
+  "migration": "NOT_ESTIMATED",
+  "executionAuthorized": false
+}

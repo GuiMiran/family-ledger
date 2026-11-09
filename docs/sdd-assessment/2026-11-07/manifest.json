@@ -1,0 +1,17 @@
+{
+  "source_revision": "0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd",
+  "guido_revision": "4566a3529d833ea037eecc62efe907325ada32e1",
+  "files": {
+    "adoption-record.log": "3fd247c149f9e88e8dbacbdfa4bb27a9c47be6b3ab7f17bb150b122c77a75d0f",
+    "audit.json": "c695ea1f61be70e564597e4569cda5d3a6138f44dbd41f824dc9ceedcbc06d69",
+    "audit.md": "af0bfd36c5db81be9792dae155168e3070d1bd189896ee29d97b96eb03a991c3",
+    "environment.txt": "2f5c7a50b956a1389c747caba0089a9a2d1b0a16451da19b32f20e44c0215e42",
+    "family-isolation.log": "bb595944e2aa5326d5fdf3cfff8ea0181ee037be9b4ebc10d109e433df3d9580",
+    "missing-date.log": "2b1ffbd4664b1265c33f483144491d86b02084ae2995652a9bff854cc3548b33",
+    "probes.py": "3deca2439d2b6855f6607ee2c0f5b3d81e5fc8ed3f087b69d5033f1e96f353c4",
+    "receipts.json": "1cde470bd8958ae10f7996a6ccc105158d45f583894e7ae146599fb27a178f8e",
+    "regression.log": "4949bea7a482e974dbd0b1ddfd4e0e40d42c39ab6c29575d140ec5a38df7391f",
+    "scope.json": "983c635ede72ec13da8bbbe3b784c8967005f7b3811a6c2e35179b5757b8f5b2",
+    "spectra-validate.log": "da67cbb21eb17b3f2238b736ab700183c5e9de9279434146d8b49aa7dfe195cd"
+  }
+}
