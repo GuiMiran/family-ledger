@@ -1,0 +1,81 @@
+{
+  "run_at": "2026-11-08T06:49:11.906458+00:00",
+  "source": "mercadona_public_storefront",
+  "postcode": "08038",
+  "coverage": [
+    {
+      "store": "mercadona",
+      "status": "source_unavailable",
+      "catalogue_url": "https://www.mercadona.es/",
+      "completed_categories": 0,
+      "expected_categories": 7,
+      "partial": true,
+      "failure_reason": null,
+      "invalid_items": 0,
+      "skipped_non_equivalent_items": 0,
+      "zone_verified": false,
+      "observed_postal_code": null
+    },
+    {
+      "store": "makro",
+      "status": "source_not_configured",
+      "catalogue_url": "https://www.makro.es/"
+    },
+    {
+      "store": "lidl",
+      "status": "source_not_configured",
+      "catalogue_url": "https://www.lidl.es/"
+    },
+    {
+      "store": "dia",
+      "status": "source_not_configured",
+      "catalogue_url": "https://www.dia.es/"
+    },
+    {
+      "store": "carrefour",
+      "status": "source_not_configured",
+      "catalogue_url": "https://www.carrefour.es/"
+    },
+    {
+      "store": "condis",
+      "status": "source_not_configured",
+      "catalogue_url": "https://www.condis.es/"
+    }
+  ],
+  "offer_count": 0,
+  "comparable_items": 0,
+  "results": [
+    {
+      "key": "whole_milk",
+      "top_offers": []
+    },
+    {
+      "key": "sliced_beef",
+      "top_offers": []
+    },
+    {
+      "key": "fresh_cheese",
+      "top_offers": []
+    },
+    {
+      "key": "puleva_max",
+      "top_offers": []
+    },
+    {
+      "key": "eggs",
+      "top_offers": []
+    },
+    {
+      "key": "chicken_breast",
+      "top_offers": []
+    },
+    {
+      "key": "rice",
+      "top_offers": []
+    },
+    {
+      "key": "pasta",
+      "top_offers": []
+    }
+  ]
+}

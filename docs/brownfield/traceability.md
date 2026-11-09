@@ -10,3 +10,6 @@
 | Inventario/menús/analítica | contratos `specs/04` a `06` | Sin prueba ejecutable de entrega | Objetivo |
 
 El mapa inverso agrupa los archivos por su responsabilidad original. Los módulos vacíos de paquetes son soporte de importación. Dockerfile, Compose y pyproject describen ejecución e instalación; no prueban un despliegue. La matriz de Spectra detecta etiquetas desconocidas, no todo código sin etiqueta; este mapa complementa ese límite.
+
+## Evolución 0.2.0
+La matriz anterior describe el diagnóstico inicial. La API actual (`app/main.py`) conecta auth (`app/core/auth.py`), comandos transaccionales (`receipt_commands.py`), sesiones y servicio de ingesta. Las pruebas de `test_receipt_api.py`, `test_family_isolation.py`, `test_receipt_validation_limits.py` y `test_migrations.py` desafían autorización, propiedad, precisión, rollback y migración. `test_postgres.py` califica concurrencia solo cuando corre en un PostgreSQL descartable real. Los recibos históricos mantienen sus revisiones originales.

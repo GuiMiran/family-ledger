@@ -19,7 +19,7 @@ from app.domain.normalization.pipeline import (
     MatchResult,
     ProductMatcher,
 )
-from app.infrastructure.db.orm import ProductAlias
+from app.infrastructure.db.orm import Product, ProductAlias
 
 # ruido habitual en descripciones de ticket que no aporta identidad
 _NOISE = re.compile(
@@ -39,23 +39,43 @@ def normalize_text(raw: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
 
 
+def _visible_aliases(supermarket_id, family_id):
+    """Both an alias and its product must be shared or owned by this family.
+
+    Omitting the family deliberately grants only shared-catalog visibility.
+    An alias from another market is not a candidate for either matcher.
+    """
+    return (
+        select(ProductAlias, Product)
+        .join(Product, Product.id == ProductAlias.product_id)
+        .where(
+            or_(ProductAlias.supermarket_id == supermarket_id,
+                ProductAlias.supermarket_id.is_(None)),
+            or_(Product.family_id.is_(None), Product.family_id == family_id),
+            or_(ProductAlias.family_id.is_(None), ProductAlias.family_id == family_id),
+        )
+    )
+
+
+def _precedence(alias, product):
+    # Specific market, then own alias/product, then deterministic tie-breaking.
+    return (alias.supermarket_id is None, alias.family_id is None,
+            product.family_id is None, str(alias.id))
+
+
 class ExactMatcher(ProductMatcher):
     def __init__(self, session: Session):
         self.session = session
 
-    def match(self, alias_text: str, supermarket_id: uuid.UUID | None):
-        stmt = select(ProductAlias).where(
+    def match(self, alias_text: str, supermarket_id: uuid.UUID | None,
+              family_id: uuid.UUID | None = None):
+        stmt = _visible_aliases(supermarket_id, family_id).where(
             func.lower(ProductAlias.alias_text) == alias_text.lower().strip(),
-            or_(
-                ProductAlias.supermarket_id == supermarket_id,
-                ProductAlias.supermarket_id.is_(None),
-            ),
         )
-        # prioridad: alias específico de la cadena sobre alias global
-        rows = self.session.execute(stmt).scalars().all()
+        rows = self.session.execute(stmt).all()
         if not rows:
             return None
-        best = sorted(rows, key=lambda a: a.supermarket_id is None)[0]
+        best, _ = min(rows, key=lambda row: _precedence(*row))
         return MatchResult(
             product_id=best.product_id,
             match_type="exact",
@@ -72,23 +92,30 @@ class FuzzyMatcher(ProductMatcher):
         self.session = session
         self.threshold = threshold
 
-    def match(self, alias_text: str, supermarket_id: uuid.UUID | None):
+    def match(self, alias_text: str, supermarket_id: uuid.UUID | None,
+              family_id: uuid.UUID | None = None):
         needle = normalize_text(alias_text)
         if not needle:
             return None
-        best: tuple[float, ProductAlias] | None = None
-        for alias in self.session.execute(select(ProductAlias)).scalars():
+        candidates = []
+        for alias, product in self.session.execute(
+            _visible_aliases(supermarket_id, family_id)
+        ).all():
             score = SequenceMatcher(
                 None, needle, normalize_text(alias.alias_text)
             ).ratio()
-            if best is None or score > best[0]:
-                best = (score, alias)
-        if best and best[0] >= self.threshold:
+            if score >= self.threshold:
+                # Honor market/ownership precedence among accepted candidates;
+                # similarity then resolves candidates within the same scope.
+                scope = _precedence(alias, product)
+                candidates.append(((*scope[:3], -score, scope[3]), score, alias))
+        if candidates:
+            _, score, alias = min(candidates, key=lambda candidate: candidate[0])
             return MatchResult(
-                product_id=best[1].product_id,
+                product_id=alias.product_id,
                 match_type="fuzzy",
-                confidence=round(best[0], 3),
-                matched_alias=best[1].alias_text,
+                confidence=round(score, 3),
+                matched_alias=alias.alias_text,
             )
         return None
 

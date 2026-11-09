@@ -10,7 +10,18 @@ def require(condition, message):
     if not condition:
         raise SystemExit(message)
 
-baseline = json.loads((ROOT / 'docs/brownfield/baseline.json').read_text())
+historical_path = ROOT / 'docs/brownfield/baseline.json'
+remediation_path = ROOT / 'docs/brownfield/remediation-baseline.json'
+shopping_path = ROOT / 'docs/brownfield/shopping-baseline.json'
+current_path = shopping_path if shopping_path.exists() else remediation_path
+baseline = json.loads((current_path if current_path.exists() else historical_path).read_text())
+if current_path.exists():
+    require(hashlib.sha256(historical_path.read_bytes()).hexdigest() == baseline['parent_baseline_sha256'],
+            'Historical baseline was modified')
+    require((ROOT / baseline['change_contract']).is_file(), 'Change contract missing')
+    if shopping_path.exists():
+        require(hashlib.sha256(remediation_path.read_bytes()).hexdigest() == baseline['parent_remediation_baseline_sha256'],
+                'Remediation baseline was modified')
 for relative, expected in baseline['files'].items():
     p = ROOT / relative
     require(p.is_file(), f'Baseline file missing: {relative}')
@@ -43,4 +54,4 @@ for group in record['tax_summary']:
     require(tax == D(group['vat']), 'Tax group rounding mismatch')
 meat = [l for l in r['lines'] if l['unit'] == 'kg']
 require(sum((D(l['quantity']) for l in meat), D(0)) == D('15.306'), 'Meat weight mismatch')
-print(f'PASS: baseline Python AST preserved; {len(r["lines"])} lines; net {net}; VAT {vat}; gross {net + vat}. No database import performed.')
+print(f'PASS: selected versioned baseline matches; historical baseline retained; {len(r["lines"])} lines; net {net}; VAT {vat}; gross {net + vat}. No database import performed.')

@@ -1,0 +1,25 @@
+{
+  "project_version": "0.2.0",
+  "source_base_commit": "92c768697240d71c913e208c5ba231b97312b154",
+  "working_tree_delta_ref": "docs/brownfield/remediation-baseline.json",
+  "source_snapshot_sha256": "7eb8f9b0f7ed0e80c5ba6994c2e51bf0aee8871fec2518c6640a3a38c7f4b606",
+  "local_tests": {
+    "command": "python -m pytest -q",
+    "outcome": "passed",
+    "passed": 99,
+    "skipped": 3,
+    "skip_reason": "No PostgreSQL server available locally; dedicated CI service configured.",
+    "receipt": "local-tests.log",
+    "sha256": "b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d"
+  },
+  "isolation_after": {
+    "command": "python docs/sdd-assessment/2026-11-07/probes.py . family-isolation",
+    "exit_code": 0,
+    "receipt": "family-isolation-after.log",
+    "sha256": "376a59ee184aeb8b4e98b05fa9a3f063e3e67912024a036370cfd21949f3bca5"
+  },
+  "packaging": "Agent B clean editable .[dev] install succeeded; pip check passed.",
+  "postgresql": "NOT_RUN_LOCALLY",
+  "deployment": "NOT_RUN",
+  "product_data_import": "NOT_RUN"
+}

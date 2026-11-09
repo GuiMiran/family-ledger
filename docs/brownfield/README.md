@@ -17,7 +17,8 @@ En la baseline inicial no se encontró un comando ni un protocolo publicado llam
 5. Verificación: [resultado y límites](verification.md). Instalar dependencias de diagnóstico no corrige por sí mismo el empaquetado del producto.
 6. Revisión: PR; rollback mediante revert del commit de adopción. No hay migración de datos ni despliegue.
 
-## Estado y brechas
+## Estado histórico y brechas al commit evaluado
+Los estados siguientes describen 0616d2b. La corrección funcional posterior 0.2.0 se detalla en [su contrato](../changes/2026-11-07-remediation-contract.md) y [operación](../operations/api-v0.2.md). Instalación, sesiones, aislamiento y flujo API se corrigen sin reescribir el diagnóstico original; OCR/menús IA, consumo real y reconstrucción siguen fuera de esta entrega.
 | ID | Observación verificable | Estado / siguiente cambio |
 |---|---|---|
 | BF-001 | `.spectra/` y entrada para agentes no existían en baseline | Incorporados por esta adopción |

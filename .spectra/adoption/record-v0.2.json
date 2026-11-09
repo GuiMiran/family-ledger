@@ -1,0 +1,241 @@
+{
+  "protocolId": "spectra-adoption",
+  "protocolVersion": "1.0.0",
+  "state": "in_review",
+  "mode": "brownfield",
+  "project": {
+    "name": "Family Ledger",
+    "repository": "https://github.com/GuiMiran/family-ledger",
+    "version": "0.2.0"
+  },
+  "scope": {
+    "objective": "Mapear adopción previa al protocolo 1.0.0 y registrar diagnóstico acotado reproducible.",
+    "behaviors": [
+      "Interpretar líneas Makro con pesos y cantidades y reconciliar base neta con IVA declarado.",
+      "Mantener fecha desconocida pendiente en lugar de inventarla.",
+      "Conservar descripción e importes de líneas no normalizadas en la ingesta.",
+      "Aprender alias por coincidencia aceptada y reutilizarlos.",
+      "Guardar y consultar compra confirmada desde la aplicación/API.",
+      "Aislar datos y normalización entre familias.",
+      "Actualizar inventario mediante confirmación/evento sin duplicación.",
+      "Conservar transcripción manual sin afirmar ingreso en BD ni stock y reconciliar importes."
+    ],
+    "exclusions": [
+      "Reconstrucción aislada no ejecutada; NOT_TESTED",
+      "Sin evaluación organizativa ni nivel G1–G5",
+      "Sin despliegue ni BD PostgreSQL real",
+      "Sin cambios de lógica de producto",
+      "Sin certificación normativa ni auditoría de seguridad completa"
+    ],
+    "owner": "GuiMiran"
+  },
+  "authorization": {
+    "source": "Instrucciones del usuario en esta sesión: formalizar el protocolo, continuar tras fusionarlo y usar GUIDO si es necesario.",
+    "allowedActions": [
+      "Inspección",
+      "Auditoría y pruebas locales sintéticas",
+      "Dos revisiones analíticas independientes",
+      "Documentación y PR revisable"
+    ],
+    "executionPolicy": "No despliegue, cambio funcional ni datos productivos; el diagnóstico no concede autoridad adicional."
+  },
+  "baseline": {
+    "commit": "92c768697240d71c913e208c5ba231b97312b154",
+    "snapshotRef": "docs/brownfield/remediation-baseline.json",
+    "snapshotSha256": "7eb8f9b0f7ed0e80c5ba6994c2e51bf0aee8871fec2518c6640a3a38c7f4b606",
+    "workingTreeDeltaRef": "docs/changes/2026-11-07-remediation-contract.md",
+    "limitations": [
+      "Runtime candidate is an explicit tested delta from this commit, not an unchanged historical baseline.",
+      "Original 0.1 adoption/diagnosis preserved in record-v0.1.json and docs/sdd-assessment/2026-11-07/."
+    ]
+  },
+  "tooling": {
+    "spectraVersion": "0.5.0",
+    "spectraCommit": "b7acc9a5ae1299a867db9a6a412d189eac056771",
+    "guidoCommit": "4566a3529d833ea037eecc62efe907325ada32e1",
+    "rubricRevision": "guido-scale-v0.1 at 4566a3529d833ea037eecc62efe907325ada32e1"
+  },
+  "obligations": [
+    {
+      "id": "OBL-001",
+      "description": "Interpretar líneas Makro con pesos y cantidades y reconciliar base neta con IVA declarado.",
+      "mandatory": true,
+      "specRefs": [
+        "BR-001",
+        "AC-001"
+      ],
+      "priority": "MUST",
+      "acceptanceRefs": [
+        "BR-001",
+        "AC-001"
+      ],
+      "owner": "GuiMiran"
+    },
+    {
+      "id": "OBL-002",
+      "description": "Mantener fecha desconocida pendiente en lugar de inventarla.",
+      "mandatory": true,
+      "specRefs": [
+        "BR-002",
+        "INV-002",
+        "AC-002"
+      ],
+      "priority": "MUST",
+      "acceptanceRefs": [
+        "BR-002",
+        "INV-002",
+        "AC-002"
+      ],
+      "owner": "GuiMiran"
+    },
+    {
+      "id": "OBL-003",
+      "description": "Conservar descripción e importes de líneas no normalizadas en la ingesta.",
+      "mandatory": true,
+      "specRefs": [
+        "INV-003",
+        "AC-003"
+      ],
+      "priority": "MUST",
+      "acceptanceRefs": [
+        "INV-003",
+        "AC-003"
+      ],
+      "owner": "GuiMiran"
+    },
+    {
+      "id": "OBL-004",
+      "description": "Aprender alias por coincidencia aceptada y reutilizarlos.",
+      "mandatory": true,
+      "specRefs": [
+        "BR-003",
+        "BR-004",
+        "AC-003"
+      ],
+      "priority": "MUST",
+      "acceptanceRefs": [
+        "BR-003",
+        "BR-004",
+        "AC-003"
+      ],
+      "owner": "GuiMiran"
+    },
+    {
+      "id": "OBL-005",
+      "description": "Guardar y consultar compra confirmada desde la aplicación/API.",
+      "mandatory": true,
+      "specRefs": [
+        "US-003",
+        "OP-004",
+        "AC-004"
+      ],
+      "priority": "MUST",
+      "acceptanceRefs": [
+        "US-003",
+        "OP-004",
+        "AC-004"
+      ],
+      "owner": "GuiMiran"
+    },
+    {
+      "id": "OBL-006",
+      "description": "Aislar datos y normalización entre familias.",
+      "mandatory": true,
+      "specRefs": [
+        "INV-004",
+        "AC-007"
+      ],
+      "priority": "MUST",
+      "acceptanceRefs": [
+        "INV-004",
+        "AC-007"
+      ],
+      "owner": "GuiMiran"
+    },
+    {
+      "id": "OBL-007",
+      "description": "Actualizar inventario mediante confirmación/evento sin duplicación.",
+      "mandatory": true,
+      "specRefs": [
+        "US-005",
+        "EVT-001",
+        "AC-006"
+      ],
+      "priority": "MUST",
+      "acceptanceRefs": [
+        "US-005",
+        "EVT-001",
+        "AC-006"
+      ],
+      "owner": "GuiMiran"
+    },
+    {
+      "id": "OBL-008",
+      "description": "Conservar transcripción manual sin afirmar ingreso en BD ni stock y reconciliar importes.",
+      "mandatory": true,
+      "specRefs": [
+        "BR-005",
+        "INV-001",
+        "AC-005"
+      ],
+      "priority": "MUST",
+      "acceptanceRefs": [
+        "BR-005",
+        "INV-001",
+        "AC-005"
+      ],
+      "owner": "GuiMiran"
+    }
+  ],
+  "claims": [],
+  "evidence": [
+    {
+      "scope": "Remediation candidate delta",
+      "sourceSnapshotSha256": "7eb8f9b0f7ed0e80c5ba6994c2e51bf0aee8871fec2518c6640a3a38c7f4b606",
+      "receiptRef": "docs/sdd-assessment/remediation-v0.2/local-receipts.json"
+    }
+  ],
+  "diagnostic": {
+    "status": "review_incomplete",
+    "inventoryRef": null,
+    "reviewReportRefs": [],
+    "reconciliationRef": null,
+    "limitations": [
+      "Fresh post-remediation reports and PostgreSQL CI evidence pending. Historical reports assess 0616d2b only."
+    ]
+  },
+  "organizationalAssessment": {
+    "status": "not_run",
+    "reportRef": null,
+    "level": null
+  },
+  "reconstruction": {
+    "status": "NOT_TESTED",
+    "protocolRef": null,
+    "receiptRef": null
+  },
+  "gaps": [
+    {
+      "id": "LEGACY-ALIAS-PROVENANCE",
+      "impact": "Legacy global aliases lack family provenance.",
+      "owner": "GuiMiran",
+      "closureCheck": "Owner reviews legacy global aliases before shared use.",
+      "dependencies": [
+        "Existing database operator review; no real DB migrated here."
+      ]
+    }
+  ],
+  "nextChanges": [
+    {
+      "scope": "OCR, connected UI, consumption/reservations, AI menu generation and normalized package-price comparison",
+      "status": "future_separate_contracts"
+    }
+  ],
+  "review": {
+    "reviewer": null,
+    "reviewedRevision": null,
+    "scope": "Conformidad documental 1.0.0 y diagnóstico del commit indicado.",
+    "decision": "pending_owner_review",
+    "recordRef": null
+  }
+}

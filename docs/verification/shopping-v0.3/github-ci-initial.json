@@ -1,0 +1,16 @@
+{
+  "repository": "GuiMiran/family-ledger",
+  "head_commit": "e0bfb48049a7b76504fd1a71a11eb58c736c7700",
+  "tree": "9b73b2f557ccf59811ec20f1684b5e09c4dd84fe",
+  "run_id": 42456699074,
+  "job_id": 128657144645,
+  "url": "https://github.com/GuiMiran/family-ledger/actions/runs/42456699074",
+  "conclusion": "failure",
+  "python": {
+    "passed": 236,
+    "skipped": 0,
+    "postgresql": "real PostgreSQL16 service; four qualification tests ran"
+  },
+  "frontend": "failure TS1117 duplicate partial key in coverage labels; corrected in following revision",
+  "excerpt": "2026-11-08T06:56:14.3434781Z 236 passed, 1 warning in 5.71s\n2026-11-08T06:56:17.7650656Z ##[error]src/main.tsx(21,528): error TS1117: An object literal cannot have multiple properties with the same name.\n2026-11-08T06:56:17.7890873Z ##[error]Process completed with exit code 1."
+}

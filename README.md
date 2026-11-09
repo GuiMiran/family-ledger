@@ -6,18 +6,22 @@ El sistema operativo financiero de una familia. Fase 1 (MVP): reducir el
 desperdicio alimentario, optimizar las compras y medir el ahorro real —
 a partir de una sola foto del ticket.
 
-## Adopción Spectra · brownfield
+## Versión 0.2.0 — correcciones y flujo persistente
 
-Entrada para agentes: [AGENTS.md](AGENTS.md). Dominio en [13 capas Spectra](.spectra/00-vision.md), contratos técnicos originales en `specs/` y [baseline, brechas y evidencia](docs/brownfield/README.md).
+- Normalización, alias aprendidos e historial de precios limitados a catálogo global autorizado o familia propia.
+- API autenticada para guardar/consultar tickets, confirmar pendientes y proyectar compras a inventario y analítica básica.
+- Claves idempotentes por familia y transacciones con rollback; sin duplicar eventos ni inventario en reintentos.
+- Instalación editable corregida, SQLAlchemy/psycopg/PyJWT declarados y administración offline para esquema, familias y tokens.
 
-El código de persistencia existe, pero la API actual expone solo interpretación de texto y salud; no conecta confirmación con BD. PostgreSQL está definido en Compose. Esto no acredita despliegue, inventario ni analítica operativos.
+[Operación y contrato de API](docs/operations/api-v0.2.md) · [Base de datos/migración](docs/operations/database.md) · [Contrato de corrección](docs/changes/2026-11-07-remediation-contract.md).
 
-La [compra Makro de 363 EUR](data/purchases/makro-36300-captured-20261107.json) queda como transcripción pendiente de fecha, sin afirmar importación a una BD ni stock disponible. [Historial del cambio](docs/changes/2026-11-07-spectra-brownfield.md).
+Entrada para agentes: [AGENTS.md](AGENTS.md). Dominio: [13 capas Spectra](.spectra/00-vision.md). Protocolo: [registro de adopción](.spectra/adoption/record.json).
+
+El [diagnóstico GUIDO histórico](docs/sdd-assessment/2026-11-07/README.md) conserva el defecto original reproducido al commit 0616d2b; las correcciones posteriores requieren su propia evidencia. No asigna nivel organizativo ni acredita reconstrucción.
+
+La [compra Makro de 363 EUR](data/purchases/makro-36300-captured-20261107.json) sigue pendiente de fecha. No se ha desplegado ni importado a una base de datos privada. OCR de imagen, menús IA y consumo real de inventario siguen pendientes. El candidato 0.3.0 incorpora conversión de formatos a €/kg/l/unidad para observaciones de fuentes, con cobertura explícita.
 
 Gobernanza: [Spectra](https://github.com/GuiMiran/spectra), [ecosistema GUIDO](https://github.com/GuiMiran/spectra/tree/main/docs/ecosystem).
-
-## Diagnóstico SDD acotado
-[GUIDO y conformidad 1.0.0](docs/sdd-assessment/2026-11-07/README.md): inventario, ocho obligaciones, dos revisiones independientes y recibos al commit 0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd. Las 34 pruebas existentes pasan, pero una sonda sintética demuestra un fallo de aislamiento entre familias en normalización. Sin nivel organizativo GUIDO, sin reconstrucción y sin corrección funcional en esta propuesta.
 
 ## Estado histórico declarado — Sprint 2
 
@@ -41,25 +45,25 @@ gratis** (test `test_lidl_ai_normalization_then_free_second_time`).
 
 **Historial de precios propio** (`product_price_history`): la comparativa
 €/kg entre supermercados sale de los tickets de la propia familia — sin
-depender de APIs de terceros que no existen oficialmente.
+requerir una conexión externa. La existencia o disponibilidad de APIs de terceros
+debe verificarse por cadena; el comparador de fuentes se documenta por separado.
 
 **Reconciliación al céntimo**: cada parser valida que las líneas cuadren
 con el total (Makro contra base imponible, Lidl/Mercadona contra PVP).
 Si no cuadra → `pending_fields` con sugerencia. Nunca se pide
 reintroducir el ticket completo.
 
-**El raw nunca se pierde**: `raw_text` por línea y `raw_ocr` completo se
-conservan; si mañana mejora un parser, se reprocesan tickets antiguos.
+**El raw nunca se pierde**: `raw_text` por línea y los campos estructurados se conservan. El texto OCR completo no se almacena por la API estructurada actual; su retención requiere un contrato específico de captura y privacidad.
 
-## Ejecutar
+## Ejecutar la versión actual
 
 ```bash
-pip install -e ".[dev]"       # bloqueado actualmente por BF-002; ver diagnóstico
-pytest -q                        # 34 tests
+pip install -e ".[dev]"
+pytest -q                        # suite actual
 uvicorn app.main:app --reload    # docs: http://localhost:8000/docs
 ```
 
-Con Docker: `docker compose up` (API + PostgreSQL 16).
+Con Docker, seguir el [procedimiento explícito de inicialización](docs/operations/api-v0.2.md) antes de arrancar API + PostgreSQL 16.
 
 ## Estructura
 
@@ -89,3 +93,13 @@ tests/
 
 ---
 Guido Miranda · GUIDO SDD Engineering Stack · CC BY-NC-ND 4.0
+
+## Candidato 0.3.0 · Comparador y asesor familiar
+
+Pantalla móvil React PWA, cesta editable para 08038, hasta tres ofertas por cadena
+y globales, kg/l/unidad con IVA, formatos y peso variable. Asesor de reglas con
+auditoría y datos aislados por familia. [Operación y límites](docs/operations/shopping-v0.3.md),
+[contrato Spectra](docs/changes/2026-11-08-shopping-agent-08038.md) y
+[decisión de arquitectura](docs/adr/0003-shopping-pwa.md). Mercadona: adaptador experimental
+de escaparate público; otras fuentes requieren configuración. No equivale a seis
+integraciones, OCR real, despliegue ni ahorro anual demostrado.

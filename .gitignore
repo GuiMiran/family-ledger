@@ -9,3 +9,7 @@ venv/
 .DS_Store
 
 .tools/
+
+web/node_modules/
+web/dist/
+web/*.tsbuildinfo
