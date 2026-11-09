@@ -11,12 +11,17 @@ def require(condition, message):
         raise SystemExit(message)
 
 historical_path = ROOT / 'docs/brownfield/baseline.json'
-current_path = ROOT / 'docs/brownfield/remediation-baseline.json'
+remediation_path = ROOT / 'docs/brownfield/remediation-baseline.json'
+shopping_path = ROOT / 'docs/brownfield/shopping-baseline.json'
+current_path = shopping_path if shopping_path.exists() else remediation_path
 baseline = json.loads((current_path if current_path.exists() else historical_path).read_text())
 if current_path.exists():
     require(hashlib.sha256(historical_path.read_bytes()).hexdigest() == baseline['parent_baseline_sha256'],
             'Historical baseline was modified')
-    require((ROOT / baseline['change_contract']).is_file(), 'Remediation contract missing')
+    require((ROOT / baseline['change_contract']).is_file(), 'Change contract missing')
+    if shopping_path.exists():
+        require(hashlib.sha256(remediation_path.read_bytes()).hexdigest() == baseline['parent_remediation_baseline_sha256'],
+                'Remediation baseline was modified')
 for relative, expected in baseline['files'].items():
     p = ROOT / relative
     require(p.is_file(), f'Baseline file missing: {relative}')

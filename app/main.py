@@ -40,8 +40,14 @@ def receipt_view(receipt):
                        "product_id": str(x.product_id) if x.product_id else None}
                       for x in sorted(receipt.lines, key=lambda row: row.line_number)]}
 
-def create_app(database_url=None, jwt_secret=None, *, initialize_schema=False):
-    api = FastAPI(title="Family Ledger API", version="0.2.0", description="Cada euro tiene un propósito.")
+def create_app(database_url=None, jwt_secret=None, *, initialize_schema=False, shopping_collector=None):
+    api = FastAPI(title="Family Ledger API", version="0.3.0", description="Cada euro tiene un propósito.")
+    @api.middleware("http")
+    async def private_cache_policy(request, call_next):
+        response = await call_next(request)
+        if request.url.path.startswith("/api/"):
+            response.headers["Cache-Control"] = "no-store"
+        return response
     url = database_url or os.environ.get("DATABASE_URL")
     api.state.jwt_secret = jwt_secret if jwt_secret is not None else os.environ.get("JWT_SECRET")
     api.state.engine = create_db_engine(url) if url else None
@@ -186,6 +192,13 @@ def create_app(database_url=None, jwt_secret=None, *, initialize_schema=False):
     @api.get("/health")
     def health():
         return {"status": "ok"}
+    from app.api.shopping import install_shopping_routes
+    install_shopping_routes(api, database, shopping_collector)
+    from pathlib import Path
+    from fastapi.staticfiles import StaticFiles
+    web_dir = Path(os.environ.get("SHOPPING_WEB_DIR", str(Path(__file__).resolve().parents[1] / "web" / "dist")))
+    if web_dir.is_dir() and (web_dir / "index.html").is_file():
+        api.mount("/", StaticFiles(directory=web_dir, html=True), name="shopping-web")
     return api
 
 app = create_app()

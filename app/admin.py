@@ -27,6 +27,7 @@ def main(argv: list[str] | None = None) -> int:
     token = commands.add_parser("token", help="Issue an expiring token for an existing family")
     token.add_argument("--family", type=uuid.UUID, required=True)
     token.add_argument("--hours", type=int, choices=range(1, 25), default=8)
+    token.add_argument("--web-url", help="Return an expiring family invite link instead of a raw token")
     args = parser.parse_args(argv)
     url = os.environ.get("DATABASE_URL")
     if not url:
@@ -59,7 +60,17 @@ def main(argv: list[str] | None = None) -> int:
                 with factory() as session:
                     if session.get(Family, args.family) is None:
                         raise ValueError("Family is not provisioned")
-                print(issue_family_token(os.environ["JWT_SECRET"], args.family, args.hours))
+                issued = issue_family_token(os.environ["JWT_SECRET"], args.family, args.hours)
+                if args.web_url:
+                    from urllib.parse import urlsplit, urlencode
+                    target = urlsplit(args.web_url)
+                    if (target.scheme not in {"http", "https"} or not target.hostname
+                            or target.username or target.password or target.query or target.fragment
+                            or (target.scheme == "http" and target.hostname not in {"localhost", "127.0.0.1"})):
+                        raise ValueError("Invite URL must use HTTPS (HTTP only for localhost) without credentials/query/fragment")
+                    print(args.web_url.rstrip("/") + "/#" + urlencode({"token": issued}))
+                else:
+                    print(issued)
         return 0
     except (SchemaUpgradeError, ValueError) as error:
         print(str(error), file=sys.stderr)

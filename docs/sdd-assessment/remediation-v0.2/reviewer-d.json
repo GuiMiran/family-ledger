@@ -1,0 +1,200 @@
+{
+  "rubric": "guido-scale-v0.1",
+  "scope": "Family Ledger receipt interpretation/ingestion, confirmation, purchase inventory projection and family isolation. Frozen inventory: docs/sdd-assessment/2026-11-07/scope.json, exactly eight mandatory obligations selected from product purpose/contracts before current test outcomes; not repository-wide or exhaustive. Post-remediation existing-implementation review by independent reviewer D, 2026-11-07, read-only candidate source mapped by parent to public commit. Trusted rubric GUIDO commit 4566a3529d833ea037eecc62efe907325ada32e1. Original scope.json revision and historical reports remain baseline evidence only. No target code executed or modified by this reviewer. Deployment, real OCR, connected UI, consumption/reservations, external broker, production data, security certification and reconstruction excluded.",
+  "revision": "b6084dcbfde7122cc51c85e96683207ddb4c08e0",
+  "dimensions": {
+    "specCoverage": {
+      "status": "OBSERVED",
+      "evidence": [
+        "docs/sdd-assessment/2026-11-07/scope.json",
+        ".spectra/03-business-rules.md BR-001–BR-009",
+        ".spectra/04-invariants.md INV-001–INV-005",
+        ".spectra/11-acceptance-criteria.md AC-001–AC-010",
+        "docs/operations/api-v0.2.md"
+      ],
+      "rationale": "All 8/8 frozen obligations have substantive clauses. New API/event/identity clauses describe current delivered scope while original photo/OCR and UI contracts remain future targets. This denominator cannot establish completeness outside the selected behavior."
+    },
+    "specQuality": {
+      "status": "OBSERVED",
+      "evidence": [
+        ".spectra/03-business-rules.md BR-001, BR-004, BR-008, BR-009",
+        ".spectra/07-events.md EVT-001",
+        "docs/operations/api-v0.2.md Implemented contract",
+        "docs/changes/2026-11-07-remediation-contract.md"
+      ],
+      "rationale": "Reviewed clauses against current code/tests: net-versus-gross Makro basis, confidence thresholds, signed-family authority, pending confirmation, transactional inline events, idempotency conflict and purchase-only inventory are explicit and testable. AC-002 still acknowledges missing dedicated negative parser tests in the regression suite; parent has now rerun the current missing-date standalone probe, while a dedicated missing-total parser challenge remains unverified. No contradiction establishing a failed scoped behavior was found."
+    },
+    "traceability": {
+      "status": "OBSERVED",
+      "evidence": [
+        "docs/brownfield/remediation-baseline.json; docs/sdd-assessment/remediation-v0.2/local-receipts.json (source base 92c768697240d71c913e208c5ba231b97312b154; candidate digest 7eb8f9b0f7ed0e80c5ba6994c2e51bf0aee8871fec2518c6640a3a38c7f4b606). Parent evaluator supplied public-commit mapping to b6084dcbfde7122cc51c85e96683207ddb4c08e0; local older HEAD is not the assessed revision.",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "docs/sdd-assessment/remediation-v0.2/family-isolation-after.log (sha256 376a59ee184aeb8b4e98b05fa9a3f063e3e67912024a036370cfd21949f3bca5 verified)",
+        ".spectra/11-acceptance-criteria.md",
+        "docs/brownfield/traceability.md",
+        "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent.",
+        "Parent evaluator communication 2026-11-07: reran current missing-date synthetic probe and verifier on unchanged candidate; passed, purchase_date=None and pending purchase_date. Reviewer D did not execute target code; parent report supplies execution provenance."
+      ],
+      "rationale": "Inspected clause-to-implementation-to-test assertions and local source-digest receipt. Parent supplied public-commit mapping plus independently retrieved current CI logs; CI tests a source-equivalent PR merge checkout, not an inferred local HEAD. Local 99-pass/3-skip receipt is supplemented by remote 102-pass/zero-skip PostgreSQL receipt and current adoption verifier. Historical execution reports remain historical. Aggregate pytest lacks per-test output, but reviewed workflow executes complete suite without selection. README mislocates new unknown-line assertion in test_ingestion.py; actual test is test_family_isolation.py. Tags/dashboard percentages are declarations rather than behavioral coverage."
+    },
+    "invariantCoverage": {
+      "status": "OBSERVED",
+      "evidence": [
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "tests/test_receipt_api.py",
+        "tests/test_family_isolation.py",
+        "tests/test_receipt_validation_limits.py",
+        "tests/test_postgres.py",
+        "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent.",
+        "Parent evaluator communication 2026-11-07: reran current missing-date synthetic probe and verifier on unchanged candidate; passed, purchase_date=None and pending purchase_date. Reviewer D did not execute target code; parent report supplies execution provenance."
+      ],
+      "rationale": "Current tests challenge family ownership, private alias/product visibility, rejected AI proposals, history scope, undated persistence, forged confidence, reconciliation, numeric precision, same-key conflicts, injected failure rollback and once-only projection. 8/8 obligations have bounded evidence. Verified CI additionally executes real PostgreSQL concurrent create/confirm and recognized legacy migration; this qualifies those synthetic checks only. Parent reran missing-date parser probe on unchanged candidate. No deployed-service, arbitrary-concurrency, missing-total parser negative or full-security claim."
+    },
+    "domainExtraction": {
+      "status": "OBSERVED",
+      "evidence": [
+        ".spectra/01-glossary.md",
+        ".spectra/03-business-rules.md",
+        ".spectra/05-contracts.md",
+        "docs/changes/2026-11-07-remediation-contract.md",
+        "docs/operations/api-v0.2.md",
+        "data/purchases/makro-36300-captured-20261107.json"
+      ],
+      "rationale": "Decision review distinguishes explicit current rules from missing knowledge: packaged quantities preserve declared units, VAT uses printed group rounding, sale date remains unknown, global/private aliases require compatible ownership, legacy uncertain ownership stays quarantined, and inventory means purchases rather than consumption balance. Actual sale date, legacy alias provenance and package conversion cannot be guessed. Source-informed review is not proof that a blinded builder can reconstruct these decisions."
+    },
+    "reconstructability": {
+      "status": "NOT_TESTED",
+      "evidence": [],
+      "rationale": "No frozen, isolated reconstruction trial or independent reserved-oracle evaluation was performed. Source/test inspection and remediation regression cannot establish reconstruction; no organizational grade or attestation."
+    }
+  },
+  "obligations": [
+    {
+      "id": "OBL-001",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        ".spectra/03-business-rules.md BR-001; .spectra/11-acceptance-criteria.md AC-001",
+        "app/infrastructure/parsers/makro.py parse/_score",
+        "tests/test_makro_parser.py::test_weight_line_pollo, test_multi_quantity_line, test_vat_groups_resolved, test_totals_reconcile_no_pending",
+        "tests/test_api.py::test_parse_endpoint_makro",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent."
+      ]
+    },
+    {
+      "id": "OBL-002",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        ".spectra/03-business-rules.md BR-002; .spectra/04-invariants.md INV-002",
+        "app/infrastructure/parsers/makro.py::_score (direct source review: null date produces pending field)",
+        "app/application/receipt_commands.py::validated_receipt",
+        "tests/test_receipt_api.py::test_undated_pending_has_no_stock_then_confirmation_projects_once",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "Demonstrated undated structured API input and parent-rerun current Makro missing-date probe. No dedicated parser missing-total negative test claimed.",
+        "Parent evaluator communication 2026-11-07: reran current missing-date synthetic probe and verifier on unchanged candidate; passed, purchase_date=None and pending purchase_date. Reviewer D did not execute target code; parent report supplies execution provenance."
+      ]
+    },
+    {
+      "id": "OBL-003",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        ".spectra/04-invariants.md INV-003; AC-003",
+        "app/application/receipt_ingestion.py::_write_lines/_normalize_line",
+        "tests/test_family_isolation.py::test_unknown_lines_retain_exact_description_amount_and_review_links (two lines assert raw text, description, quantities, exact amounts, review links and null product IDs)",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent."
+      ]
+    },
+    {
+      "id": "OBL-004",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        ".spectra/03-business-rules.md BR-003/BR-004; AC-003",
+        "app/application/receipt_ingestion.py::_apply_match; app/infrastructure/normalization/matchers.py",
+        "tests/test_ingestion.py::test_makro_ingestion_exact_fuzzy_and_review, test_lidl_ai_normalization_then_free_second_time",
+        "tests/test_family_isolation.py::test_learned_alias_is_private_even_for_a_shared_product",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "AI provider is synthetic; no claim about external model accuracy.",
+        "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent."
+      ]
+    },
+    {
+      "id": "OBL-005",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        ".spectra/05-contracts.md OP-004; AC-004",
+        "app/main.py::create_receipt/confirm_receipt/get_receipt/list_receipts",
+        "tests/test_receipt_api.py::test_file_database_survives_application_recreation, test_undated_pending_has_no_stock_then_confirmation_projects_once",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "Demonstrated API and persistent SQLite plus PostgreSQL restart check; connected UI and deployed environment NOT_EVALUATED.",
+        "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent."
+      ]
+    },
+    {
+      "id": "OBL-006",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        ".spectra/04-invariants.md INV-004; AC-007",
+        "app/infrastructure/normalization/matchers.py::_visible_aliases; app/application/receipt_ingestion.py::_resolve_ai_proposal/price_comparison; app/main.py family filters",
+        "tests/test_family_isolation.py (exact/fuzzy/product-and-alias visibility, market precedence, AI rejection, learned aliases and scoped history)",
+        "tests/test_receipt_api.py::test_family_scope_comes_from_token_not_body_and_keys_are_per_family",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "docs/sdd-assessment/remediation-v0.2/family-isolation-after.log (original A/B challenge now passes; verified hash)",
+        "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent."
+      ]
+    },
+    {
+      "id": "OBL-007",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        ".spectra/07-events.md EVT-001; .spectra/04-invariants.md INV-005; AC-006",
+        "app/application/receipt_commands.py::project_confirmed; app/main.py::save_command; ORM event/inventory/submission uniqueness",
+        "tests/test_receipt_api.py::test_same_key_retries_once_and_conflicting_body_rejected, test_undated_pending_has_no_stock_then_confirmation_projects_once, test_confirmation_failure_restores_original_pending_lines, test_file_database_survives_application_recreation; inventory-flush injected-failure test",
+        "docs/sdd-assessment/remediation-v0.2/local-tests.log (99 passed, 3 PostgreSQL checks skipped; sha256 b2ab9f86ec655ee13df2c430eb01c1d46c6ffca01902ab82befe35f5bb8b256d verified by reviewer D)",
+        "Sequential retries/rollback demonstrated locally; current verified PostgreSQL 16 CI additionally demonstrates four-worker same-key create and confirmation with checked receipt/line/submission/event/inventory cardinalities. No external broker or arbitrary-load equivalence claimed.",
+        "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent."
+      ]
+    },
+    {
+      "id": "OBL-008",
+      "basis": "EXISTING_IMPLEMENTATION",
+      "mandatory": true,
+      "outcome": "DEMONSTRATED",
+      "evidence": [
+        ".spectra/03-business-rules.md BR-005/BR-006; .spectra/04-invariants.md INV-001/INV-002; AC-005",
+        "data/purchases/makro-36300-captured-20261107.json",
+        "Reviewer D independent read-only stdlib Decimal arithmetic on 2026-11-07: 20 lines sum 328.36; tax-group bases match line grouping; all three declared VAT values match ROUND_HALF_UP at group level; VAT sum 34.64; net + VAT = 363.00. Null purchase_date, pending purchase_date, pending_review status, database_imported=false, inventory_confirmed=false directly verified. No target imports or code execution.",
+        "scripts/verify_adoption.py inspected as control definition; its historical PASS is not attributed to candidate execution.",
+        "/workspace/scratch/1778e4e08e2b/family-post-ci.json; https://github.com/GuiMiran/family-ledger/actions/runs/42424861150 job 128560843117: 102 passed, zero skips, real PostgreSQL 16; root retrieved GitHub logs. Merge checkout 04d924e15c7769de119480ca28e48189fb128b93 merges assessed head b6084dcbfde7122cc51c85e96683207ddb4c08e0 into its base 92c768697240d71c913e208c5ba231b97312b154; source-tree equivalence verified by parent. Current verify_adoption PASS: 20 lines; net 328.36; VAT 34.64; gross 363.00; no DB import."
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "observation": "Highest remaining selected verification gap: AC-002 still lacks dedicated missing-date/total parser cases in the maintained pytest suite. Current missing-date behavior is supported by source review plus the parent-rerun standalone probe; missing-total parser challenge remains NOT_EVALUATED. This is missing durable regression evidence, not an observed behavior failure.",
+      "nextAction": "Owner: parser maintainer. Promote missing-date standalone challenge into routine parser regression and add a corresponding missing-total case.",
+      "closureCheck": "Run current-commit parser tests that remove only sale date or paid total from the Makro fixture; assert relevant value stays null/pending and unaffected line quantities, amounts and declared VAT remain unchanged. Retain source-bound execution receipt."
+    },
+    {
+      "observation": "Current remediation README points the explicit unknown-line-retention challenge to tests/test_ingestion.py, whereas its two-line amount/description assertions are in tests/test_family_isolation.py::test_unknown_lines_retain_exact_description_amount_and_review_links. The broad pytest receipt also lacks per-test identifiers; automated trace percentages cannot replace this inspected chain.",
+      "nextAction": "Owner: documentation maintainer. Correct the test location and publish a compact per-obligation source/test/receipt map for the candidate, preserving baseline documents as historical.",
+      "closureCheck": "All eight frozen IDs resolve to exact current test names or explicit independent artifact checks and revision-bound receipts; unknown-line path resolves to the actual assertions and old logs remain labeled with old revisions."
+    }
+  ],
+  "migration": "NOT_ESTIMATED",
+  "executionAuthorized": false
+}

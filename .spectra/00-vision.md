@@ -6,3 +6,5 @@ Estado objetivo pendiente: OCR real de imagen, conexión del prototipo visual, c
 Las especificaciones técnicas originales siguen en [specs](../specs/01-architecture.md); no se reescriben como comportamiento ya entregado.
 No se ha demostrado reconstrucción completa ni ejecución productiva. El ticket actual se conserva como registro pendiente, no como ingreso en una BD desplegada.
 Marco normativo: no se realiza una certificación legal; los tipos fiscales del registro proceden del ticket, no de una regla tributaria nueva.
+
+Candidato 0.3.0: comparador de cesta familiar por CP con normalización kg/l/unidad, snapshots y asesor acotado de reglas; pantalla React PWA conectada a estas rutas. Adaptador experimental del escaparate público de Mercadona y contrato de feed para otras cadenas. Disponibilidad real depende de la fuente y se informa en cobertura; no acredita seis integraciones ni OCR de foto.

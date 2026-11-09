@@ -104,3 +104,35 @@ def test_postgres_explicit_legacy_alias_migration_retains_rows(pg_app):
         assert quarantined is not None and quarantined != family_id
         assert session.scalar(select(func.count()).select_from(ProductAlias)) == 2
     assert migrate_database(app.state.engine)['status'] == 'current'
+
+
+def test_postgres_shopping_refresh_serializes_family_snapshot(pg_app):
+    from datetime import datetime,timezone
+    from app.domain.shopping import PriceOffer
+    from app.infrastructure.prices import CollectionResult
+    from app.infrastructure.db.orm import PriceObservationRow,ShoppingAuditRow,ShoppingProfileRow
+    app,family_id=pg_app
+    class Source:
+        def collect(self,profile):
+            offer=PriceOffer(id='synthetic-pg',store='mercadona',product_name='Synthetic whole milk',
+                comparison_group='milk_whole_uht',pack_quantity='1',pack_unit='l',price='1',
+                source_name='synthetic-pg',source_url='https://mercadona.es/product/synthetic',
+                observed_at=datetime.now(timezone.utc),postal_code=profile.postal_code,location_verified=True)
+            return CollectionResult([offer],[{'store':'mercadona','status':'observations_received'}])
+    app.state.shopping_collector=Source()
+    headers={'Authorization':'Bearer '+issue_family_token(SECRET,family_id)}
+    def refresh(_):
+        with TestClient(app) as client:
+            response=client.post('/api/v1/shopping/refresh',headers=headers)
+            assert response.status_code==200,response.text
+            return response.json()['comparison']['coverage']
+    with ThreadPoolExecutor(max_workers=4) as workers:
+        assert list(workers.map(refresh,range(4)))==[1]*4
+    with app.state.sessions() as session:
+        assert session.scalar(select(func.count()).select_from(PriceObservationRow))==1
+        assert session.scalar(select(func.count()).select_from(ShoppingAuditRow))==4
+    for table in (PriceObservationRow.__table__,ShoppingAuditRow.__table__,ShoppingProfileRow.__table__):
+        table.drop(app.state.engine)
+    assert migrate_database(app.state.engine)['status']=='current'
+    with app.state.sessions() as session:
+        assert session.get(Family,family_id).name=='Synthetic PostgreSQL family'

@@ -25,3 +25,6 @@ Protocolo y herramientas fijados: Spectra b7acc9a5ae1299a867db9a6a412d189eac0567
 
 ## Operación 0.2.0
 Leer docs/operations/api-v0.2.md y database.md para esquema/tokens. La API no inicializa ni migra datos al importar. La migración se ejecuta explícitamente y conserva IDs; los alias globales heredados requieren revisión de procedencia. La baseline 0.2.0 se versiona en docs/brownfield/remediation-baseline.json; no borra la baseline histórica ni autoriza cambios funcionales posteriores sin contrato y pruebas.
+
+## Comparador y asesor 0.3.0
+Contrato: docs/changes/2026-11-08-shopping-agent-08038.md. Dominio: app/domain/shopping.py; proveedores: app/infrastructure/prices.py y mercadona.py; rutas: app/api/shopping.py; asesor: app/application/shopping_agent.py; pantalla: web/. Operación y cobertura: docs/operations/shopping-v0.3.md. El baseline candidato shopping-baseline.json conserva los dos anteriores. No extrapolar mocks a precios reales ni anunciar seis integraciones. Mercadona usa escaparate público no documentado como API oficial. El asesor no usa LLM ni ejecuta compras. Conservar fotos y tokens fuera de git.
