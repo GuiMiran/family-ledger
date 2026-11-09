@@ -10,3 +10,5 @@ Marco normativo: no se realiza una certificación legal; los tipos fiscales del 
 Candidato 0.3.0: comparador de cesta familiar por CP con normalización kg/l/unidad, snapshots y asesor acotado de reglas; pantalla React PWA conectada a estas rutas. Adaptador experimental del escaparate público de Mercadona y contrato de feed para otras cadenas. Disponibilidad real depende de la fuente y se informa en cobertura; no acredita seis integraciones ni OCR de foto.
 
 Privacidad: perfiles nuevos vacíos, configuración explícita por familia y ejemplos sintéticos separados. La recogida y el asesor requieren alta completa. La publicación queda bloqueada hasta validar ese recorrido y su aislamiento. docs/data-privacy.md.
+
+Candidato 0.4.0: navegación móvil de cinco vistas, dashboard de registros confirmados y captura con OCR local Tesseract. El borrador se revisa antes del guardado; el original se procesa temporalmente y no se conserva. Menús IA, movimientos físicos de congelación/consumo y ahorro logrado siguen pendientes. No declarar el producto completo por completar estas pantallas.

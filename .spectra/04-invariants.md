@@ -9,3 +9,5 @@
 - INV-006 MUST: Perfil, observaciones personalizadas y auditoría de compras pertenecen exclusivamente a la familia autenticada. Una recomendación no crea compra, pago, inventario ni ahorro realizado. AC-013.
 
 - INV-007 MUST: Ningún perfil o caso particular se publica como ejemplo ni se asigna a otra familia. El historial público redactado no acredita integridad byte a byte ni nueva certificación. AC-014.
+
+- INV-008 MUST: Extraer una foto no escribe compras ni existencias. Solo el guardado validado e idempotente confirma y proyecta; fotos temporales y metadatos se eliminan. AC-016.

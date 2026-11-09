@@ -38,3 +38,17 @@ La aplicación web está en `web/`. El archivo `prototype/FamilyLedgerApp.jsx` e
 El [diagnóstico histórico](docs/sdd-assessment/2026-11-07/README.md) conserva hallazgos metodológicos y límites, con datos particulares redactados. Las copias públicas modificadas no son evidencia original byte a byte ni una recertificación. No se asigna nivel organizativo ni resultado de reconstrucción.
 
 Licencia: CC BY-NC-ND 4.0.
+
+## Candidato 0.4.0 · frontal familiar y captura
+
+Interfaz móvil con Inicio, Despensa, Cámara, Menús y Ahorro; comparador y perfil
+accesibles desde la aplicación. Dashboard basado exclusivamente en tickets
+confirmados; las vistas sin datos no contienen resultados de ejemplo.
+
+La cámara extrae borradores privados mediante OCR local Tesseract para formatos
+soportados. Se revisan campos ambiguos antes del guardado validado e idempotente.
+Las fotos originales no se conservan en esta versión. Menús IA, consumo y
+congelación física, y medición de ahorro siguen pendientes.
+
+[Operación y límites](docs/operations/mobile-app-v0.4.md) ·
+[Contrato](docs/changes/2026-11-09-mobile-family-app.md).

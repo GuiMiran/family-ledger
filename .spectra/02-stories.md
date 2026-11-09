@@ -9,3 +9,6 @@
 - US-007 SHOULD: Como responsable de compras quiero un asesor que calcule el desembolso de mi cesta sin comprar ni inventar ahorro conseguido. AC-013. Asesor determinista inicial, sin modelo de lenguaje.
 
 - US-008 MUST: Como familia nueva quiero configurar y editar mi propio nombre, zona, tiendas y cesta sin heredar preferencias ajenas ni una demostración. AC-014. Contrato de privacidad vigente.
+
+- US-009 MUST: Como familia quiero navegar Inicio, Despensa, Captura, Menús y Ahorro, con el comparador integrado y datos privados reales o estados vacíos honestos. AC-015.
+- US-010 MUST: Como familia quiero obtener un borrador desde una foto y revisar solo campos ambiguos antes de guardar una compra. AC-016.
