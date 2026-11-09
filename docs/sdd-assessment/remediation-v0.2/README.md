@@ -1,7 +1,9 @@
+> PRIVACY-REDACTED HISTORICAL MATERIAL (2026-11-09). Private case details have been removed. This public copy is not byte-original evidence, its former file digests are withdrawn, and it does not re-certify historical outcomes. See docs/data-privacy.md.
+
 # Remediation candidate 0.2.0
 
-The original GUIDO diagnosis and its failing receipt remain immutable in
-`../2026-11-07/`. This directory records later corrective work; it does not
+The historical GUIDO diagnosis and its failing isolation finding are summarized in
+`../2026-11-07/`; public copies are privacy-redacted. This directory records later corrective work; it does not
 replace the original evaluation with a retrospective PASS.
 
 ## Corrected behavior
@@ -26,16 +28,14 @@ organizational assessments or a reconstruction trial.
 
 ## Receipts and provenance
 
-`local-receipts.json` identifies the source base plus candidate snapshot digest
-in `docs/brownfield/remediation-baseline.json`. `local-tests.log` reports real
+`local-receipts.json` records historical source provenance; its former file-digest claims are withdrawn for this redacted public copy. `local-tests.log` reports real
 local execution, including PostgreSQL skips. `family-isolation-after.log`
 records the same synthetic challenge that previously failed. The historical
-baseline JSON and all original report/log hashes are retained.
+methodological findings are retained; modified report/log bytes are not original and prior hashes do not authenticate them.
 
 The candidate is subject to owner review. Local SQLite success is not a claim
 about a deployed server. Remote CI runs are the separate source-commit-bound
-evidence for PostgreSQL. No household receipt has been imported into a remote
-database, and the 363 EUR record's sale date remains unknown.
+evidence for PostgreSQL. This public package does not establish a household receipt import into a remote database. Particular transaction details have been removed.
 
 ## Remaining product work
 
@@ -54,7 +54,6 @@ identify documentation/test gaps (dedicated parser missing-date/total negatives,
 precise alias confidence boundaries and a stale unknown-line evidence pointer).
 Their analytical work did not authorize running target code. Coordinator-run
 receipts are separate evidence: `github-ci-b6084dc.json` records 102 passed,
-zero skips with PostgreSQL 16. Reports are retained unchanged, including those
-limitations. This is not certification or a whole-product maturity score.
+zero skips with PostgreSQL 16. Reports retain their methodological limitations, with private case details redacted and former byte-integrity claims withdrawn. This is not certification or a whole-product maturity score.
 
 Later shopping 0.3.0 is a different change; those reports do not evaluate it.

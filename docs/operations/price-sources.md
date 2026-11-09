@@ -2,7 +2,7 @@
 
 `app.infrastructure.prices.PriceFeedProvider.collect(ShoppingProfile)` returns
 `CollectionResult(offers: list[PriceOffer], coverage: list[dict], source_name: str)`.
-The default profile selects Mercadona, Makro, Lidl, DIA, Carrefour and Condis.
+A new profile selects no stores. Each household explicitly configures its own selection before collection.
 The registry's official public website URLs are navigation references, **not API
 endpoints**, data permissions, connected providers or proof of local prices.
 
@@ -41,7 +41,7 @@ least one observation asserts that context; it does **not** prove freshness,
 availability, tax completeness or eligibility. The comparison domain applies
 those gates separately. Contacting a source never changes an offer's postal code,
 verification flag, source timestamp or availability. A generic public catalogue
-remains an unlocalized reference; another postcode never becomes verified 08038.
+remains an unlocalized reference; another postcode never becomes verified for the requested location.
 
 ## Bounds and operational limits
 
@@ -64,7 +64,7 @@ is connected by this implementation.
 ## SYNTHETIC ONLY contract example
 
 This is a fabricated response to explain the schema. It is not a current price,
-retailer quotation or evidence that a product is sold in 08038. In particular,
+retailer quotation or evidence of local availability. In particular,
 absence of location fields deliberately leaves it unlocalized.
 
 ```json

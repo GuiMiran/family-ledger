@@ -1,3 +1,5 @@
+> PRIVACY-REDACTED HISTORICAL MATERIAL (2026-11-09). Private case details have been removed. This public copy is not byte-original evidence, its former file digests are withdrawn, and it does not re-certify historical outcomes. See docs/data-privacy.md.
+
 # Shopping candidate 0.3.0 · verification
 
 Source base b6084dcbfde7122cc51c85e96683207ddb4c08e0. Candidate source snapshot
@@ -6,17 +8,11 @@ is bound by shopping-baseline.json and local-receipts.json. Local suite: 232 pas
 TypeScript and production build pass. Browser binary download failed; visual and
 physical-mobile checks have not run. No deployment or household DB changes.
 
-Synthetic tests qualify arithmetic, eligibility, adapters, privacy, bounded agent,
-explicit migration and API behavior; not six live chains. The final live smoke
-queried Mercadona public storefront with explicit environment proxy opt-in:
-61 observations, 6 of 8 basket groups with eligible options for echoed CP08038.
-Milk UHT is credited only to the three individually checked legal-name details.
-Egg size remains pending; beef cut unknown is excluded. No price is a stock or
-future-price guarantee. Other five chains require configured sources.
-
-Earlier direct/proxy smoke failures and the intermediate injected-client success
-are retained separately. These do not replace the final receipt. Logs contain
-no invitation, customer account, private feed token or proxy address.
+Synthetic tests historically challenged arithmetic, eligibility, adapters, privacy,
+bounded agent, migration and API behavior; not six live chains. Household-specific
+live observations and locality/basket details have been withdrawn. Their public
+JSON files are tombstones, not current source-price evidence or a new PASS.
+Earlier file digests no longer authenticate redacted public copies.
 
 Existing C/D diagnosis reports archived in ../../sdd-assessment/remediation-v0.2
 refer only to b6084dc's eight selected obligations. No GUIDO level or reconstruction

@@ -1,13 +1,11 @@
 # Comparator and shopping agent · contract before implementation
 
-User-approved objective: FAMILY LEDGER should anticipate shopping decisions using
-current supermarket prices. Initial postcode is 08038, editable per household.
-Preferred stores: Mercadona, Makro, Lidl, DIA, Carrefour and Condis.
-
-Initial basket: Puleva Max separately from ordinary whole milk; sliced beef;
-eggs; fresh cheese; fresh boneless chicken breast; rice; dry pasta. Ordinary
-milk=whole, beef=sliced beef, cheese=fresh were explicitly confirmed. Quantities
-are editable comparison references, not inferred consumption or purchase orders.
+Objective: FAMILY LEDGER helps each household compare equivalent offers using
+its own explicitly configured location, stores and basket. New households start
+empty; no owner case or demo profile is applied automatically. The later
+[privacy contract](2026-11-09-private-profiles.md) governs onboarding and public
+examples. Quantities are editable comparison references, not inferred consumption
+or purchase orders. Public documentation contains no initial household basket.
 
 ## Invariants
 
@@ -16,12 +14,12 @@ are editable comparison references, not inferred consumption or purchase orders.
    unknown tax is not silently guessed. Cashback is separate from checkout cost.
 2. Match a declared comparison group and optional brand/EAN; different milk,
    meat cuts, egg sizes and fresh/frozen formats must not be silently mixed.
-   Puleva Max never competes against ordinary milk. Unknown equivalence is a gap.
+   A special branded formulation never competes against an ordinary group. Unknown equivalence is a gap.
 3. Return up to three eligible offers per store/group and three across stores;
    never invent missing candidates. Include full pack outlay, normalized unit
    price, source URL, source timestamp, zone/store and promotion conditions.
 4. A price for another postcode or a generic public catalogue cannot be called
-   verified for 08038. Old, future-dated, expired, conditional-ineligible or
+   verified for the requested household location. Old, future-dated, expired, conditional-ineligible or
    unavailable offers are excluded from the eligible ranking with explicit reason.
    Generic catalogue references can be shown separately, clearly unlocalized.
 5. Profiles, personalized offers and advisor audit records are family-scoped.
@@ -51,5 +49,5 @@ and source context are configured and verified. No deployment or actual purchase
 Acceptance: unit/pack/VAT arithmetic; same-group checks; freshness, postcode and
 promotion gates; per-store/global top-three without padding; profile isolation;
 provider outage/unconfigured behavior; server-computed advisor explanations;
-mobile build; original receipt/auth suite unchanged. Evidence is recorded against
+mobile build; receipt/auth regression with wholly synthetic fixtures. Evidence is recorded against
 the resulting revision; mocked feed tests qualify adapter behavior, not live prices.

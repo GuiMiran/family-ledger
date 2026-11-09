@@ -3,8 +3,8 @@
 |---|---|---|
 | Ticket | Evidencia de una compra, con líneas y total declarado | Compra Makro |
 | Línea | Artículo, cantidad, unidad e importe impreso | Pechuga por kg |
-| Base imponible | Importe antes de impuestos | 328,36 EUR |
-| Total pagado | Salida de dinero con impuestos | 363,00 EUR |
+| Base imponible | Importe antes de impuestos | Valor neto declarado |
+| Total pagado | Salida de dinero con impuestos | Valor bruto declarado |
 | Campo pendiente | Dato no confirmado; no se sustituye por una suposición | Fecha fuera de la foto |
 | Producto canónico | Identidad común para descripciones equivalentes | Macarrones |
 | Alias | Descripción vinculada a un producto canónico | Descripción de tienda |

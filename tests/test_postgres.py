@@ -121,6 +121,9 @@ def test_postgres_shopping_refresh_serializes_family_snapshot(pg_app):
             return CollectionResult([offer],[{'store':'mercadona','status':'observations_received'}])
     app.state.shopping_collector=Source()
     headers={'Authorization':'Bearer '+issue_family_token(SECRET,family_id)}
+    from tests.shopping_fixtures import configured_profile
+    with TestClient(app) as client:
+        assert client.put('/api/v1/shopping/profile',headers=headers,json=configured_profile().model_dump(mode='json')).status_code==200
     def refresh(_):
         with TestClient(app) as client:
             response=client.post('/api/v1/shopping/refresh',headers=headers)

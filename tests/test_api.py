@@ -18,8 +18,8 @@ def test_parse_endpoint_makro():
     assert r.status_code == 200
     body = r.json()
     assert body["supermarket_key"] == "makro"
-    assert body["total_amount"] == "211.87"
-    assert len(body["lines"]) == 17
+    assert body["total_amount"] == "36.12"
+    assert len(body["lines"]) == 8
 
 
 def test_parse_endpoint_unknown_ticket():

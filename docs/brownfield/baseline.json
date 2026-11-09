@@ -166,5 +166,6 @@
       "ast_sha256": "2e7f67052c1b2f9fc46c76ec099697d7642bd6b4f36d25ac2444a82eb400caad"
     }
   },
-  "scope": "Brownfield adoption; source changes limited to trace comments. No deployment or database import."
+  "scope": "Brownfield adoption; source changes limited to trace comments. No deployment or database import.",
+  "privacy_state": "Historical metadata retained with personal paths redacted; active content baseline superseded by privacy-baseline.json."
 }

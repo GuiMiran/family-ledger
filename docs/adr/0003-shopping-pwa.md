@@ -12,5 +12,5 @@ fallos explícitos. Ventajas: un frontend web móvil, despliegue empaquetado jun
 a API y validación de precios independiente. Costes: enlaces de acceso temporales
 como etapa inicial; login renovable, validación móvil real y OCR de foto pendientes.
 
-Contrato: ../changes/2026-11-08-shopping-agent-08038.md. No se altera silenciosamente
+Contrato: ../changes/2026-11-08-shopping-comparator.md. No se altera silenciosamente
 la especificación técnica Flutter original: queda como opción futura, no implementación.

@@ -1,3 +1,5 @@
+> Documento histórico con referencias redactadas por privacidad. Se retienen hallazgos, no una garantía de integridad byte a byte de las copias actuales.
+
 # Cambio · Conformidad con protocolo 1.0.0 y diagnóstico GUIDO
 El protocolo ya fusionado en Spectra se aplica documentalmente a la adopción inicial. Se preservan baseline histórica y lógica de producto; se añaden registro estructurado, rutas del auditor, inventario y dos revisiones con reconciliación.
 Commit evaluado: 0616d2b86c2930a8c96a2c65e4cae0cd5ff1ddbd. Evidencia y límites: [diagnóstico](../sdd-assessment/2026-11-07/README.md).

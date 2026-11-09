@@ -1,20 +1,11 @@
 """Parser de tickets Lidl (Lidl Supermercados S.A.).
 
-Validado contra ticket real (El Prat de Llobregat, 04/07/2026, 151,46 €,
-48 líneas). Particularidades del formato Lidl:
+Cubierto por tickets completamente sintéticos sin identificadores personales.
 
-- Precios de línea CON IVA (PVP), letra de grupo de IVA al final:
-    'MACARRONS RATLLATS    1,09x  2      2,18 B'   (multi-unidad)
-    'SPAGHETTI INTEGRAL                  1,09 B'   (unidad simple)
-- Productos a peso: sublínea bajo el artículo:
-    'FILET D'ANOLL 1ª A                  8,30 B'
-    '  0,472 kg x 17,59  EUR/kg'
-- Descuentos como sublínea negativa del artículo anterior:
-    '  Desc.                            -1,10'
-    '    PROMO LIDL PLUS                -0,30'
-- Tabla de IVA con letras: 'A  4%  2,10  52,42  54,52' → A=4 %, B=10 %, C=21 %
-- La letra final [ABC] es el discriminador fuerte de línea de artículo:
-  totales, entregas y tabla de IVA no la llevan.
+- Líneas con IVA incluido y letra de grupo al final, con cantidad opcional.
+- Sublíneas de peso: '0,650 kg x 10,00 EUR/kg'.
+- Descuentos negativos 'Desc.' y 'PROMO LIDL PLUS' se asocian a la línea previa.
+- La tabla de IVA resuelve las letras; los totales no llevan letra final.
 """
 from __future__ import annotations
 

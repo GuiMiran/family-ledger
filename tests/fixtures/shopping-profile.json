@@ -1,0 +1,9 @@
+{
+  "postal_code": "00000",
+  "preferred_stores": ["mercadona", "makro", "lidl", "dia", "carrefour", "condis"],
+  "basket": [
+    {"key":"milk", "label":"Synthetic milk", "comparison_group":"milk_whole_uht", "unit":"l", "desired_quantity":"1"},
+    {"key":"chicken", "label":"Synthetic chicken", "comparison_group":"chicken_breast_fresh_boneless", "unit":"kg", "desired_quantity":"1"},
+    {"key":"eggs", "label":"Synthetic eggs - size not selected", "comparison_group":"eggs_size_pending", "unit":"unit", "desired_quantity":"6"}
+  ]
+}

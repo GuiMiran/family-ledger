@@ -218,5 +218,6 @@
     ".github/workflows/spectra-brownfield.yml": {
       "sha256": "164f4be4613b31820c7a13e3b490b577b68df000731b1a0b5b2b58cd80035d2d"
     }
-  }
+  },
+  "privacy_state": "Historical metadata retained with personal paths redacted; active content baseline superseded by privacy-baseline.json."
 }

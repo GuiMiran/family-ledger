@@ -74,12 +74,13 @@ not subtract consumption or infer package-content conversions. Analytics exclude
 undated pending purchases from date periods. Product price history preserves
 original units; there is no claim of comparable €/kg across package formats.
 
-## Current Makro record
+## Private receipt storage
 
-`data/purchases/makro-36300-captured-20261107.json` contains a `parsed_receipt`
-member ready for review/import. Its sale date remains unknown. Importing that
-member would store a pending purchase, without inventory, until the user confirms
-the actual date. This release has not imported it into a deployed/private BD.
+Public examples are wholly synthetic. Real receipt JSON, photographs and private
+purchase dates belong in authenticated storage or controlled exports outside
+Git. An undated receipt must stay pending without inventory until valid correction;
+this contract does not establish that any particular purchase was imported.
+See [data privacy](../data-privacy.md).
 
 ## Verification
 

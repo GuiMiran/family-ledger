@@ -93,6 +93,8 @@ class PriceFeedProvider:
             return CollectionResult([], [{"store": store, "status": status,
                 "catalogue_url": STORE_CATALOGUES.get(store)} for store in stores])
 
+        if not profile.configured:
+            return result("profile_incomplete")
         if not self.url:
             return result("source_not_configured")
         if not self._safe_endpoint():

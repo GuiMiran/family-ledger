@@ -9,6 +9,11 @@
   "skipped": 0,
   "postgresql": "Real PostgreSQL 16 service; tests/test_postgres.py all executed.",
   "adoption_verifier": "passed",
-  "excerpt": "2026-11-07T23:21:28.1451234Z   TEST_DATABASE_URL: ***localhost:5432/family_ledger_test\n2026-11-07T23:21:28.8221120Z HEAD is now at 04d924e Merge b6084dcbfde7122cc51c85e96683207ddb4c08e0 into 92c768697240d71c913e208c5ba231b97312b154\n2026-11-07T23:21:28.8260144Z [command]/usr/bin/git log -1 --format=%H\n2026-11-07T23:21:28.8515487Z   TEST_DATABASE_URL: ***localhost:5432/family_ledger_test\n2026-11-07T23:21:28.9786180Z   TEST_DATABASE_URL: ***localhost:5432/family_ledger_test\n2026-11-07T23:21:29.4214830Z   TEST_DATABASE_URL: ***localhost:5432/family_ledger_test\n2026-11-07T23:21:30.0715506Z HEAD is now at b7acc9a docs: formalize greenfield and brownfield Spectra adoption protocol (#32)\n2026-11-07T23:21:30.0744850Z [command]/usr/bin/git log -1 --format=%H\n2026-11-07T23:21:30.0944636Z   TEST_DATABASE_URL: ***localhost:5432/family_ledger_test\n2026-11-07T23:21:30.1239643Z \u001b[32m  ✔  All checks passed — specs are valid\u001b[0m\n2026-11-07T23:21:30.2417633Z PASS: selected versioned baseline matches; historical baseline retained; 20 lines; net 328.36; VAT 34.64; gross 363.00. No database import performed.\n2026-11-07T23:21:30.2548840Z   TEST_DATABASE_URL: ***localhost:5432/family_ledger_test\n2026-11-07T23:21:38.6980840Z ##[group]Run python -m pytest -q\n2026-11-07T23:21:38.6981117Z \u001b[36;1mpython -m pytest -q\u001b[0m\n2026-11-07T23:21:38.7027610Z   TEST_DATABASE_URL: ***localhost:5432/family_ledger_test\n2026-11-07T23:21:42.3539300Z 102 passed, 1 warning in 3.09s",
-  "producer": "GitHub Actions logs retrieved through GitHub connector by Codex root"
+  "excerpt": "PRIVACY REDACTED: original log excerpt contained private transaction arithmetic. Historical test outcome metadata retained; no fresh execution asserted.",
+  "producer": "GitHub Actions logs retrieved through GitHub connector by Codex root",
+  "privacy_redaction": {
+    "status": "REDACTED_HISTORICAL_COPY",
+    "notice": "PRIVACY-REDACTED HISTORICAL MATERIAL (2026-11-09). Private case details have been removed. This public copy is not byte-original evidence, its former file digests are withdrawn, and it does not re-certify historical outcomes. See docs/data-privacy.md.",
+    "original_byte_integrity_claim": "WITHDRAWN"
+  }
 }

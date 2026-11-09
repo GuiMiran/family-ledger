@@ -1,57 +1,45 @@
-"""Verifica baseline semántico, referencias y transcripción, sin red ni BD."""
+# @spectra INV-007
+"""Verify the authorized privacy baseline and explicitly synthetic public data."""
 import ast
 import hashlib
 import json
-from decimal import Decimal, ROUND_HALF_UP
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
 def require(condition, message):
     if not condition:
         raise SystemExit(message)
 
-historical_path = ROOT / 'docs/brownfield/baseline.json'
-remediation_path = ROOT / 'docs/brownfield/remediation-baseline.json'
-shopping_path = ROOT / 'docs/brownfield/shopping-baseline.json'
-current_path = shopping_path if shopping_path.exists() else remediation_path
-baseline = json.loads((current_path if current_path.exists() else historical_path).read_text())
-if current_path.exists():
-    require(hashlib.sha256(historical_path.read_bytes()).hexdigest() == baseline['parent_baseline_sha256'],
-            'Historical baseline was modified')
-    require((ROOT / baseline['change_contract']).is_file(), 'Change contract missing')
-    if shopping_path.exists():
-        require(hashlib.sha256(remediation_path.read_bytes()).hexdigest() == baseline['parent_remediation_baseline_sha256'],
-                'Remediation baseline was modified')
+
+baseline = json.loads((ROOT / 'docs/brownfield/privacy-baseline.json').read_text())
+require((ROOT / baseline['change_contract']).is_file(), 'Privacy change contract missing')
+for relative, expected in baseline['parent_metadata_sha256'].items():
+    require(hashlib.sha256((ROOT / relative).read_bytes()).hexdigest() == expected,
+            'Redacted historical baseline metadata changed')
 for relative, expected in baseline['files'].items():
-    p = ROOT / relative
-    require(p.is_file(), f'Baseline file missing: {relative}')
+    path = ROOT / relative
+    require(path.is_file(), f'Baseline file missing: {relative}')
     if 'ast_sha256' in expected:
-        digest = hashlib.sha256(ast.dump(ast.parse(p.read_text()), include_attributes=False).encode()).hexdigest()
+        digest = hashlib.sha256(ast.dump(ast.parse(path.read_text()), include_attributes=False).encode()).hexdigest()
         require(digest == expected['ast_sha256'], f'Python semantics changed: {relative}')
     else:
-        require(hashlib.sha256(p.read_bytes()).hexdigest() == expected['sha256'], f'Baseline changed: {relative}')
+        require(hashlib.sha256(path.read_bytes()).hexdigest() == expected['sha256'],
+                f'Baseline changed: {relative}')
 
-record = json.loads((ROOT / 'data/purchases/makro-36300-captured-20261107.json').read_text())
-r = record['parsed_receipt']
-D = Decimal
-require(r['purchase_date'] is None, 'Unknown purchase date must remain null')
-require(any(p['field_path'] == 'purchase_date' for p in r['pending_fields']), 'Date review missing')
-require(record['status'] == 'pending_review', 'Transcription must remain pending')
-require(record['database_imported'] is False and record['inventory_confirmed'] is False, 'No DB/inventory claim allowed')
-require(r['invoice_number'] is None, 'Public record must omit invoice identifier')
-require(len(r['lines']) == 20, 'Expected 20 monetary lines, without double-counting basket header')
-require([l['line_number'] for l in r['lines']] == list(range(1, 21)), 'Line ordering invalid')
-net = sum((D(l['line_total']) for l in r['lines']), D(0))
-require(net == D(record['net_total']) == D('328.36'), 'Net lines do not reconcile')
-vat = sum((D(g['vat']) for g in record['tax_summary']), D(0))
-require(net + vat == D(r['total_amount']) == D('363.00'), 'Gross total mismatch')
-require(vat == D(r['total_vat']) == D('34.64'), 'VAT mismatch')
-require(sum((D(g['base']) for g in record['tax_summary']), D(0)) == net, 'Tax bases mismatch')
-for group in record['tax_summary']:
-    base = sum((D(l['line_total']) for l in r['lines'] if D(l['vat_rate']) == D(group['rate'])), D(0))
-    require(base == D(group['base']), f"Tax group base mismatch: {group['rate']}")
-    tax = (base * D(group['rate']) / 100).quantize(D('.01'), rounding=ROUND_HALF_UP)
-    require(tax == D(group['vat']), 'Tax group rounding mismatch')
-meat = [l for l in r['lines'] if l['unit'] == 'kg']
-require(sum((D(l['quantity']) for l in meat), D(0)) == D('15.306'), 'Meat weight mismatch')
-print(f'PASS: selected versioned baseline matches; historical baseline retained; {len(r["lines"])} lines; net {net}; VAT {vat}; gross {net + vat}. No database import performed.')
+names = subprocess.check_output(['git', 'ls-files', '--cached', '--others', '--exclude-standard', '-z'], cwd=ROOT).decode().split('\0')
+for relative in set(names):
+    if not relative or not (ROOT / relative).is_file():
+        continue
+    require(not relative.startswith(('data/purchases/', 'private/', 'private-data/')),
+            'Private household data must not be versioned')
+    require(not relative.endswith(('.private.json', '.private.txt')), 'Private file must not be versioned')
+for path in (ROOT / 'tests/fixtures').glob('*_ticket.txt'):
+    require('SYNTHETIC TEST DATA' in path.read_text()[:200], 'Public receipt fixtures must be synthetic')
+demo = json.loads((ROOT / 'data/demo/shopping-profile.json').read_text())
+require(demo['kind'] == 'synthetic_mock_data' and demo['auto_load'] is False,
+        'Demo must be explicit and must never auto-load into a household profile')
+require(not list((ROOT / 'data/purchases').glob('*')), 'No household purchase records may remain public')
+print('PASS: privacy baseline matches; public examples are explicit synthetic data; private records are excluded. No history rewrite, database import or deployment performed.')

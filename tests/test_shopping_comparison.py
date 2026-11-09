@@ -12,7 +12,7 @@ NOW = datetime(2026, 11, 8, 12, tzinfo=timezone.utc)
 
 
 def profile(**changes):
-    data = dict(basket=[BasketItem(key="milk", label="Whole milk", comparison_group="milk_whole_uht",
+    data = dict(postal_code="00000", preferred_stores=list(Store), basket=[BasketItem(key="milk", label="Whole milk", comparison_group="milk_whole_uht",
                                  unit="l", desired_quantity="7")])
     data.update(changes)
     return ShoppingProfile(**data)
@@ -22,7 +22,7 @@ def offer(**changes):
     data = dict(id="a", store="mercadona", product_name="Synthetic milk",
                 comparison_group="milk_whole_uht", pack_quantity="1", pack_unit="l", price="1.20",
                 source_url="https://tienda.mercadona.es/example", source_name="Synthetic test",
-                observed_at=NOW, postal_code="08038", location_verified=True)
+                observed_at=NOW, postal_code="00000", location_verified=True)
     data.update(changes)
     return PriceOffer(**data)
 
@@ -31,17 +31,16 @@ def item_result(offers, household=None):
     return compare(household or profile(), offers, NOW)["items"][0]
 
 
-def test_defaults_are_editable_references_and_preserve_equivalence():
+def test_new_household_has_no_example_or_personal_defaults():
     p = ShoppingProfile()
-    assert p.postal_code == "08038" and len(p.basket) == 8 and len(p.preferred_stores) == 6
-    groups = {i.comparison_group for i in p.basket}
-    assert {"milk_whole_uht", "puleva_max", "beef_sliced", "cheese_fresh", "eggs_size_pending"} <= groups
+    assert p.postal_code is None and p.basket == [] and p.preferred_stores == []
+    assert p.family_name is None and not p.configured
     assert p.coupons_enabled is False and p.club_memberships == []
     assert p.max_age_hours == 24
     with pytest.raises(ValidationError):
-        ShoppingProfile(postal_code="8038")
+        ShoppingProfile(postal_code="1234")
     with pytest.raises(ValidationError):
-        profile(basket=[p.basket[0], p.basket[0]])
+        profile(basket=[profile().basket[0], profile().basket[0]])
 
 
 def test_bundle_vat_outlay_overbuy_and_cashback_do_not_use_float_or_discount():
@@ -85,7 +84,7 @@ def test_gram_conversion_and_unit_count_multipacks():
     ({"club_required": True}, "club_required"),
     ({"coupon_required": True}, "coupon_required"),
     ({"available": False}, "unavailable"),
-    ({"postal_code": "08039"}, "postcode_mismatch"),
+    ({"postal_code": "11111"}, "postcode_mismatch"),
 ])
 def test_exclusion_gates(changes, reason):
     result = item_result([offer(**changes)])
@@ -105,7 +104,7 @@ def test_store_brand_ean_and_specific_cut_are_not_silently_equivalent():
 
 
 def test_pending_egg_size_never_gets_eligible_ranking():
-    p = ShoppingProfile()
+    p = profile(basket=[BasketItem(key="eggs", label="Synthetic unsized eggs", comparison_group="eggs_size_pending", unit="unit", desired_quantity="6")])
     pending = next(i for i in compare(p, [offer(comparison_group="eggs_size_pending", pack_unit="unit")], NOW)["items"] if i["key"] == "eggs")
     assert not pending["top_offers"]
     assert "egg_size_pending" in pending["excluded"][0]["reasons"]
@@ -113,7 +112,7 @@ def test_pending_egg_size_never_gets_eligible_ranking():
 
 def test_unlocalized_references_are_not_coverage_or_local_ranks():
     offers = [offer(id="no-zone", postal_code=None), offer(id="unverified", location_verified=False),
-              offer(id="wrong", postal_code="08039")]
+              offer(id="wrong", postal_code="11111")]
     result = compare(profile(), offers, NOW)
     assert result["coverage"] == 0
     item = result["items"][0]

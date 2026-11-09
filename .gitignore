@@ -13,3 +13,14 @@ venv/
 web/node_modules/
 web/dist/
 web/*.tsbuildinfo
+
+# Household data must never be versioned.
+private/
+private-data/
+*.private.json
+*.private.txt
+.env.*
+!.env.example
+data/purchases/
+
+web/node_modules

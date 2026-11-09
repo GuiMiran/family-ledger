@@ -2,19 +2,17 @@
 
 ## Recorrido
 
-La familia abre un enlace temporal, ajusta CP/cesta/cantidades/tamaño de huevos,
-guarda y pulsa actualizar. Ve hasta tres opciones globales o por supermercado
-con €/kg, €/l o €/unidad, desembolso del formato, condiciones, fecha y enlace.
-Las cantidades iniciales (1 kg/l o 12 huevos) son referencias editables y no una
-previsión de consumo. El asesor elige menor desembolso para esa cantidad entre
-ofertas compatibles y muestra sobrantes. Una recomendación no es una compra.
+La familia autenticada empieza con un perfil vacío. Configura nombre, código
+postal, tiendas y cesta, guarda y después puede actualizar las fuentes. Puede
+editar cada artículo, variante y cantidad o eliminarlo. La recogida y el asesor
+se bloquean si falta la configuración requerida; no se reutilizan preferencias
+de otra familia ni de una demostración.
 
-Perfil inicial: CP 08038; Mercadona, Makro, Lidl, DIA, Carrefour y Condis. Leche
-entera, vacuno fileteado y queso fresco confirmados. Puleva Max es grupo separado.
-Arroz largo y pasta seca de trigo son referencias editables. Tamaño de huevos
-pendiente. El corte concreto de vacuno y variantes exactas no se infieren; si la
-fuente no acredita equivalencia, queda hueco. Menos de tres ofertas es resultado
-válido y visible. El comparador no mezcla una leche especial con leche normal.
+El comparador muestra hasta tres opciones globales o por tienda con precio por
+unidad, desembolso del formato, condiciones, fecha y enlace. Las cantidades son
+referencias explícitas de la familia, no una previsión automática de consumo.
+Las variantes incompatibles se mantienen separadas. Menos de tres ofertas es
+un resultado válido. La recomendación no constituye un pedido.
 
 ## Fuentes
 
@@ -28,7 +26,7 @@ cambios de formato o bloqueo se muestran; no se eluden ni se usan credenciales.
 La publicación de un producto no garantiza stock. Se mantiene IVA incluido y
 peso aproximado con precio/kg publicado, sin recomputarlo desde pesos redondeados.
 La clasificación conservadora puede dejar sin resultados leche sin prueba UHT por producto,
-Puleva Max no disponible y vacuno sin corte conocido. No son precios cero.
+una variante ausente o un corte sin equivalencia acreditada. No son precios cero.
 
 Las otras cinco cadenas requieren fuente o acuerdo configurado; el adaptador
 `SHOPPING_PRICE_FEED_URL`/`SHOPPING_PRICE_FEED_TOKEN` permite recibir observaciones
@@ -77,6 +75,9 @@ No hay despliegue, compra ni importación de ticket real por este cambio.
 política determinista, sin LLM, pago ni pedido. Diferencia potencial = comparación
 contra el desembolso más caro entre opciones equivalentes observadas para los
 mismos artículos cubiertos. No representa ahorro logrado ni la mejor cesta de
-Barcelona. No incluye viaje, entrega, precios de fuentes ausentes ni consumo real.
+una zona geográfica. No incluye viaje, entrega, precios de fuentes ausentes ni consumo real.
 Presupuesto solo se declara cumplido cuando la cesta tiene cobertura completa.
 No hay predicción de caducidad/consumo ni reserva del congelador en este módulo.
+
+## Condición de publicación
+Despliegue bloqueado hasta validar alta inicial, edición e independencia de perfiles y bloqueo de recogida incompleta. Los datos públicos son sintéticos. Los antiguos recibos de fuentes vinculados a un caso particular han sido retirados; no acreditan precios actuales. Ver [privacidad](../data-privacy.md).

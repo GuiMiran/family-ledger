@@ -1,3 +1,5 @@
+> PRIVACY-REDACTED HISTORICAL MATERIAL (2026-11-09). Private case details have been removed. This public copy is not byte-original evidence, its former file digests are withdrawn, and it does not re-certify historical outcomes. See docs/data-privacy.md.
+
 # SDD repository evidence audit
 
 Repository: `/workspace/scratch/1778e4e08e2b/family-ledger-conformance`

@@ -106,7 +106,7 @@ Cada servicio es un módulo FastAPI independiente (mismo repo, distinto proceso/
 ## 7. Siguientes pasos sugeridos
 
 1. Validar el modelo de `Product` normalizado (punto más crítico y más fácil de hacer mal)
-2. Elegir proveedor OCR y probar con 5-10 tickets reales vuestros (Mercadona/Lidl/Bonpreu)
+2. Elegir proveedor OCR y probar con tickets sintéticos públicos y tickets privados solo en un entorno autorizado
 3. Definir el contrato OpenAPI de `Receipt Service` y `Inventory Service`
 4. Prototipo de la pantalla de captura + confirmación de campos ambiguos en Flutter
 

@@ -7,3 +7,5 @@
 - INV-005 MUST: Compra, líneas, idempotencia, evento y proyección se confirman juntos o se revierten juntos; reintentos no duplican proyección. AC-009 y AC-010.
 
 - INV-006 MUST: Perfil, observaciones personalizadas y auditoría de compras pertenecen exclusivamente a la familia autenticada. Una recomendación no crea compra, pago, inventario ni ahorro realizado. AC-013.
+
+- INV-007 MUST: Ningún perfil o caso particular se publica como ejemplo ni se asigna a otra familia. El historial público redactado no acredita integridad byte a byte ni nueva certificación. AC-014.

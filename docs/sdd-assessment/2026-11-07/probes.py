@@ -17,7 +17,7 @@ from app.infrastructure.parsers.makro import MakroParser
 mode = sys.argv[2]
 if mode == 'missing-date':
     raw = (target / 'tests/fixtures/makro_ticket.txt').read_text()
-    parsed = MakroParser().parse(raw.replace('04/07/2026', ''))
+    parsed = MakroParser().parse('\n'.join(line for line in raw.splitlines() if 'Fecha de venta:' not in line))
     passed = parsed.purchase_date is None and any(x.field_path == 'purchase_date' for x in parsed.pending_fields)
     print(json.dumps({'obligation':'OBL-002','expected':'null date and pending review','purchase_date':str(parsed.purchase_date),'pending_fields':[x.field_path for x in parsed.pending_fields],'passed':passed}))
     sys.exit(0 if passed else 1)
