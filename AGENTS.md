@@ -34,3 +34,6 @@ El contrato docs/changes/2026-11-09-private-profiles.md autoriza retirar datos p
 
 ## Aplicación móvil 0.4.0
 Contrato: docs/changes/2026-11-09-mobile-family-app.md. Pantallas en web/src/mobile.tsx y main.tsx; dashboard de registros en app/api/dashboard.py; extracción privada en app/api/capture.py y puerto/adaptador OCR. El runtime Docker instala Tesseract spa/cat/eng. No sustituir datos vacíos por cifras de las capturas de referencia. Las fotos originales no se conservan, el OCR no guarda compras y los menús/congelación física siguen pendientes. Leer docs/operations/mobile-app-v0.4.md.
+
+## Recuperación de acceso 0.4.1
+Contrato docs/changes/2026-11-09-private-access.md: invitación privada configurada por operador, hash y vencimiento en entorno, intercambio POST antes de renderizar la familia. No guardar secretos en Git ni aceptar family_id del cliente. app/api/access.py; tests/test_access.py; segundo recorrido de scripts/verify_mobile_ui.py con UI_TEST_PRIVATE_INVITE=1. No afirmar cuentas persistentes ni invitaciones de un solo uso.

@@ -63,6 +63,7 @@ jobs:
             python -m playwright install --with-deps chromium
           fi
           python scripts/verify_mobile_ui.py
+          UI_TEST_PRIVATE_INVITE=1 python scripts/verify_mobile_ui.py
       - name: Upload synthetic UI review screenshots
         if: always()
         uses: actions/upload-artifact@v4

@@ -1,0 +1,3 @@
+# Access recovery 0.4.1 local qualification
+
+275 Python tests passed locally; five skipped (four require PostgreSQL, one real OCR runtime). Twelve new invitation tests passed, covering correct family, no DB writes, bad configuration including nonfinite expiry, bad/expired/unprovisioned invitations, family selector rejection and throttling. TypeScript/Vite build passed. Spectra validate passed; trace iteration 9 retains two critical and two major historical gaps. Local browser binary unavailable; CI must qualify both direct JWT and invitation exchange paths and full PostgreSQL/OCR regression before release. No production access success is claimed here.

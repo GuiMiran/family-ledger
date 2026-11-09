@@ -4,7 +4,11 @@ import './style.css';
 import {Icon,BottomNav,Home,Pantry,Capture,Menus,Savings,type View,type Receipt,type Purchase,type Analytics,type Api} from './mobile';
 
 // Consume the invitation before rendering or making requests. Session memory only.
-const invitation = new URLSearchParams(window.location.hash.slice(1)).get('token');
+const accessFragment = new URLSearchParams(window.location.hash.slice(1));
+let invitation = accessFragment.get('token');
+let accessError = '';
+let privateInvite = accessFragment.get('invite');
+accessFragment.delete('token');accessFragment.delete('invite');
 if (window.location.hash) window.history.replaceState(null, '', window.location.pathname + window.location.search);
 const request:Api=async(path,method='GET',body,extraHeaders={})=>{
  const form=body instanceof FormData;
@@ -163,7 +167,7 @@ function App(){
  }
  useEffect(()=>{const expire=()=>setExpired(true);window.addEventListener('family-session-expired',expire);if(invitation)void reload();return()=>window.removeEventListener('family-session-expired',expire);},[]);
  function navigate(next:View){setView(next);window.scrollTo({top:0,behavior:'instant'});}
- if(!invitation||expired)return <main className="welcome"><div className="brand-mark">f<span>·</span></div><span className="eyebrow">FAMILY LEDGER</span><h1>Tu familia.<br/><span>Un poco más de calma.</span></h1><p>Organiza tus compras, consulta tus registros y decide con perspectiva.</p><div className="welcome-note"><Icon name="user"/><div><strong>Entra con tu invitación familiar</strong><p>{expired?'Este enlace ya no da acceso. Solicita una nueva invitación a quien gestiona vuestra familia.':'Abre el enlace privado de tu familia para empezar. Cada familia configura su propio espacio.'}</p></div></div><small>La invitación solo permanece en memoria durante esta sesión. Si recargas, vuelve a abrir el enlace.</small></main>;
+ if(!invitation||expired)return <main className="welcome"><div className="brand-mark">f<span>·</span></div><span className="eyebrow">FAMILY LEDGER</span><h1>Tu familia.<br/><span>Un poco más de calma.</span></h1><p>Organiza tus compras, consulta tus registros y decide con perspectiva.</p><div className="welcome-note"><Icon name="user"/><div><strong>Entra con tu invitación familiar</strong><p>{accessError|| (expired?'Este enlace ya no da acceso. Solicita una nueva invitación a quien gestiona vuestra familia.':'Abre el enlace privado de tu familia para empezar. Cada familia configura su propio espacio.')}</p></div></div><small>La invitación solo permanece en memoria durante esta sesión. Si recargas, vuelve a abrir el enlace.</small></main>;
  return <div className="family-app"><header className="family-header"><button className="logo" onClick={()=>navigate('home')} aria-label="Family Ledger, inicio"><span className="brand-mark small">f<span>·</span></span><span>Family Ledger<small>UN POCO MÁS DE CALMA</small></span></button><button className={'profile-button '+(view==='profile'?'active':'')} onClick={()=>navigate('profile')} aria-label="Perfil de mi familia"><Icon name="user" size={20}/><span>{profile?.family_name||'Mi familia'}</span></button></header><main className="mobile-main">
  {error&&<div className="alert" role="alert">{error}<button className="text-action" disabled={loading} onClick={()=>void reload()}>Actualizar datos</button></div>}
  {view==='home'&&<Home analytics={analytics} receipts={receipts} onNavigate={navigate} loading={loading}/>}
@@ -174,5 +178,20 @@ function App(){
  </main><div hidden={view!=='compare'&&view!=='profile'}><ShoppingView mode={view==='profile'?'profile':'compare'} onProfile={setProfile} onNavigate={navigate}/></div><BottomNav view={view} onChange={navigate}/></div>;
 }
 
-createRoot(document.getElementById('root')!).render(<App/>);
+const root = createRoot(document.getElementById('root')!);
+async function openPrivateInvitation(){
+ if(privateInvite){
+  root.render(<main className="welcome"><h1>Abriendo tu familia…</h1><p role="status">Verificando tu invitación privada.</p></main>);
+  try{
+   const response=await fetch('/api/v1/access/exchange',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({invitation:privateInvite}),cache:'no-store',credentials:'omit'});
+   if(!response.ok)throw new Error(response.status===429?'Espera un minuto y vuelve a abrir tu enlace.':'Esta invitación no está disponible o ha caducado. Solicita un enlace nuevo.');
+   const result=await response.json();
+   if(typeof result.access_token!=='string'||!result.access_token)throw new Error('No se pudo abrir la sesión. Vuelve a abrir tu enlace.');
+   invitation=result.access_token;
+  }catch(error){invitation=null;accessError=error instanceof Error?error.message:'No se pudo abrir tu familia. Vuelve a abrir el enlace.';}
+  finally{privateInvite=null;}
+ }
+ root.render(<App/>);
+}
+void openPrivateInvitation();
 if('serviceWorker' in navigator) window.addEventListener('load',()=>{navigator.serviceWorker.register('/sw.js').catch(()=>{});});

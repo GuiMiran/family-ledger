@@ -16,3 +16,5 @@
 - BR-012 MUST: Perfil nuevo sin CP, cesta ni tiendas; la familia los configura explícitamente. Recogida y asesor requieren configuración completa. Ejemplos sintéticos separados, nunca semillas productivas. AC-014.
 
 - BR-013 MUST: El OCR local valida imagen, tamaño, resolución, concurrencia y tiempo; no conserva el original ni consulta un proveedor externo. Una lectura no usable pide repetir la foto; no inventa líneas ni pide rehacer todo el ticket. AC-016.
+
+- BR-014 MUST: Invitación operativa de alta entropía, hash y caducidad configurados; intercambio privado POST por JWT acotado a la familia preexistente. Sin registro público ni familia elegida por el cliente. AC-017.

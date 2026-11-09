@@ -6,10 +6,10 @@
   "project": {
     "name": "Family Ledger",
     "repository": "https://github.com/GuiMiran/family-ledger",
-    "version": "0.4.0"
+    "version": "0.4.1"
   },
   "scope": {
-    "objective": "Mobile family shell and bounded local photo OCR, preserving family isolation and configurable comparator.",
+    "objective": "Recover private family access through an operator-provisioned expiring invitation link.",
     "behaviors": [
       "Load the authenticated family profile or an empty onboarding state.",
       "Configure name, postcode, selected stores and basket for that family.",
@@ -29,20 +29,20 @@
     "owner": "GuiMiran"
   },
   "authorization": {
-    "source": "Owner approved implementing the mobile family app based on supplied visual references, retaining private family profiles.",
+    "source": "Owner cannot enter and requests a working private link; recover access without changing existing family data.",
     "allowedActions": [
       "Implementación en rama y PR revisable",
       "Pruebas sintéticas y consulta de escaparates públicos",
       "Documentación y trazabilidad",
       "Trabajo delegado autorizado previamente"
     ],
-    "executionPolicy": "Sin despliegue, compra, pago, merge ni datos productivos; no eludir controles de acceso de fuentes."
+    "executionPolicy": "Test and review access patch before merging and deploying the access recovery; no private data publication, signing-key rotation or purchase import."
   },
   "baseline": {
-    "commit": "cdc848dcc7194a615f0926d15143c7648dcbfa00",
-    "snapshotRef": "docs/brownfield/mobile-baseline.json",
-    "snapshotSha256": "c7a48dd1b05a489ab400e54a3a7c728dc90587c3156ab982e772fef70ad1316f",
-    "workingTreeDeltaRef": "docs/changes/2026-11-09-mobile-family-app.md",
+    "commit": "b1ec992d8c5efd42d393f81a87ea4fdf4de62ce1",
+    "snapshotRef": "docs/brownfield/access-baseline.json",
+    "snapshotSha256": "0d6efe3badc8bc8cbae0d52849816a80fd43ab527eef0d3a4bdc7fdacccc0ec7",
+    "workingTreeDeltaRef": "docs/changes/2026-11-09-private-access.md",
     "limitations": [
       "Historical metadata/report text was privacy-redacted under owner instruction; not original byte-exact evidence.",
       "This patch does not remove data from old Git commits or archived copies."
@@ -232,7 +232,7 @@
   "review": {
     "reviewer": null,
     "reviewedRevision": null,
-    "scope": "Mobile application and local photo OCR candidate; pending owner review.",
+    "scope": "Private access recovery patch; CI and operational qualification required.",
     "decision": "pending_owner_review",
     "recordRef": null
   }
