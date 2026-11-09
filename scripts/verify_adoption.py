@@ -14,7 +14,9 @@ def require(condition, message):
         raise SystemExit(message)
 
 
-baseline_path = ROOT / 'docs/brownfield/mobile-baseline.json'
+baseline_path = ROOT / 'docs/brownfield/access-baseline.json'
+if not baseline_path.is_file():
+    baseline_path = ROOT / 'docs/brownfield/mobile-baseline.json'
 if not baseline_path.is_file():
     baseline_path = ROOT / 'docs/brownfield/privacy-baseline.json'
 baseline = json.loads(baseline_path.read_text())

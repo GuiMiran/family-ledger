@@ -9,3 +9,5 @@
 - OP-006 MUST · Configurar perfil: PRE familia autenticada; POST GET devuelve su perfil persistido o alta vacía, PUT valida zona y conserva sus propias preferencias; ERROR recogida/asesor sin configuración completa se rechazan antes de contactar fuentes. US-008; AC-014.
 
 - OP-007 MUST · Extraer foto: PRE familia autenticada/provisionada e imagen JPEG/PNG/WebP válida; POST borrador o error sanitizado con petición de nueva captura; sin escritura en BD. AC-016.
+
+- OP-008 MUST · Abrir invitación: PRE secreto válido vigente y familia provisionada; POST JWT de ocho horas, sin escrituras ni conservación en navegador; ERROR rechazo uniforme, límite local de intentos y fallo cerrado sin configuración. AC-017.

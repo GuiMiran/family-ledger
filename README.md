@@ -52,3 +52,5 @@ congelación física, y medición de ahorro siguen pendientes.
 
 [Operación y límites](docs/operations/mobile-app-v0.4.md) ·
 [Contrato](docs/changes/2026-11-09-mobile-family-app.md).
+
+Acceso piloto 0.4.1: el operador puede emitir invitaciones privadas con caducidad mediante hash configurado. El enlace general no autentica. Ver docs/changes/2026-11-09-private-access.md.

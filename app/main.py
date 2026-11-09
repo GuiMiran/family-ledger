@@ -41,7 +41,7 @@ def receipt_view(receipt):
                       for x in sorted(receipt.lines, key=lambda row: row.line_number)]}
 
 def create_app(database_url=None, jwt_secret=None, *, initialize_schema=False, shopping_collector=None, ocr_provider=None):
-    api = FastAPI(title="Family Ledger API", version="0.4.0", description="Cada euro tiene un propósito.")
+    api = FastAPI(title="Family Ledger API", version="0.4.1", description="Cada euro tiene un propósito.")
     @api.middleware("http")
     async def private_cache_policy(request, call_next):
         response = await call_next(request)
@@ -192,6 +192,8 @@ def create_app(database_url=None, jwt_secret=None, *, initialize_schema=False, s
     @api.get("/health")
     def health():
         return {"status": "ok"}
+    from app.api.access import install_access_routes
+    install_access_routes(api, database)
     from app.api.dashboard import install_dashboard_routes
     install_dashboard_routes(api, database)
     from app.api.capture import install_capture_routes

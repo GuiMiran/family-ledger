@@ -1,5 +1,5 @@
 # @spectra BR-007
-"""Offline-issued, expiring family-scoped access tokens; no public token minting."""
+"""Expiring family tokens issued offline or through operator-provisioned invitations."""
 from datetime import datetime, timedelta, timezone
 import uuid
 

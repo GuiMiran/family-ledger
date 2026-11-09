@@ -10,6 +10,10 @@ Path(os.environ.get('UI_SCREENSHOT_DIR','/tmp')).mkdir(parents=True,exist_ok=Tru
 calls=[]; saves=[]
 def route_handler(route):
  req=route.request;path=req.url.split('/api/v1/')[1];calls.append(path)
+ if path=='access/exchange':
+  assert req.headers.get('authorization') is None
+  assert req.post_data_json=={'invitation':'synthetic-browser-invitation-1234567890'}
+  return route.fulfill(json={'access_token':'synthetic-browser-session','token_type':'bearer','expires_in':28800},headers={'Cache-Control':'no-store'})
  assert req.headers.get('authorization')=='Bearer synthetic-browser-session'
  if path=='shopping/profile':
   if req.method=='PUT':profile.update(req.post_data_json)
@@ -38,9 +42,9 @@ with sync_playwright() as p:
  page.route('**/*',static_route)
  page.route('**/api/v1/**',route_handler)
  errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
- page.goto('http://127.0.0.1:4179/#token=synthetic-browser-session')
+ page.goto('http://127.0.0.1:4179/#'+('invite=synthetic-browser-invitation-1234567890' if os.environ.get('UI_TEST_PRIVATE_INVITE')=='1' else 'token=synthetic-browser-session'))
  expect(page.get_by_role('heading',name='Tu casa, en orden.')).to_be_visible()
- assert '#token' not in page.url
+ assert '#' not in page.url
  assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
  page.screenshot(path=str(Path(os.environ.get('UI_SCREENSHOT_DIR','/tmp'))/'family-ui-home-mobile.png'),full_page=True)
  page.get_by_role('button',name='Perfil de mi familia',exact=True).click()
